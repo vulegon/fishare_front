@@ -12,13 +12,13 @@ function Map() {
   }
 
   const center = {
-    lat: -3.745,
-    lng: -38.523,
+    lat: 36.063053704526226,
+    lng: 136.22288055523217,
   }
 
   return (
     <LoadScript googleMapsApiKey={apiKey}>
-      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
+      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15}>
       </GoogleMap>
     </LoadScript>
   )
