@@ -3,14 +3,13 @@ export const mapContainerStyle = {
   height: "100vh",
 }
 
-interface Center {
-  lat: number,
-  lng: number,
+interface MapOptions {
+  mapTypeId: string,
+  zoom: number,
+  center: { lat: number, lng: number },
 }
 
-export const center: Center = {
-  lat: 36.063053704526226,
-  lng: 136.22288055523217,
-}
-
-export const zoom = 15
+export const mapOptions = {
+  zoom: 15,
+  center: { lat: 36.063053704526226, lng: 136.22288055523217 },
+}  
