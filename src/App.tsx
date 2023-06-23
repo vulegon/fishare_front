@@ -4,7 +4,7 @@ import Map from './features/Map';
 function App() {
   return (
     <div>
-      <Map/>
+      <Map />
     </div>
   );
 }
