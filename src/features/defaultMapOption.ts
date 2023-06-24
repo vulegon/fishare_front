@@ -1,3 +1,5 @@
+import { Position } from '../types/types';
+
 export const mapContainerStyle = {
   width: '100%',
   height: '100vh',
@@ -5,7 +7,7 @@ export const mapContainerStyle = {
 
 interface MapOptions {
   zoom: number;
-  center: { lat: number; lng: number };
+  center: Position;
 }
 
 export const mapOptions: MapOptions = {
