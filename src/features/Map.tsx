@@ -18,7 +18,7 @@ function Map() {
       setSpotRegisterButtonIsDisabled(false);
     }
   };
-  
+
   return (
     <LoadScript googleMapsApiKey={apiKey}>
       <GoogleMap mapContainerStyle={mapContainerStyle} options={mapOptions} onClick={onMapClick}>
