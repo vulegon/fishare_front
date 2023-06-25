@@ -3,7 +3,7 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { apiKey } from '../config/google_map/api_key';
 import { mapContainerStyle, mapOptions } from './defaultMapOption';
 import { MarkerPosition } from '../types/types';
-import RegisterButton from '../components/RegisterButton';
+import SpotRegisterButton from './SpotRegisterButton';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
@@ -26,7 +26,7 @@ function Map() {
           <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
         )}
         <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
-          <RegisterButton isDisabled={spotRegisterButtonIsDisabled} />
+          <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} />
         </div>
       </GoogleMap>
     </LoadScript>
