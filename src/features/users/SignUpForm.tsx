@@ -3,55 +3,45 @@ import Typography from '@mui/material/Typography';
 import SubmmitButton from '../../components/SubmmitButton';
 import InputForm from '../../components/InputForm';
 import AlertMessage from '../../components/AlertMessage';
+import { apiClient, MESSAGE } from '../../services/apiClient';
+import { AlertColor } from '@mui/material';
 
 function SignUpForm() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [severity, setSeverity] = useState('');
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [responseMessage, setResponseMessage] = useState([]);
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [severity, setSeverity] = useState<AlertColor>('error');
+  const [alertOpen, setAlertOpen] = useState<boolean>(false);
+  const [responseMessage, setResponseMessage] = useState<string[]>([]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetch('http://localhost:3001/api/v1/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    try {
+      const response = await apiClient('/users', 'POST', {
         name: name,
         email: email,
         password: password,
-      }),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          setSeverity('success');
-        } else if (response.status === 400) {
-          setSeverity('error');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        console.log(data.message[0]);
-        // if (Array.isArray(data.message)) {
-        //   setResponseMessage(data.message);
-        // } else {
-        //   setResponseMessage([data.message]);
-        // }
-        setAlertOpen(true);
       });
+      if (response.ok) {
+        setSeverity('success');
+      } 
+      const json: MESSAGE = await response.json();
+      console.log(json);
+      const messages: string[] = Array.isArray(json.message) ? json.message : [json.message];
+      setResponseMessage(messages);
+      setAlertOpen(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50%' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {alertOpen && (
+        {alertOpen &&(
           <div style={{ width: '100%', marginBottom: '20px' }}>
             {responseMessage.map((message, index) => {
-              return <AlertMessage key={index} message={message} />;
+              return <AlertMessage key={index} message={message} severity={severity} />;
             })}
           </div>
         )}
