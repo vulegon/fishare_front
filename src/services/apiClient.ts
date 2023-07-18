@@ -1,4 +1,4 @@
-const baseURL = 'https://fishare-backend.fly.dev/api/v1';
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 const createRequest = (endpoint: string, method: string, body?: any, argumentHeaders?: { [key: string]: string }) => {
   const url = `${baseURL}/${endpoint}`;

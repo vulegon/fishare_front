@@ -1,7 +1,19 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 
-function InputForm({ label, type, value, setValue }: { label: string; type: string; value: string; setValue: (value: string)=> void }) {
+function InputForm({
+  label,
+  type,
+  value,
+  setValue,
+  endAdornment,
+}: {
+  label: string;
+  type: string;
+  value: string;
+  setValue: (value: string) => void;
+  endAdornment?: React.ReactNode;
+}) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
@@ -15,6 +27,9 @@ function InputForm({ label, type, value, setValue }: { label: string; type: stri
       margin='normal'
       required
       fullWidth
+      InputProps={{
+        endAdornment: endAdornment,
+      }}
     />
   );
 }
