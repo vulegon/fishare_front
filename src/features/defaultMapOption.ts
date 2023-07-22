@@ -1,8 +1,12 @@
 import { Position } from '../types/types';
 
-export const mapContainerStyle = {
-  width: '100%',
-  height: '100vh',
+export const mapContainerStyle = (height = '64') => {
+  const calcMapStyle = {
+    width: `100%`,
+    height: `calc(100vh - ${height}px)`,
+  };
+
+  return calcMapStyle;
 };
 
 interface MapOptions {

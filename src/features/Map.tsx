@@ -4,6 +4,7 @@ import { apiKey } from '../config/google_map/api_key';
 import { mapContainerStyle, mapOptions } from './defaultMapOption';
 import { MarkerPosition } from '../types/types';
 import SpotRegisterButton from './SpotRegisterButton';
+import Header from '../Header';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
@@ -20,16 +21,19 @@ function Map() {
   };
 
   return (
-    <LoadScript googleMapsApiKey={apiKey}>
-      <GoogleMap mapContainerStyle={mapContainerStyle} options={mapOptions} onClick={onMapClick}>
-        {markerPosition.lat && markerPosition.lng && (
-          <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
-        )}
-        <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
-          <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} />
-        </div>
-      </GoogleMap>
-    </LoadScript>
+    <div>
+      <Header />
+      <LoadScript googleMapsApiKey={apiKey}>
+        <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
+          {markerPosition.lat && markerPosition.lng && (
+            <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
+          )}
+          <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
+            <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} />
+          </div>
+        </GoogleMap>
+      </LoadScript>
+    </div>
   );
 }
 
