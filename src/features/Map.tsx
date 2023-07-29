@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { apiKey } from '../config/google_map/api_key';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import { mapContainerStyle, mapOptions } from './defaultMapOption';
 import { MarkerPosition } from '../types/types';
 import SpotRegisterButton from './SpotRegisterButton';
@@ -23,16 +22,14 @@ function Map() {
   return (
     <div>
       <Header />
-      <LoadScript googleMapsApiKey={apiKey}>
-        <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
-          {markerPosition.lat && markerPosition.lng && (
-            <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
-          )}
-          <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
-            <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} />
-          </div>
-        </GoogleMap>
-      </LoadScript>
+      <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
+        {markerPosition.lat && markerPosition.lng && (
+          <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
+        )}
+        <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
+          <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} />
+        </div>
+      </GoogleMap>
     </div>
   );
 }
