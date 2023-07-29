@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { apiKey } from '../config/google_map/api_key';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import { mapContainerStyle, mapOptions } from './defaultMapOption';
 import { MarkerPosition } from '../types/types';
 import SpotRegisterButton from './SpotRegisterButton';
+import Header from '../Header';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
@@ -20,8 +20,9 @@ function Map() {
   };
 
   return (
-    <LoadScript googleMapsApiKey={apiKey}>
-      <GoogleMap mapContainerStyle={mapContainerStyle} options={mapOptions} onClick={onMapClick}>
+    <div>
+      <Header />
+      <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
         {markerPosition.lat && markerPosition.lng && (
           <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
         )}
@@ -29,7 +30,7 @@ function Map() {
           <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} />
         </div>
       </GoogleMap>
-    </LoadScript>
+    </div>
   );
 }
 
