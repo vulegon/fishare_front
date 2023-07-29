@@ -42,3 +42,11 @@ export const useIsLogin = (): boolean => {
 
   return isAuthenticated;
 };
+
+export const handleLogOut = async () => {
+  try {
+    await Auth.signOut();
+  } catch (error) {
+    console.log('ログアウトエラー:', error);
+  }
+};

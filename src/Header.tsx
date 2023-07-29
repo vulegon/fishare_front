@@ -6,12 +6,11 @@ import { Link } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import Paper from '@mui/material/Paper';
-import { useGetLoginUserName, useIsLogin } from './services/auth';
+import { useGetLoginUserName, useIsLogin, handleLogOut } from './services/auth';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import { Auth } from 'aws-amplify';
 
 export default function Header() {
   const [isHeaderAccountMenuOpen, setIsHeaderAccountMenuOpen] = useState<boolean>(false);
@@ -21,13 +20,9 @@ export default function Header() {
     setIsHeaderAccountMenuOpen(!isHeaderAccountMenuOpen);
   };
 
-  const handleLogOut = async () => {
-    try {
-      await Auth.signOut();
-      window.location.reload();
-    } catch (error) {
-      console.log('ログアウトエラー:', error);
-    }
+  const handleLogOutClick = async () => {
+    await handleLogOut();
+    window.location.reload();
   };
   
   const linkStyle = {
@@ -85,7 +80,7 @@ export default function Header() {
             >
               {isAuthenticated ? (
                 <List sx={style} component='nav' aria-label='mailbox folders'>
-                  <ListItem onClick={handleLogOut}>
+                  <ListItem onClick={handleLogOutClick}>
                     <ListItemText primary='ログアウト' style={{ textAlign: 'center' }} />
                   </ListItem>
                 </List>
