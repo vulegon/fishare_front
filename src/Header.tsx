@@ -14,11 +14,11 @@ import Divider from '@mui/material/Divider';
 import { Auth } from 'aws-amplify';
 
 export default function Header() {
-  const [isAccountNameClicked, setIsAccountNameClicked] = useState<boolean>(false);
+  const [isHeaderAccountMenuOpen, setIsHeaderAccountMenuOpen] = useState<boolean>(false);
   const accountName = useGetLoginUserName();
   const isAuthenticated = useIsLogin();
   const handleAccountNameClick = () => {
-    setIsAccountNameClicked(!isAccountNameClicked);
+    setIsHeaderAccountMenuOpen(!isHeaderAccountMenuOpen);
   };
 
   const handleLogOut = async () => {
@@ -61,12 +61,12 @@ export default function Header() {
               {accountName}
             </Typography>
           </div>
-          {isAccountNameClicked ? (
+          {isHeaderAccountMenuOpen ? (
             <ExpandLessIcon onClick={handleAccountNameClick} style={{ cursor: 'pointer' }} />
           ) : (
             <ExpandMoreIcon onClick={handleAccountNameClick} style={{ cursor: 'pointer' }} />
           )}
-          {isAccountNameClicked && (
+          {isHeaderAccountMenuOpen && (
             <Paper
               elevation={3}
               style={{
@@ -86,11 +86,11 @@ export default function Header() {
               {isAuthenticated ? (
                 <List sx={style} component='nav' aria-label='mailbox folders'>
                   <ListItem onClick={handleLogOut}>
-                    <ListItemText primary='ログアウト' />
+                    <ListItemText primary='ログアウト' style={{ textAlign: 'center' }} />
                   </ListItem>
                 </List>
               ) : (
-                <List sx={style} component='nav' aria-label='mailbox folders'>
+                <List sx={style} component='nav' aria-label='mailbox folders' style={{ textAlign: 'center' }}>
                   <ListItem sx={centeredText}>
                     <Link to='/users/sign_up' style={linkStyle}>
                       新規登録

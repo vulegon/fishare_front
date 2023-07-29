@@ -25,7 +25,7 @@ export const useGetLoginUserName = (): string => {
 };
 
 export const useIsLogin = (): boolean => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
     checkAuthStatus();
