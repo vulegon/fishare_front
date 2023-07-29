@@ -6,11 +6,12 @@ import { Link } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import Paper from '@mui/material/Paper';
-import { useGetLoginUserName, useIsLogin, handleLogOut } from './services/auth';
+import { useGetLoginUserName, useIsLogin } from './services/auth';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
+import { Auth } from 'aws-amplify';
 
 export default function Header() {
   const [isAccountNameClicked, setIsAccountNameClicked] = useState<boolean>(false);
@@ -18,6 +19,21 @@ export default function Header() {
   const isAuthenticated = useIsLogin();
   const handleAccountNameClick = () => {
     setIsAccountNameClicked(!isAccountNameClicked);
+  };
+
+  const handleLogOut = async () => {
+    try {
+      await Auth.signOut();
+      window.location.reload();
+    } catch (error) {
+      console.log('ログアウトエラー:', error);
+    }
+  };
+  
+  const linkStyle = {
+    color: 'inherit',
+    textDecoration: 'none',
+    display: 'block',
   };
   const style = {
     width: '100%',
@@ -61,7 +77,7 @@ export default function Header() {
                 right: '0',
                 zIndex: 100,
                 boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.3)',
-                width: '130px',
+                width: '150px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -69,18 +85,22 @@ export default function Header() {
             >
               {isAuthenticated ? (
                 <List sx={style} component='nav' aria-label='mailbox folders'>
-                  <ListItem >
-                    <ListItemText primary='Inbox' />
+                  <ListItem onClick={handleLogOut}>
+                    <ListItemText primary='ログアウト' />
                   </ListItem>
                 </List>
               ) : (
                 <List sx={style} component='nav' aria-label='mailbox folders'>
                   <ListItem sx={centeredText}>
-                    <ListItemText primary='新規登録' />
+                    <Link to='/users/sign_up' style={linkStyle}>
+                      新規登録
+                    </Link>
                   </ListItem>
                   <Divider />
                   <ListItem sx={centeredText}>
-                    <ListItemText primary='ログイン' />
+                    <Link to='/users/sign_in' style={linkStyle}>
+                      ログイン
+                    </Link>
                   </ListItem>
                 </List>
               )}
