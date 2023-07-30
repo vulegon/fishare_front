@@ -22,6 +22,6 @@ function SpotRegisterButton({ isDisabled }: { isDisabled: boolean }) {
       </Link>
     </div>
   );
-}
+} 
 
 export default SpotRegisterButton;
