@@ -27,7 +27,7 @@ function Map() {
           <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
         )}
         <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
-          <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} />
+          <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} markerPosition={markerPosition} />
         </div>
       </GoogleMap>
     </div>
