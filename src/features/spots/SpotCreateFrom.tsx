@@ -16,11 +16,19 @@ function SpotCreateFrom() {
   return (
     <div>
       <Header />
-      <div style={{ marginTop: '40px', justifyContent: 'center' }}>
+      <div
+        style={{
+          marginTop: '40px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <Typography variant='h4' gutterBottom>
           釣り場の登録
         </Typography>
-        <SpotCreateFormMap/>
+        <SpotCreateFormMap />
       </div>
     </div>
   );
