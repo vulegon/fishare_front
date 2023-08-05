@@ -31,7 +31,7 @@ function SpotCreateFormMap() {
   return (
     <GoogleMap
       mapContainerStyle={{
-        height: '400px',
+        height: '500px',
         width: '700px',
       }}
       options={{
