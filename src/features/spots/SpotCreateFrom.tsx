@@ -26,12 +26,14 @@ function SpotCreateFrom() {
     title: string;
     id: number;
   }
-
+  const [images, setImages] = useState<Image[]>([]);
   const [description, setDescription] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
-  const [images, setImages] = useState<Image[]>([]);
   const [imageCount, setImageCount] = useState<number>(5);
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [severity, setSeverity] = useState<string>('');
+  const [alertOpen, setAlertOpen] = useState<boolean>(false);
+  const [responseMessage, setResponseMessage] = useState<string[]>([]);
 
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(event.target.value);
@@ -60,6 +62,39 @@ function SpotCreateFrom() {
     setImages(result);
   };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append('description', description);
+    formData.append('latitude', marker.lat);
+    formData.append('longitude', marker.lng);
+    images.forEach((image) => formData.append('images[]', image.file));
+    fetch('http://localhost:3001/api/v1/spots', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          setSeverity('success');
+        } else {
+          setSeverity('error');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        console.log(data.message[0]);
+        if (Array.isArray(data.message)) {
+          setResponseMessage(data.message);
+        } else {
+          setResponseMessage([data.message]);
+        }
+        setAlertOpen(true);
+      });
+    setIsLoading(false);
+  };
+
   return (
     <div>
       <Header />
@@ -76,7 +111,7 @@ function SpotCreateFrom() {
           釣り場の登録
         </Typography>
         <SpotCreateFormMap />
-        <form style={{ width: '700px' }}>
+        <form style={{ width: '700px' }} onSubmit={handleSubmit}>
           <TextField
             label='説明'
             multiline
@@ -138,7 +173,14 @@ function SpotCreateFrom() {
           <Button
             type='submit'
             variant='contained'
-            style={{ borderRadius: 50, width: '80%', fontSize: 16, display: 'flex', alignItems: 'center',margin: '0 auto' }}
+            style={{
+              borderRadius: 50,
+              width: '80%',
+              fontSize: 16,
+              display: 'flex',
+              alignItems: 'center',
+              margin: '0 auto',
+            }}
           >
             {isLoading ? <CircularProgress color='inherit' /> : '送信'}
           </Button>
