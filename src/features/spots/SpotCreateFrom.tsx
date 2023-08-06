@@ -13,6 +13,7 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import CloseIcon from '@mui/icons-material/Close';
+import CircularProgress from '@mui/material/CircularProgress';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('ja');
@@ -26,10 +27,11 @@ function SpotCreateFrom() {
     id: number;
   }
 
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<Image[]>([]);
-  const [imageCount, setImageCount] = useState(5);
+  const [imageCount, setImageCount] = useState<number>(5);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(event.target.value);
@@ -133,6 +135,13 @@ function SpotCreateFrom() {
               ))}
             </ImageList>
           </div>
+          <Button
+            type='submit'
+            variant='contained'
+            style={{ borderRadius: 50, width: '80%', fontSize: 16, display: 'flex', alignItems: 'center',margin: '0 auto' }}
+          >
+            {isLoading ? <CircularProgress color='inherit' /> : '送信'}
+          </Button>
         </form>
       </div>
     </div>

@@ -2,10 +2,10 @@ import React from 'react'
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 
-function SubmmitButton({ isLoading }: { isLoading: boolean }) {
+function SubmmitButton({ isLoading, buttonText }: { isLoading: boolean; buttonText: string }) {
   return (
-    <Button type='submit' variant='contained' sx={{ width: '80px', height: '40px' }}>
-      {isLoading ? <CircularProgress color='inherit' /> : '送信'}
+    <Button type='submit' variant='contained'>
+      {isLoading ? <CircularProgress color='inherit' /> : `${buttonText}`}
     </Button>
   );
 }
