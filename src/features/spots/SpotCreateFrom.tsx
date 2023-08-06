@@ -14,6 +14,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import CloseIcon from '@mui/icons-material/Close';
 import CircularProgress from '@mui/material/CircularProgress';
+import { MarkerPosition } from '../../types/types';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('ja');
@@ -34,6 +35,10 @@ function SpotCreateFrom() {
   const [severity, setSeverity] = useState<string>('');
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
   const [responseMessage, setResponseMessage] = useState<string[]>([]);
+  const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({
+    lat: undefined,
+    lng: undefined,
+  });
 
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(event.target.value);
@@ -67,8 +72,8 @@ function SpotCreateFrom() {
     setIsLoading(true);
     const formData = new FormData();
     formData.append('description', description);
-    formData.append('latitude', marker.lat);
-    formData.append('longitude', marker.lng);
+    formData.append('latitude', String(markerPosition.lat));
+    formData.append('longitude', String(markerPosition.lng));
     images.forEach((image) => formData.append('images[]', image.file));
     fetch('http://localhost:3001/api/v1/spots', {
       method: 'POST',
@@ -110,7 +115,7 @@ function SpotCreateFrom() {
         <Typography variant='h4' gutterBottom>
           釣り場の登録
         </Typography>
-        <SpotCreateFormMap />
+        <SpotCreateFormMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
         <form style={{ width: '700px' }} onSubmit={handleSubmit}>
           <TextField
             label='説明'

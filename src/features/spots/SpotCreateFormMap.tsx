@@ -3,11 +3,13 @@ import { GoogleMap, Marker } from '@react-google-maps/api';
 import { MarkerPosition } from '../../types/types';
 import { useLocation } from 'react-router-dom';
 
-function SpotCreateFormMap() {
-  const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({
-    lat: undefined,
-    lng: undefined,
-  });
+function SpotCreateFormMap({
+  markerPosition,
+  setMarkerPosition,
+}: {
+  markerPosition: MarkerPosition;
+  setMarkerPosition: React.Dispatch<React.SetStateAction<MarkerPosition>>;
+}) {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const latParam = searchParams.get('lat');
