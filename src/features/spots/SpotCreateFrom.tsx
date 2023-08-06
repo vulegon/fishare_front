@@ -10,6 +10,9 @@ import SpotCreateFormMap from './SpotCreateFormMap';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import CloseIcon from '@mui/icons-material/Close';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('ja');
@@ -46,6 +49,13 @@ function SpotCreateFrom() {
         setImageCount(imageCount + 1);
       };
     }
+  };
+
+  const handleCloseIconClick = (event: React.MouseEvent<SVGSVGElement>) => {
+    const delete_image_id = parseInt(event.currentTarget.id);
+    const result = images.filter((item) => item.id !== delete_image_id);
+    console.log(result);
+    setImages(result);
   };
 
   return (
@@ -93,6 +103,35 @@ function SpotCreateFrom() {
               <AddAPhotoIcon style={{ marginRight: '8px' }} />
               写真を追加
             </Button>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
+            <ImageList sx={{ width: '100%', height: 500 }} cols={3} rowHeight={230}>
+              {images.map((image) => (
+                <ImageListItem key={image.img} sx={{ height: 250, width: 200 }}>
+                  <img
+                    src={`${image.img}`}
+                    srcSet={`${image.img}`}
+                    alt={image.title}
+                    loading='lazy'
+                    id={image.id.toString()}
+                    style={{ maxHeight: '100%', width: 'auto', objectFit: 'cover' }}
+                  />
+                  <CloseIcon
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      zIndex: 100,
+                      background: 'white',
+                      borderRadius: 50,
+                      cursor: 'pointer',
+                    }}
+                    onClick={handleCloseIconClick}
+                    id={image.id.toString()}
+                  />
+                </ImageListItem>
+              ))}
+            </ImageList>
           </div>
         </form>
       </div>
