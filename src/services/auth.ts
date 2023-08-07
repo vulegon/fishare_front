@@ -50,3 +50,23 @@ export const handleLogOut = async () => {
     console.log('ログアウトエラー:', error);
   }
 };
+
+export const useGetUserId = (): string => {
+  const [userId, setUserId] = useState<string>('');
+
+  useEffect(() => {
+    getUserId();
+  }, []);
+
+  const getUserId = async () => {
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      // ユーザー情報から user_id を取得
+      const cognitoUserId = user.attributes.sub;
+      setUserId(cognitoUserId);
+    } catch (error) {
+      console.log('エラー:', error);
+    }
+  };
+  return userId;
+};

@@ -31,6 +31,3 @@ export async function apiClient(
   return response;
 };
 
-export interface MESSAGE { 
-  message: string[];
-}

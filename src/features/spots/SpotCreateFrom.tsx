@@ -14,6 +14,7 @@ import ImageUploader from './SpotImageUploader';
 import { Image } from '../../types/types';
 import SpotImageItem from './SpotImageItem';
 import SpotDescription from './SpotDescription';
+import { useGetUserId } from '../../services/auth';
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('ja');
@@ -31,6 +32,7 @@ function SpotCreateFrom() {
     lat: undefined,
     lng: undefined,
   });
+  const userId = useGetUserId();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -39,6 +41,7 @@ function SpotCreateFrom() {
     formData.append('description', description);
     formData.append('latitude', String(markerPosition.lat));
     formData.append('longitude', String(markerPosition.lng));
+    formData.append('longitude', userId);
     images.forEach((image) => formData.append('images[]', image.file));
     fetch('http://localhost:3001/api/v1/spots', {
       method: 'POST',
@@ -82,7 +85,7 @@ function SpotCreateFrom() {
         </Typography>
         <SpotCreateFormMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
         <form style={{ width: '700px' }} onSubmit={handleSubmit}>
-          <SpotDescription description={ description} setDescription={setDescription}/>
+          <SpotDescription description={description} setDescription={setDescription} />
           <ImageUploader imageCount={imageCount} setImageCount={setImageCount} images={images} setImages={setImages} />
           <SpotImageItem images={images} setImages={setImages} />
           <Button
