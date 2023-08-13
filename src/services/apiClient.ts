@@ -30,4 +30,3 @@ export async function apiClient(
   const response = await createRequest(endpoint, method, body, argumentHeaders);
   return response;
 };
-

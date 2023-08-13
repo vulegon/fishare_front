@@ -15,6 +15,10 @@ import { Image } from '../../types/types';
 import SpotImageItem from './SpotImageItem';
 import SpotDescription from './SpotDescription';
 import { useGetUserId } from '../../services/auth';
+import AlertMessage from '../../components/AlertMessage';
+import { AlertColor } from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+
 
 I18n.putVocabularies(translations);
 I18n.setLanguage('ja');
@@ -25,52 +29,43 @@ function SpotCreateFrom() {
   const [images, setImages] = useState<Image[]>([]);
   const [imageCount, setImageCount] = useState<number>(5);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [severity, setSeverity] = useState<string>('');
+  const [severity, setSeverity] = useState<AlertColor>('info');
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
-  const [responseMessage, setResponseMessage] = useState<string[]>([]);
+  const [responseMessage, setResponseMessage] = useState<string>('');
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({
     lat: undefined,
     lng: undefined,
   });
   const userId = useGetUserId();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     const formData = new FormData();
     formData.append('description', description);
-    formData.append('latitude', String(markerPosition.lat));
-    formData.append('longitude', String(markerPosition.lng));
-    formData.append('longitude', userId);
+    formData.append('str_latitude', String(markerPosition.lat));
+    formData.append('str_longitude', String(markerPosition.lng));
+    formData.append('user_id', userId);
     images.forEach((image) => formData.append('images[]', image.file));
-    fetch('http://localhost:3001/api/v1/spots', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          setSeverity('success');
-        } else {
-          setSeverity('error');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        console.log(data.message[0]);
-        if (Array.isArray(data.message)) {
-          setResponseMessage(data.message);
-        } else {
-          setResponseMessage([data.message]);
-        }
-        setAlertOpen(true);
-      });
+    console.log(formData);
+
+    //formDataの場合はヘッダーを指定してはいけないため、apiClientは使わない。
+    // https://zenn.dev/kariya_mitsuru/articles/25c9aeb27059e7
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/spots`, { method: 'POST', body: formData });
+    response.status === 200 ? setSeverity('success') : setSeverity('error');
+
+    const data = await response.json();
+    console.log(data);
+    console.log(data.message[0]);
+    setResponseMessage(data.message);
+    setAlertOpen(true);
     setIsLoading(false);
   };
 
   return (
     <div>
       <Header />
+      {alertOpen && <AlertMessage message={responseMessage} severity={severity} />}
       <div
         style={{
           marginTop: '40px',
@@ -103,6 +98,7 @@ function SpotCreateFrom() {
             {isLoading ? <CircularProgress color='inherit' /> : '送信'}
           </Button>
         </form>
+        <Box sx={{ height: 300 }}></Box>
       </div>
     </div>
   );
