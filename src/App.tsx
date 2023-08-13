@@ -1,7 +1,7 @@
 import React from 'react';
 import Map from './features/Map';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import SpotCreateFrom from './features/spots/CreateFrom';
+import SpotCreateFrom from './features/spots/SpotCreateFrom';
 import SignUpForm from './features/users/SignUpForm';
 import SignInForm from './features/users/SignInForm';
 
