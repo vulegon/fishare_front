@@ -5,10 +5,13 @@ import { MarkerPosition } from '../types/types';
 import SpotRegisterButton from './SpotRegisterButton';
 import Header from '../Header';
 import { getSpots } from '../services/apiClient';
+import SpotDetail from './SpotDetail';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
   const [spotRegisterButtonIsDisabled, setSpotRegisterButtonIsDisabled] = useState<boolean>(true);
+  const [spotIsShow, setIsSpotShow] = useState<boolean>(false);
+
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     if (e.latLng && e.latLng) {
       console.log(`緯度: ${e.latLng.lat()}, 経度: ${e.latLng.lng()}`);
@@ -43,12 +46,16 @@ function Map() {
     fetchSpots();
   }, []);
 
+  const handleMarkerClick = (event: any) => {
+    setIsSpotShow(true);
+  };
+
   return (
     <div>
       <Header />
       <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
         {spots.map((spot) => (
-          <Marker key={ spot.id.toString()}  position={{ lat: spot.lat, lng: spot.lng }} />
+          <Marker key={spot.id.toString()} position={{ lat: spot.lat, lng: spot.lng }} onClick={handleMarkerClick} />
         ))}
         {markerPosition.lat && markerPosition.lng && (
           <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
@@ -56,6 +63,7 @@ function Map() {
         <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
           <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} markerPosition={markerPosition} />
         </div>
+        {spotIsShow && <SpotDetail spotIsShow={spotIsShow} setIsSpotShow={setIsSpotShow} />}
       </GoogleMap>
     </div>
   );
