@@ -6,11 +6,13 @@ import SpotRegisterButton from './SpotRegisterButton';
 import Header from '../Header';
 import { getSpots } from '../services/apiClient';
 import SpotDetail from './SpotDetail';
+import { Spot } from '../types/types';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
   const [spotRegisterButtonIsDisabled, setSpotRegisterButtonIsDisabled] = useState<boolean>(true);
   const [spotIsShow, setIsSpotShow] = useState<boolean>(false);
+  const [detailSpot, setDetailSpot] = useState<Spot | null>(null);
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     if (e.latLng && e.latLng) {
@@ -22,11 +24,7 @@ function Map() {
       setSpotRegisterButtonIsDisabled(false);
     }
   };
-  interface Spot {
-    id: string;
-    lat: number;
-    lng: number;
-  }
+
 
   const [spots, setSpots] = useState<Spot[]>([]);
 
@@ -46,8 +44,9 @@ function Map() {
     fetchSpots();
   }, []);
 
-  const handleMarkerClick = (event: any) => {
+  const handleMarkerClick = (spot: Spot) => {
     setIsSpotShow(true);
+    setDetailSpot(spot)
   };
 
   return (
@@ -55,7 +54,11 @@ function Map() {
       <Header />
       <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
         {spots.map((spot) => (
-          <Marker key={spot.id.toString()} position={{ lat: spot.lat, lng: spot.lng }} onClick={handleMarkerClick} />
+          <Marker
+            key={spot.id.toString()}
+            position={{ lat: spot.lat, lng: spot.lng }}
+            onClick={() => handleMarkerClick(spot)}
+          />
         ))}
         {markerPosition.lat && markerPosition.lng && (
           <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
@@ -63,7 +66,7 @@ function Map() {
         <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
           <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} markerPosition={markerPosition} />
         </div>
-        {spotIsShow && <SpotDetail spotIsShow={spotIsShow} setIsSpotShow={setIsSpotShow} />}
+        {spotIsShow && <SpotDetail spotIsShow={spotIsShow} setIsSpotShow={setIsSpotShow} detailSpot={detailSpot} />}
       </GoogleMap>
     </div>
   );

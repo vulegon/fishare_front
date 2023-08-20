@@ -9,8 +9,14 @@ export interface MarkerPosition {
 }
 
 export interface Image {
-    file: File;
-    img: string;
-    title: string;
-    id: number;
-  }
+  file: File;
+  img: string;
+  title: string;
+  id: number;
+}
+
+export interface Spot {
+  id: string;
+  lat: number;
+  lng: number;
+}

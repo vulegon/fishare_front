@@ -17,3 +17,15 @@ export const getSpots = async (): Promise<Response> => {
   const response = await fetch(url, options);
   return response
 };
+
+export const getSpotShow = async (spotId: string): Promise<Response> => {
+  const url = `${baseURL}/spots/${spotId}`;
+  const method = 'GET';
+  const headers: Headers = defaultHeaders;
+  const options: RequestInit = {
+    method,
+    headers,
+  };
+  const response = await fetch(url, options);
+  return response;
+};
