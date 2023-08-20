@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import { Spot } from '../types/types';
+import { getSpotShow } from '../services/apiClient';
 
 function SpotDetail({
   spotIsShow,
@@ -11,7 +12,8 @@ function SpotDetail({
   spotIsShow: boolean;
   setIsSpotShow: React.Dispatch<React.SetStateAction<boolean>>;
   detailSpot: Spot | null;
-}) {
+  }) {
+  const [spot, setSpot] = useState<null>(null);
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
       event.type === 'keydown' &&
@@ -23,8 +25,24 @@ function SpotDetail({
     setIsSpotShow(open);
   };
 
+  const fetchSpotShow = async () => {
+    if (detailSpot === null) {
+      console.log('detailSpotはnullです')
+      return;
+    }
+    try {
+      const response = await getSpotShow(detailSpot.id);
+      if (response.status === 200) {
+        const data = await response.json();
+        setSpot(null);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
-    console.log(detailSpot);
+    fetchSpotShow();
   }, []);
 
   return (
