@@ -12,8 +12,10 @@ function SpotDetail({
   spotIsShow: boolean;
   setIsSpotShow: React.Dispatch<React.SetStateAction<boolean>>;
   detailSpot: Spot | null;
-  }) {
+}) {
   const [spot, setSpot] = useState<null>(null);
+  const [images, setImages] = useState<string[]>([]);
+
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
       event.type === 'keydown' &&
@@ -27,13 +29,15 @@ function SpotDetail({
 
   const fetchSpotShow = async () => {
     if (detailSpot === null) {
-      console.log('detailSpotはnullです')
+      console.log('detailSpotはnullです');
       return;
     }
     try {
       const response = await getSpotShow(detailSpot.id);
       if (response.status === 200) {
         const data = await response.json();
+        console.log(data);
+        setImages(data.images);
         setSpot(null);
       }
     } catch (e) {
@@ -50,12 +54,11 @@ function SpotDetail({
       {(['left', 'right', 'top', 'bottom'] as const).map((anchor) => (
         <React.Fragment key={anchor}>
           <Drawer open={spotIsShow} onClose={toggleDrawer(false)} BackdropProps={{ invisible: true }}>
-            <Box
-              sx={{ width: 500 }}
-              role='presentation'
-              onClick={toggleDrawer(false)}
-              onKeyDown={toggleDrawer(false)}
-            ></Box>
+            <Box sx={{ width: 500 }} role='presentation' onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+              {images.map((image) => (
+                <img key={image} src={image} alt='spot_image' />
+              ))}
+            </Box>
           </Drawer>
         </React.Fragment>
       ))}
