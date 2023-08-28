@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import { Spot } from '../types/types';
 import { getSpotShow } from '../services/apiClient';
+import Typography from '@mui/material/Typography';
 
 function SpotDetail({
   spotIsShow,
@@ -54,7 +55,22 @@ function SpotDetail({
       {(['left', 'right', 'top', 'bottom'] as const).map((anchor) => (
         <React.Fragment key={anchor}>
           <Drawer open={spotIsShow} onClose={toggleDrawer(false)} BackdropProps={{ invisible: true }}>
-            <Box sx={{ width: 500 }} role='presentation' onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+            <Box
+              sx={{
+                width: 500,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              role='presentation'
+              onClick={toggleDrawer(false)}
+              onKeyDown={toggleDrawer(false)}
+            >
+              <Box sx={{ height: 100 }}></Box>
+              <Typography variant='h5'>釣り場の名前</Typography>
+              <Typography variant='h5'>釣れる魚</Typography>
+
               {images.map((image) => (
                 <img key={image} src={image} alt='spot_image' />
               ))}

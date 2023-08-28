@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -16,7 +16,10 @@ export default function Header() {
   const [isHeaderAccountMenuOpen, setIsHeaderAccountMenuOpen] = useState<boolean>(false);
   const accountName = useGetLoginUserName();
   const isAuthenticated = useIsLogin();
-  const handleAccountNameClick = () => {
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const handleAccountNameClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
     setIsHeaderAccountMenuOpen(!isHeaderAccountMenuOpen);
   };
 
@@ -24,7 +27,7 @@ export default function Header() {
     await handleLogOut();
     window.location.reload();
   };
-  
+
   const linkStyle = {
     color: 'inherit',
     textDecoration: 'none',
@@ -40,6 +43,20 @@ export default function Header() {
     alignItems: 'center', // テキストを中央に配置するスタイル
     justifyContent: 'center',
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsHeaderAccountMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('click', handleClickOutside);
+
+    return () => {
+      window.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
   return (
     <AppBar position='static'>
       <Toolbar>
@@ -77,6 +94,7 @@ export default function Header() {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
+              ref={menuRef}
             >
               {isAuthenticated ? (
                 <List sx={style} component='nav' aria-label='mailbox folders'>
