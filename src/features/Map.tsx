@@ -3,7 +3,7 @@ import { GoogleMap, Marker } from '@react-google-maps/api';
 import { mapContainerStyle, mapOptions } from './defaultMapOption';
 import { MarkerPosition } from '../types/types';
 import SpotRegisterButton from './SpotRegisterButton';
-import Header from '../Header';
+import Header from './headers/Header';
 import { getSpots } from '../services/apiClient';
 import SpotDetail from './SpotDetail';
 import { Spot } from '../types/types';
@@ -25,7 +25,6 @@ function Map() {
     }
   };
 
-
   const [spots, setSpots] = useState<Spot[]>([]);
 
   const fetchSpots = async () => {
@@ -46,7 +45,7 @@ function Map() {
 
   const handleMarkerClick = (spot: Spot) => {
     setIsSpotShow(true);
-    setDetailSpot(spot)
+    setDetailSpot(spot);
   };
 
   return (
