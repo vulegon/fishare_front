@@ -31,7 +31,6 @@ function InputPasswordField({
       onChange={handleOnChange}
       required
       fullWidth
-      sx={{ marginBottom: '30px' }}
       InputProps={{
         endAdornment: (
           <InputAdornment position='end'>

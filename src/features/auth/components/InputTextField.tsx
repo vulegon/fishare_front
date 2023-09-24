@@ -20,10 +20,8 @@ function InputTextField({
       variant='outlined'
       value={value}
       onChange={handleOnChange}
-      // margin='normal'
       required
       fullWidth
-      sx={{ marginBottom: '30px' }}
     />
   );
 }
