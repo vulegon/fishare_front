@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import { Amplify, I18n } from 'aws-amplify';
-import { withAuthenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
-import awsExports from '../../aws-exports';
-import { translations } from '@aws-amplify/ui';
-import Header from '../../Header';
+import Header from '../headers/Header';
 import Typography from '@mui/material/Typography';
 import SpotCreateFormMap from './SpotCreateFormMap';
 import Button from '@mui/material/Button';
@@ -14,18 +9,14 @@ import ImageUploader from './SpotImageUploader';
 import { Image } from '../../types/types';
 import SpotImageItem from './SpotImageItem';
 import SpotDescription from './SpotDescription';
-import { useGetUserId } from '../../services/auth';
 import AlertMessage from '../../components/AlertMessage';
 import { AlertColor } from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-
-
-I18n.putVocabularies(translations);
-I18n.setLanguage('ja');
-Amplify.configure(awsExports);
+import SpotName from './SpotName';
 
 function SpotCreateFrom() {
   const [description, setDescription] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [images, setImages] = useState<Image[]>([]);
   const [imageCount, setImageCount] = useState<number>(5);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -36,12 +27,13 @@ function SpotCreateFrom() {
     lat: undefined,
     lng: undefined,
   });
-  const userId = useGetUserId();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
+    const userId = '123'; //あとで修正
     const formData = new FormData();
+    formData.append('name', name);
     formData.append('description', description);
     formData.append('str_latitude', String(markerPosition.lat));
     formData.append('str_longitude', String(markerPosition.lng));
@@ -80,6 +72,7 @@ function SpotCreateFrom() {
         </Typography>
         <SpotCreateFormMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
         <form style={{ width: '700px' }} onSubmit={handleSubmit}>
+          <SpotName name={name} setName={setName} />
           <SpotDescription description={description} setDescription={setDescription} />
           <ImageUploader imageCount={imageCount} setImageCount={setImageCount} images={images} setImages={setImages} />
           <SpotImageItem images={images} setImages={setImages} />
@@ -104,4 +97,4 @@ function SpotCreateFrom() {
   );
 }
 
-export default withAuthenticator(SpotCreateFrom);
+export default SpotCreateFrom;

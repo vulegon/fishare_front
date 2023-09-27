@@ -8,7 +8,7 @@ import { apiKey } from './config/google_map/api_key';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    {/* コンポーネントが呼び出されるたびにLoadScriptが実行されるとエラーになるので、そのための対応 */}
+    {/* コンポーネントが呼び出されるたびにLoadScriptが実行されるとコンソールでエラーが出るので、そのための対応 */}
     <LoadScript googleMapsApiKey={apiKey}>
       <App />
     </LoadScript>

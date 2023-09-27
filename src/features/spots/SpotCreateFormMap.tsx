@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { MarkerPosition } from '../../types/types';
 import { useLocation } from 'react-router-dom';
