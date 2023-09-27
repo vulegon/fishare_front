@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import Paper from '@mui/material/Paper';
 import { getCurrentUser } from '../../../api/user';
 import UserProfile from './UserProfile';
 import AuthenticatedMenu from './AuthenticatedMenu';
 import UnAuthenticatedMenu from './UnAuthenticatedMenu';
 import { CurrentUserContext } from '../../../App';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function UserAccountMenu() {
   const [isUserAccountMenuOpen, setIsUserAccountMenuOpen] = useState<boolean>(false);
@@ -63,12 +62,8 @@ function UserAccountMenu() {
     <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', cursor: 'pointer', position: 'relative' }}>
       <div onClick={handleAccountNameClick}>
         <UserProfile userName={currentUser.name} userEmail={currentUser.email} />
+        <AccountCircleIcon fontSize='large'></AccountCircleIcon>
       </div>
-      {isUserAccountMenuOpen ? (
-        <ExpandLessIcon onClick={handleAccountNameClick} style={{ cursor: 'pointer' }} />
-      ) : (
-        <ExpandMoreIcon onClick={handleAccountNameClick} style={{ cursor: 'pointer' }} />
-      )}
       {isUserAccountMenuOpen && (
         <Paper
           elevation={3}
