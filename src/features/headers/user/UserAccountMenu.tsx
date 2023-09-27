@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import Paper from '@mui/material/Paper';
-import { getCurrentUser } from '../../../api/auth';
+import { getCurrentUser } from '../../../api/user';
 import UserProfile from './UserProfile';
 import AuthenticatedMenu from './AuthenticatedMenu';
 import UnAuthenticatedMenu from './UnAuthenticatedMenu';
+import { CurrentUserContext } from '../../../App';
 
 function UserAccountMenu() {
   const [isUserAccountMenuOpen, setIsUserAccountMenuOpen] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [userName, setUserName] = useState<string>('ゲスト');
-  const [userEmail, setUserEmail] = useState<string>('');
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const handleAccountNameClick = (event: React.MouseEvent) => {
@@ -19,27 +19,29 @@ function UserAccountMenu() {
     setIsUserAccountMenuOpen(!isUserAccountMenuOpen);
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await getCurrentUser();
-        if (response === null) return;
-        if (response.status !== 200) return;
-        const data = await response.json();
-        console.log(data);
-        setIsAuthenticated(data.is_login);
-        if (isAuthenticated) {
-          const user = data.data;
-          setUserName(user.name);
-          setUserEmail(user.email);
-        }
-      } catch (e) {
-        console.log('エラー:', e);
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await getCurrentUser();
+      if (response === null) return;
+      if (response.status !== 200) return;
+      const data = await response.json();
+      console.log(data);
+      setIsAuthenticated(data.is_login);
+      if (isAuthenticated) {
+        const userData = data.data;
+        const currentUser = {
+          id: userData.id,
+          name: userData.name,
+          email: userData.email,
+        };
+        setCurrentUser(currentUser);
       }
+    } catch (e) {
+      console.log('エラー:', e);
     }
+  };
 
-    fetchData();
-
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsUserAccountMenuOpen(false);
@@ -53,10 +55,14 @@ function UserAccountMenu() {
     };
   }, []);
 
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [isAuthenticated]);
+
   return (
     <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', cursor: 'pointer', position: 'relative' }}>
       <div onClick={handleAccountNameClick}>
-        <UserProfile userName={userName} userEmail={userEmail} />
+        <UserProfile userName={currentUser.name} userEmail={currentUser.email} />
       </div>
       {isUserAccountMenuOpen ? (
         <ExpandLessIcon onClick={handleAccountNameClick} style={{ cursor: 'pointer' }} />

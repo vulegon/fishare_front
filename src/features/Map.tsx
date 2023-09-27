@@ -4,9 +4,10 @@ import { mapContainerStyle, mapOptions } from './defaultMapOption';
 import { MarkerPosition } from '../types/types';
 import SpotRegisterButton from './SpotRegisterButton';
 import Header from './headers/Header';
-import { getSpots } from '../services/apiClient';
+import { getSpots } from '../api/client';
 import SpotDetail from './SpotDetail';
 import { Spot } from '../types/types';
+import { getCurrentUser } from '../api/user';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
@@ -41,6 +42,7 @@ function Map() {
 
   useEffect(() => {
     fetchSpots();
+    getCurrentUser();
   }, []);
 
   const handleMarkerClick = (spot: Spot) => {
@@ -52,13 +54,13 @@ function Map() {
     <div>
       <Header />
       <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
-        {spots.map((spot) => (
+        {/* {spots.map((spot) => (
           <Marker
             key={spot.id.toString()}
             position={{ lat: spot.lat, lng: spot.lng }}
             onClick={() => handleMarkerClick(spot)}
           />
-        ))}
+        ))} */}
         {markerPosition.lat && markerPosition.lng && (
           <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
         )}

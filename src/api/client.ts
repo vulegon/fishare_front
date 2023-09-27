@@ -1,8 +1,10 @@
-const baseURL = process.env.REACT_APP_BASE_URL;
-type Headers = {
+export const baseURL = process.env.REACT_APP_BASE_URL;
+
+export type Headers = {
   [key: string]: string;
 };
-const defaultHeaders = {
+
+export const defaultHeaders = {
   'Content-Type': 'application/json',
 };
 
@@ -15,13 +17,16 @@ export const getSpots = async (): Promise<Response> => {
     headers,
   };
   const response = await fetch(url, options);
-  return response
+  return response;
 };
 
-export const getSpotShow = async (spotId: string): Promise<Response> => {
+export const getSpotShow = async (spotId: string, userId: string): Promise<Response> => {
   const url = `${baseURL}/spots/${spotId}`;
   const method = 'GET';
-  const headers: Headers = defaultHeaders;
+  const headers: Headers = {
+    'Content-Type': 'application/json',
+    'Fishare-User-Id': userId,
+  };
   const options: RequestInit = {
     method,
     headers,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ListItem from '@mui/material/ListItem';
 
-function LogInMenu({ path, value }: { path: string; value: string }) {
+function LogInMenu({ path, value, onClick }: { path: string; value: string; onClick?: () => void }) {
   const centeredText = {
     display: 'flex',
     alignItems: 'center',
@@ -23,7 +23,7 @@ function LogInMenu({ path, value }: { path: string; value: string }) {
   };
 
   return (
-    <ListItem sx={listItemStyle}>
+    <ListItem sx={listItemStyle} onClick={onClick}>
       <Link to={path} style={linkStyle}>
         {value}
       </Link>
