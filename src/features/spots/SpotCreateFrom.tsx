@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import Header from '../headers/Header';
 import Typography from '@mui/material/Typography';
-import SpotCreateFormMap from './SpotCreateFormMap';
+import SpotMap from './SpotMap';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { MarkerPosition } from '../../types/types';
-import ImageUploader from './SpotImageUploader';
+import ImageUploader from './ImageUploader';
 import { Image } from '../../types/types';
-import SpotImageItem from './SpotImageItem';
-import SpotDescription from './SpotDescription';
+import ImageItem from './ImageItem';
+import Description from './Description';
 import AlertMessage from '../../components/AlertMessage';
 import { AlertColor } from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import SpotName from './SpotName';
-import CatchableFishInput from './CatchableFish';
+import CatchableFish from './CatchableFish';
+import FishingTypeSelector from './FishingTypeSelector';
 
 function SpotCreateFrom() {
   const [description, setDescription] = useState<string>('');
@@ -71,13 +72,14 @@ function SpotCreateFrom() {
         <Typography variant='h4' gutterBottom>
           釣り場の登録
         </Typography>
-        <SpotCreateFormMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
+        <SpotMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
         <form style={{ width: '700px' }} onSubmit={handleSubmit}>
           <SpotName name={name} setName={setName} />
-          <CatchableFishInput></CatchableFishInput>
-          <SpotDescription description={description} setDescription={setDescription} />
+          <CatchableFish />
+          <FishingTypeSelector></FishingTypeSelector>
+          <Description description={description} setDescription={setDescription} />
           <ImageUploader imageCount={imageCount} setImageCount={setImageCount} images={images} setImages={setImages} />
-          <SpotImageItem images={images} setImages={setImages} />
+          <ImageItem images={images} setImages={setImages} />
           <Button
             type='submit'
             variant='contained'
