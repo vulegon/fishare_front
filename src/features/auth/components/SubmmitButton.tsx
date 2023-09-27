@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 
-function SubmmitButton({ value }: { value: string }) {
+function SubmmitButton({ isLoading, buttonText }: { isLoading: boolean; buttonText: string }) {
   return (
-    <Button type='submit' variant='contained' color='primary' fullWidth>
-      {value}
+    <Button type='submit' variant='contained' fullWidth style={{ height: '48px' }} disabled={isLoading}>
+      {isLoading ? <CircularProgress color='inherit' /> : `${buttonText}`}
     </Button>
   );
 }

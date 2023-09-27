@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import InputHelpText from './InputHelpText';
 import { signUp } from '../../../api/auth';
-import ErrorMessageText from './ErrorMessageText';
 import InputHelpTextSpace from './InputHelpTextSpace';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -12,6 +11,7 @@ import {
   FormTitle,
   SubmmitButton,
   AuthContainer,
+  ErrorMessageText,
 } from '../components/Index';
 
 function SignUp() {
@@ -25,9 +25,11 @@ function SignUp() {
     [key: string]: string[];
   };
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
     try {
       const response = await signUp({
         name: name,
@@ -55,6 +57,7 @@ function SignUp() {
     } catch (e) {
       console.log('例外的なエラー');
     }
+    setIsLoading(false);
   };
 
   return (
@@ -79,7 +82,7 @@ function SignUp() {
         <InputPasswordField label={'パスワード確認'} value={passwordConfirmation} setState={setPasswordConfirmation} />
         {isOpenErrorMessages && <ErrorMessageText fieldKey={'password_confirmation'} errors={errors} />}
         <InputFieldSpace></InputFieldSpace>
-        <SubmmitButton value='送信'></SubmmitButton>
+        <SubmmitButton isLoading={isLoading} buttonText='登録'></SubmmitButton>
       </form>
     </AuthContainer>
   );
