@@ -1,14 +1,10 @@
 import React from 'react';
 import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
-import { fishNames } from '../../../master/catchableFish';
+import { fishNames } from '../../master/catchableFish';
 import { TextField } from '@mui/material';
 
-function CatchableFishInput({ setIsCatchableFishSelected }: { setIsCatchableFishSelected: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  const handleCathableFishOnChange = () => {
-    setIsCatchableFishSelected(true);
-  };
+function CatchableFishInput() {
   return (
     <Autocomplete
       multiple
@@ -22,7 +18,6 @@ function CatchableFishInput({ setIsCatchableFishSelected }: { setIsCatchableFish
         ))
       }
       renderInput={(params) => <TextField {...params} variant='standard' label='釣れる魚' />}
-      onChange={handleCathableFishOnChange}
     />
   );
 }

@@ -13,6 +13,7 @@ import AlertMessage from '../../components/AlertMessage';
 import { AlertColor } from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import SpotName from './SpotName';
+import CatchableFishInput from './CatchableFish';
 
 function SpotCreateFrom() {
   const [description, setDescription] = useState<string>('');
@@ -73,6 +74,7 @@ function SpotCreateFrom() {
         <SpotCreateFormMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
         <form style={{ width: '700px' }} onSubmit={handleSubmit}>
           <SpotName name={name} setName={setName} />
+          <CatchableFishInput></CatchableFishInput>
           <SpotDescription description={description} setDescription={setDescription} />
           <ImageUploader imageCount={imageCount} setImageCount={setImageCount} images={images} setImages={setImages} />
           <SpotImageItem images={images} setImages={setImages} />
