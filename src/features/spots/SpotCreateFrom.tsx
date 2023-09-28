@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import Header from '../headers/Header';
-import Typography from '@mui/material/Typography';
-import SpotMap from './SpotMap';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Typography, AlertColor, Box } from '@mui/material';
 import { MarkerPosition } from '../../types/types';
-import ImageUploader from './ImageUploader';
 import { Image } from '../../types/types';
-import ImageItem from './ImageItem';
-import Description from './Description';
 import AlertMessage from '../../components/AlertMessage';
-import { AlertColor } from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import SpotName from './SpotName';
-import CatchableFish from './CatchableFish';
-import FishingTypeSelector from './FishingTypeSelector';
-import FormSpace from './FormSpace';
-import SubmmitButton from './SubmmitButton';
+import {
+  ImageItem,
+  Description,
+  SpotName,
+  CatchableFish,
+  FishingTypeSelector,
+  FormSpace,
+  SubmmitButton,
+  ImageUploader,
+  SpotMap,
+} from './index';
 
 function SpotCreateFrom() {
   const [description, setDescription] = useState<string>('');
