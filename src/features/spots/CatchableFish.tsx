@@ -4,20 +4,30 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { fishNames } from '../../master/catchableFish';
 import { TextField } from '@mui/material';
 
-function CatchableFishInput() {
+function CatchableFishInput({
+  catchableFish,
+  setCatchableFish,
+}: {
+  catchableFish: string[];
+  setCatchableFish: React.Dispatch<React.SetStateAction<string[]>>;
+}) {
+  const handleCatchableFishChange = (event: React.ChangeEvent<unknown>, newValue: string[]) => {
+    setCatchableFish(newValue);
+  };
   return (
     <Autocomplete
       multiple
-      id='tags-filled'
+      id='tags-outlined'
       options={fishNames.map((option) => option.name)}
       freeSolo
+      onChange={handleCatchableFishChange}
       renderTags={(value: readonly string[], getTagProps) =>
         value.map((option: string, index: number) => (
           // eslint-disable-next-line react/jsx-key
           <Chip variant='outlined' label={option} {...getTagProps({ index })} />
         ))
       }
-      renderInput={(params) => <TextField {...params} variant='standard' label='釣れる魚' />}
+      renderInput={(params) => <TextField {...params} label='釣れる魚' />}
     />
   );
 }

@@ -15,6 +15,8 @@ import Box from '@mui/material/Box';
 import SpotName from './SpotName';
 import CatchableFish from './CatchableFish';
 import FishingTypeSelector from './FishingTypeSelector';
+import FormSpace from './FormSpace';
+import SubmmitButton from './SubmmitButton';
 
 function SpotCreateFrom() {
   const [description, setDescription] = useState<string>('');
@@ -29,18 +31,20 @@ function SpotCreateFrom() {
     lat: undefined,
     lng: undefined,
   });
+  const [fishingType, setFishingType] = useState<string>('');
+  const [catchableFish, setCatchableFish] = useState<string[]>(['']);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    const userId = '123'; //あとで修正
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
     formData.append('str_latitude', String(markerPosition.lat));
     formData.append('str_longitude', String(markerPosition.lng));
-    formData.append('user_id', userId);
+    formData.append('fishing_type', fishingType);
     images.forEach((image) => formData.append('images[]', image.file));
+    catchableFish.forEach((fish) => formData.append('fish[]', fish));
     console.log(formData);
 
     //formDataの場合はヘッダーを指定してはいけないため、apiClientは使わない。
@@ -75,25 +79,14 @@ function SpotCreateFrom() {
         <SpotMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
         <form style={{ width: '700px' }} onSubmit={handleSubmit}>
           <SpotName name={name} setName={setName} />
-          <CatchableFish />
-          <FishingTypeSelector></FishingTypeSelector>
+          <FormSpace></FormSpace>
+          <CatchableFish catchableFish={catchableFish} setCatchableFish={setCatchableFish} />
+          <FormSpace></FormSpace>
+          <FishingTypeSelector fishingType={fishingType} setFishingType={setFishingType}></FishingTypeSelector>
           <Description description={description} setDescription={setDescription} />
           <ImageUploader imageCount={imageCount} setImageCount={setImageCount} images={images} setImages={setImages} />
           <ImageItem images={images} setImages={setImages} />
-          <Button
-            type='submit'
-            variant='contained'
-            style={{
-              borderRadius: 50,
-              width: '80%',
-              fontSize: 16,
-              display: 'flex',
-              alignItems: 'center',
-              margin: '0 auto',
-            }}
-          >
-            {isLoading ? <CircularProgress color='inherit' /> : '送信'}
-          </Button>
+          <SubmmitButton isLoading={isLoading} buttonText='送信'></SubmmitButton>
         </form>
         <Box sx={{ height: 300 }}></Box>
       </div>
