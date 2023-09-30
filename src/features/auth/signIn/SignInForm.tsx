@@ -52,7 +52,7 @@ function SignInForm() {
   };
   return (
     <>
-      <Header isShowSearchSpot={false} isShowUserAccountMenu={false}></Header>
+      <Header isShowSearchSpot={false} isShowUserAccountMenu={false}/>
       <AuthContainer>
         <FormTitle value='ログイン'></FormTitle>
         <form onSubmit={handleSubmit} style={{ width: '400px' }}>

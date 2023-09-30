@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import InputHelpText from './InputHelpText';
+import InputHelpText from '../components/InputHelpText';
 import { signUp } from '../../../api/auth';
 import InputHelpTextSpace from './InputHelpTextSpace';
 import { useNavigate } from 'react-router-dom';
