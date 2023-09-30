@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import SearchSpot from './searchSpot/SearchSpot';
-import { Box } from '@mui/material';
+import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import AuthenticatedMenu from './menu/authenticatedMenu/AuthenticatedMenu';
 import { CurrentUserContext } from '../../App';
 import { getCurrentUser } from '../../api/user';
@@ -46,8 +43,9 @@ export default function Header({
 
   useEffect(() => {
     fetchCurrentUser();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <AppBar position='static'>
       <Toolbar>
