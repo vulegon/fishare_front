@@ -18,7 +18,8 @@ export default function Header({
   isShowUserAccountMenu?: boolean;
 }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { setCurrentUser } = useContext(CurrentUserContext);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const fetchCurrentUser = async () => {
     try {
       const response = await getCurrentUser();
@@ -38,15 +39,15 @@ export default function Header({
       }
     } catch (e) {
       console.log('エラー:', e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const isUserLoggedIn = () => {
-    return !!currentUser.id;
-  };
   useEffect(() => {
     fetchCurrentUser();
-  }, [isAuthenticated]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <AppBar position='static'>
       <Toolbar>
@@ -57,7 +58,7 @@ export default function Header({
         </Link>
         <Box sx={{ width: 100 }} />
         {isShowSearchSpot && <SearchSpot />}
-        {isShowUserAccountMenu && isUserLoggedIn() ? <AuthenticatedMenu /> : <UnAuthenticatedMenu />}
+        {!isLoading && (isShowUserAccountMenu && isAuthenticated ? <AuthenticatedMenu /> : <UnAuthenticatedMenu />)}
       </Toolbar>
     </AppBar>
   );
