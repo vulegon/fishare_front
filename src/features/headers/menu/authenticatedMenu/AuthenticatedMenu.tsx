@@ -53,7 +53,7 @@ function AuthenticatedMenu() {
               margin: '10px',
               padding: '10px',
               position: 'absolute',
-              top: '50px',
+              top: '40px',
               right: '0',
               zIndex: 100,
               boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.3)',

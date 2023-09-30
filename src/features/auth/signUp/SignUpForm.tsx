@@ -14,6 +14,7 @@ import {
   ErrorMessageText,
 } from '../components/Index';
 import Header from '../../headers/Header';
+import { Box } from '@mui/material';
 
 function SignUp() {
   const [name, setName] = useState<string>('');
@@ -53,6 +54,7 @@ function SignUp() {
       } else {
         const data = await response.json();
         setErrors(data.errors);
+        console.log(data);
         setIsOpenErrorMessages(true);
       }
     } catch (e) {
@@ -64,10 +66,11 @@ function SignUp() {
   return (
     <>
       <Header isShowSearchSpot={false} isShowUserAccountMenu={false}></Header>
+      <Box sx={{height: 50} }></Box>
       <AuthContainer>
         <FormTitle value='ユーザー登録'></FormTitle>
         <form onSubmit={handleSubmit}>
-          <InputHelpText value={'20文字以内で入力してください'} />
+          <InputHelpText value={'10文字以内で入力してください'} />
           <InputHelpTextSpace></InputHelpTextSpace>
           <InputTextField label={'名前'} value={name} setState={setName} />
           {isOpenErrorMessages && <ErrorMessageText fieldKey={'name'} errors={errors} />}
@@ -77,7 +80,7 @@ function SignUp() {
           <InputFieldSpace></InputFieldSpace>
           <InputHelpText value={'8文字以上128文字以下で入力してください'} />
           <br />
-          <InputHelpText value={'少なくとも1つ以上の小文字アルファベットと数字を含めてください'} />
+          <InputHelpText value={'英字の小文字と大文字、および数字を各1つ以上含む必要があります'} />
           <InputHelpTextSpace></InputHelpTextSpace>
           <InputPasswordField label={'パスワード'} value={password} setState={setPassword} />
           {isOpenErrorMessages && <ErrorMessageText fieldKey={'password'} errors={errors} />}
