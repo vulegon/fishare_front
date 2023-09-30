@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import Header from '../headers/Header';
-import Typography from '@mui/material/Typography';
-import SpotCreateFormMap from './SpotCreateFormMap';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Typography, AlertColor, Box } from '@mui/material';
 import { MarkerPosition } from '../../types/types';
-import ImageUploader from './SpotImageUploader';
 import { Image } from '../../types/types';
-import SpotImageItem from './SpotImageItem';
-import SpotDescription from './SpotDescription';
 import AlertMessage from '../../components/AlertMessage';
-import { AlertColor } from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import SpotName from './SpotName';
+import {
+  ImageItem,
+  Description,
+  SpotName,
+  CatchableFish,
+  FishingTypeSelector,
+  FormSpace,
+  SubmmitButton,
+  ImageUploader,
+  SpotMap,
+} from './index';
 
 function SpotCreateFrom() {
   const [description, setDescription] = useState<string>('');
@@ -27,18 +29,20 @@ function SpotCreateFrom() {
     lat: undefined,
     lng: undefined,
   });
+  const [fishingType, setFishingType] = useState<string>('');
+  const [catchableFish, setCatchableFish] = useState<string[]>(['']);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    const userId = '123'; //あとで修正
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
     formData.append('str_latitude', String(markerPosition.lat));
     formData.append('str_longitude', String(markerPosition.lng));
-    formData.append('user_id', userId);
+    formData.append('fishing_type', fishingType);
     images.forEach((image) => formData.append('images[]', image.file));
+    catchableFish.forEach((fish) => formData.append('fish[]', fish));
     console.log(formData);
 
     //formDataの場合はヘッダーを指定してはいけないため、apiClientは使わない。
@@ -56,7 +60,7 @@ function SpotCreateFrom() {
 
   return (
     <div>
-      <Header />
+      <Header isShowSearchSpot={false} />
       {alertOpen && <AlertMessage message={responseMessage} severity={severity} />}
       <div
         style={{
@@ -70,26 +74,17 @@ function SpotCreateFrom() {
         <Typography variant='h4' gutterBottom>
           釣り場の登録
         </Typography>
-        <SpotCreateFormMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
+        <SpotMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
         <form style={{ width: '700px' }} onSubmit={handleSubmit}>
           <SpotName name={name} setName={setName} />
-          <SpotDescription description={description} setDescription={setDescription} />
+          <FormSpace></FormSpace>
+          <CatchableFish catchableFish={catchableFish} setCatchableFish={setCatchableFish} />
+          <FormSpace></FormSpace>
+          <FishingTypeSelector fishingType={fishingType} setFishingType={setFishingType}></FishingTypeSelector>
+          <Description description={description} setDescription={setDescription} />
           <ImageUploader imageCount={imageCount} setImageCount={setImageCount} images={images} setImages={setImages} />
-          <SpotImageItem images={images} setImages={setImages} />
-          <Button
-            type='submit'
-            variant='contained'
-            style={{
-              borderRadius: 50,
-              width: '80%',
-              fontSize: 16,
-              display: 'flex',
-              alignItems: 'center',
-              margin: '0 auto',
-            }}
-          >
-            {isLoading ? <CircularProgress color='inherit' /> : '送信'}
-          </Button>
+          <ImageItem images={images} setImages={setImages} />
+          <SubmmitButton isLoading={isLoading} buttonText='送信'></SubmmitButton>
         </form>
         <Box sx={{ height: 300 }}></Box>
       </div>

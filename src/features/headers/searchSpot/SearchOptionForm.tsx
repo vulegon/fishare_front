@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TextField } from '@mui/material';
 import { Box } from '@mui/material';
-import SearchSpotCheckBox from './SearchSpotCheckBox';
+import CheckBox from '../../../components/CheckBox';
 import TuneIcon from '@mui/icons-material/Tune';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
@@ -67,13 +67,13 @@ function SearchOptionForm() {
           <CatchableFishInput setIsCatchableFishSelected={setIsCatchableFishSelected} />
           <Box sx={{ height: 10 }}></Box>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-            <SearchSpotCheckBox label={'海釣り'} />
-            <SearchSpotCheckBox label={'川釣り'} />
+            <CheckBox label={'海釣り'} />
+            <CheckBox label={'川釣り'} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-            <SearchSpotCheckBox label={'10km圏内'} />
-            <SearchSpotCheckBox label={'県内'} />
-            <SearchSpotCheckBox label={'指定なし'} />
+            <CheckBox label={'10km圏内'} />
+            <CheckBox label={'県内'} />
+            <CheckBox label={'指定なし'} />
           </div>
         </Paper>
       )}
