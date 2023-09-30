@@ -13,6 +13,7 @@ import {
   AuthContainer,
   ErrorMessageText,
 } from '../components/Index';
+import Header from '../../headers/Header';
 
 function SignUp() {
   const [name, setName] = useState<string>('');
@@ -61,30 +62,37 @@ function SignUp() {
   };
 
   return (
-    <AuthContainer>
-      <FormTitle value='ユーザー登録'></FormTitle>
-      <form onSubmit={handleSubmit}>
-        <InputHelpText value={'20文字以内で入力してください'} />
-        <InputHelpTextSpace></InputHelpTextSpace>
-        <InputTextField label={'名前'} value={name} setState={setName} />
-        {isOpenErrorMessages && <ErrorMessageText fieldKey={'name'} errors={errors} />}
-        <InputFieldSpace></InputFieldSpace>
-        <InputTextField label={'メールアドレス'} value={email} setState={setEmail} />
-        {isOpenErrorMessages && <ErrorMessageText fieldKey={'email'} errors={errors} />}
-        <InputFieldSpace></InputFieldSpace>
-        <InputHelpText value={'8文字以上128文字以下で入力してください'} />
-        <br />
-        <InputHelpText value={'少なくとも1つ以上の小文字アルファベットと数字を含めてください'} />
-        <InputHelpTextSpace></InputHelpTextSpace>
-        <InputPasswordField label={'パスワード'} value={password} setState={setPassword} />
-        {isOpenErrorMessages && <ErrorMessageText fieldKey={'password'} errors={errors} />}
-        <InputFieldSpace></InputFieldSpace>
-        <InputPasswordField label={'パスワード確認'} value={passwordConfirmation} setState={setPasswordConfirmation} />
-        {isOpenErrorMessages && <ErrorMessageText fieldKey={'password_confirmation'} errors={errors} />}
-        <InputFieldSpace></InputFieldSpace>
-        <SubmmitButton isLoading={isLoading} buttonText='登録'></SubmmitButton>
-      </form>
-    </AuthContainer>
+    <>
+      <Header isShowSearchSpot={false} isShowUserAccountMenu={false}></Header>
+      <AuthContainer>
+        <FormTitle value='ユーザー登録'></FormTitle>
+        <form onSubmit={handleSubmit}>
+          <InputHelpText value={'20文字以内で入力してください'} />
+          <InputHelpTextSpace></InputHelpTextSpace>
+          <InputTextField label={'名前'} value={name} setState={setName} />
+          {isOpenErrorMessages && <ErrorMessageText fieldKey={'name'} errors={errors} />}
+          <InputFieldSpace></InputFieldSpace>
+          <InputTextField label={'メールアドレス'} value={email} setState={setEmail} />
+          {isOpenErrorMessages && <ErrorMessageText fieldKey={'email'} errors={errors} />}
+          <InputFieldSpace></InputFieldSpace>
+          <InputHelpText value={'8文字以上128文字以下で入力してください'} />
+          <br />
+          <InputHelpText value={'少なくとも1つ以上の小文字アルファベットと数字を含めてください'} />
+          <InputHelpTextSpace></InputHelpTextSpace>
+          <InputPasswordField label={'パスワード'} value={password} setState={setPassword} />
+          {isOpenErrorMessages && <ErrorMessageText fieldKey={'password'} errors={errors} />}
+          <InputFieldSpace></InputFieldSpace>
+          <InputPasswordField
+            label={'パスワード確認'}
+            value={passwordConfirmation}
+            setState={setPasswordConfirmation}
+          />
+          {isOpenErrorMessages && <ErrorMessageText fieldKey={'password_confirmation'} errors={errors} />}
+          <InputFieldSpace></InputFieldSpace>
+          <SubmmitButton isLoading={isLoading} buttonText='登録'></SubmmitButton>
+        </form>
+      </AuthContainer>
+    </>
   );
 }
 

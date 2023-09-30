@@ -60,7 +60,7 @@ function SpotCreateFrom() {
 
   return (
     <div>
-      <Header />
+      <Header isShowSearchSpot={false} />
       {alertOpen && <AlertMessage message={responseMessage} severity={severity} />}
       <div
         style={{

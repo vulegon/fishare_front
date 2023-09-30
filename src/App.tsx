@@ -1,7 +1,7 @@
 import React, { createContext, useState } from 'react';
 import Map from './features/Map';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import SpotCreateFrom from './features/spots/SpotCreateFrom';
 import SignUpForm from './features/auth/signUp/SignUpForm';
 import SignInForm from './features/auth/signIn/SignInForm';
