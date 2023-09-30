@@ -44,7 +44,7 @@ export default function Header({
   useEffect(() => {
     fetchCurrentUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <AppBar position='static'>
