@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import SearchSpot from './searchSpot/SearchSpot';
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import AuthenticatedMenu from './menu/authenticatedMenu/AuthenticatedMenu';
-import { CurrentUserContext } from '../../App';
+import { CurrentUserContext, isCurrentUserLoadingCompleteContext } from '../../App';
 import UnAuthenticatedMenu from './menu/unAuthenticatedMenu/UnAuthenticatedMenu';
 import { isUserLoggedIn } from '../../utils/authUtils';
 
@@ -15,6 +15,7 @@ export default function Header({
   isShowUserAccountMenu?: boolean;
 }) {
   const { currentUser } = useContext(CurrentUserContext);
+  const { isCurrentUserLoadingComplete } = useContext(isCurrentUserLoadingCompleteContext);
 
   return (
     <AppBar position='static'>
@@ -26,7 +27,8 @@ export default function Header({
         </Link>
         <Box sx={{ width: 100 }} />
         {isShowSearchSpot && <SearchSpot />}
-        {isShowUserAccountMenu && isUserLoggedIn(currentUser) ? <AuthenticatedMenu /> : <UnAuthenticatedMenu />}
+        {isCurrentUserLoadingComplete &&
+          (isShowUserAccountMenu && isUserLoggedIn(currentUser) ? <AuthenticatedMenu /> : <UnAuthenticatedMenu />)}
       </Toolbar>
     </AppBar>
   );
