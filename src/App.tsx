@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Map from './features/Map';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
@@ -9,11 +9,11 @@ import SignUpSuccessForm from './features/auth/signUp/success/SignUpSuccessForm'
 import { getCurrentUser } from './api/user';
 import { CurrentUser } from './types/CurrentUser';
 import { isUserLoggedIn } from './utils/authUtils';
-import { CurrentUserContext,IsCurrentUserLoadingCompleteContext } from './contexts/index';
+import { CurrentUserContext, IsCurrentUserLoadingCompleteContext } from './contexts/index';
 
 function App() {
   const [currentUser, setCurrentUser] = useState<CurrentUser>({ id: '', name: '', email: '' }); // ログインユーザー情報の初期値
-  const [isCurrentUserLoadingComplete, setIsCurrentUserLoadingComplete] = useState<boolean>(false); // ログインユーザー情報の初期値
+  const [isCurrentUserLoadingComplete, setIsCurrentUserLoadingComplete] = useState<boolean>(false); //ログインユーザーの読み込みが終わったか
   const fetchCurrentUser = async () => {
     try {
       const response = await getCurrentUser();
@@ -50,7 +50,15 @@ function App() {
             <Route path='/' element={<Map />} />
             <Route
               path='/spots'
-              element={isUserLoggedIn(currentUser) ? <SpotCreateFrom /> : <Navigate to='/auth/sign_in' />}
+              element={
+                isCurrentUserLoadingComplete ? (
+                  isUserLoggedIn(currentUser) ? (
+                    <SpotCreateFrom />
+                  ) : (
+                    <Navigate to='/auth/sign_in' />
+                  )
+                ) : null
+              }
             />
             <Route path='/auth/sign_up' element={<SignUpForm />} />
             <Route path='/auth/sign_in' element={<SignInForm />} />
