@@ -12,7 +12,7 @@ import {
   SubmmitButton,
   AuthContainer,
   ErrorMessageText,
-} from '../components/Index';
+} from '../components';
 import Header from '../../headers/Header';
 import { Box } from '@mui/material';
 
@@ -66,7 +66,7 @@ function SignUp() {
   return (
     <>
       <Header isShowSearchSpot={false} isShowUserAccountMenu={false}></Header>
-      <Box sx={{height: 50} }></Box>
+      <Box sx={{ height: 50 }}></Box>
       <AuthContainer>
         <FormTitle value='ユーザー登録'></FormTitle>
         <form onSubmit={handleSubmit}>

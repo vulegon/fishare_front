@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Paper from '@mui/material/Paper';
-import { CurrentUserContext } from '../../../../App';
+import { CurrentUserContext } from '../../../../contexts/index';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Typography from '@mui/material/Typography';
 import UserAccountMenu from './UserAccountMenu';

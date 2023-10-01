@@ -7,7 +7,7 @@ import {
   SubmmitButton,
   AuthContainer,
   ErrorMessageText,
-} from '../components/Index';
+} from '../components';
 import { signIn } from '../../../api/auth';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -52,7 +52,7 @@ function SignInForm() {
   };
   return (
     <>
-      <Header isShowSearchSpot={false} isShowUserAccountMenu={false}/>
+      <Header isShowSearchSpot={false} isShowUserAccountMenu={false} />
       <AuthContainer>
         <FormTitle value='ログイン'></FormTitle>
         <form onSubmit={handleSubmit} style={{ width: '400px' }}>

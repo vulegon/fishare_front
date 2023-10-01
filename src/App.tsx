@@ -9,18 +9,7 @@ import SignUpSuccessForm from './features/auth/signUp/success/SignUpSuccessForm'
 import { getCurrentUser } from './api/user';
 import { CurrentUser } from './types/CurrentUser';
 import { isUserLoggedIn } from './utils/authUtils';
-export const CurrentUserContext = createContext(
-  {} as {
-    currentUser: CurrentUser;
-    setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUser>>;
-  }
-);
-export const isCurrentUserLoadingCompleteContext = createContext(
-  {} as {
-    isCurrentUserLoadingComplete: boolean;
-    setIsCurrentUserLoadingComplete: React.Dispatch<React.SetStateAction<boolean>>;
-  }
-);
+import { CurrentUserContext,IsCurrentUserLoadingCompleteContext } from './contexts/index';
 
 function App() {
   const [currentUser, setCurrentUser] = useState<CurrentUser>({ id: '', name: '', email: '' }); // ログインユーザー情報の初期値
@@ -54,7 +43,9 @@ function App() {
   return (
     <Router>
       <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
-        <isCurrentUserLoadingCompleteContext.Provider value={{ isCurrentUserLoadingComplete, setIsCurrentUserLoadingComplete }}>
+        <IsCurrentUserLoadingCompleteContext.Provider
+          value={{ isCurrentUserLoadingComplete, setIsCurrentUserLoadingComplete }}
+        >
           <Routes>
             <Route path='/' element={<Map />} />
             <Route
@@ -65,7 +56,7 @@ function App() {
             <Route path='/auth/sign_in' element={<SignInForm />} />
             <Route path='/auth/sign_up/success' element={<SignUpSuccessForm />} />
           </Routes>
-        </isCurrentUserLoadingCompleteContext.Provider>
+        </IsCurrentUserLoadingCompleteContext.Provider>
       </CurrentUserContext.Provider>
     </Router>
   );
