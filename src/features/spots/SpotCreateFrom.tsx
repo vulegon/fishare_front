@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Header from '../headers/Header';
 import { Typography, AlertColor, Box } from '@mui/material';
-import { MarkerPosition } from '../../types/types';
-import { Image } from '../../types/types';
+import { MarkerPosition } from '../../types/Spot';
+import { Image } from '../../types/Spot';
 import AlertMessage from '../../components/AlertMessage';
 import {
   ImageItem,

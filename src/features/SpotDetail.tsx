@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import { Spot } from '../types/types';
+import { Spot } from '../types/Spot';
 import { getSpotShow } from '../api/client';
 import Typography from '@mui/material/Typography';
 import defaultSpotImage from './default-spot-image.png';

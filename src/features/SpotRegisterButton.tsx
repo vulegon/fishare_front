@@ -1,7 +1,7 @@
 import React from 'react';
 import RegisterButton from '../components/RegisterButton';
 import { Link } from 'react-router-dom';
-import { MarkerPosition } from '../types/types';
+import { MarkerPosition } from '../types/Spot';
 
 interface SpotRegisterButtonProps {
   isDisabled: boolean;
@@ -23,11 +23,15 @@ function SpotRegisterButton({ isDisabled, markerPosition }: SpotRegisterButtonPr
 
   return (
     <div>
-      <Link to={`/spots?lat=${markerPosition.lat}&lng=${markerPosition.lng}`} style={linkStyle} onClick={handleLinkClick}>
+      <Link
+        to={`/spots?lat=${markerPosition.lat}&lng=${markerPosition.lng}`}
+        style={linkStyle}
+        onClick={handleLinkClick}
+      >
         <RegisterButton isDisabled={isDisabled} />
       </Link>
     </div>
   );
-} 
+}
 
 export default SpotRegisterButton;
