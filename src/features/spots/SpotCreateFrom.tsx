@@ -9,12 +9,15 @@ import {
   Description,
   SpotName,
   CatchableFish,
-  FishingTypeSelector,
+  LocationSelector,
   FormSpace,
   SubmmitButton,
   ImageUploader,
   SpotMap,
+  FishingTypeCheckBox,
 } from './index';
+import { createSpot } from '../../api/spot';
+import FishingTypeSelector from './LocationSelector';
 
 function SpotCreateFrom() {
   const [description, setDescription] = useState<string>('');
@@ -29,25 +32,22 @@ function SpotCreateFrom() {
     lat: undefined,
     lng: undefined,
   });
-  const [fishingType, setFishingType] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
   const [catchableFish, setCatchableFish] = useState<string[]>(['']);
+  const [fishingType, setFishingType] = useState<string[]>(['']);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('description', description);
-    formData.append('str_latitude', String(markerPosition.lat));
-    formData.append('str_longitude', String(markerPosition.lng));
-    formData.append('fishing_type', fishingType);
-    images.forEach((image) => formData.append('images[]', image.file));
-    catchableFish.forEach((fish) => formData.append('fish[]', fish));
-    console.log(formData);
-
-    //formDataの場合はヘッダーを指定してはいけないため、apiClientは使わない。
-    // https://zenn.dev/kariya_mitsuru/articles/25c9aeb27059e7
-    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/spots`, { method: 'POST', body: formData });
+    const response = await createSpot({
+      name: name,
+      description: description,
+      images: images,
+      location: location,
+      catchableFish: catchableFish,
+      latitude: String(markerPosition.lat),
+      longitude: String(markerPosition.lng),
+    });
     response.status === 200 ? setSeverity('success') : setSeverity('error');
 
     const data = await response.json();
@@ -80,7 +80,8 @@ function SpotCreateFrom() {
           <FormSpace></FormSpace>
           <CatchableFish catchableFish={catchableFish} setCatchableFish={setCatchableFish} />
           <FormSpace></FormSpace>
-          <FishingTypeSelector fishingType={fishingType} setFishingType={setFishingType}></FishingTypeSelector>
+          <LocationSelector location={location} setLocation={setLocation}></LocationSelector>
+          <FishingTypeCheckBox></FishingTypeCheckBox>
           <Description description={description} setDescription={setDescription} />
           <ImageUploader imageCount={imageCount} setImageCount={setImageCount} images={images} setImages={setImages} />
           <ImageItem images={images} setImages={setImages} />
