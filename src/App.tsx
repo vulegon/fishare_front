@@ -17,8 +17,8 @@ function App() {
   const fetchCurrentUser = async () => {
     try {
       const response = await getCurrentUser();
-      if (response === null) return;
-      if (response.status !== 200) return;
+      if (response === null) return setIsCurrentUserLoadingComplete(true);
+      if (response.status !== 200) return setIsCurrentUserLoadingComplete(true);
       const data = await response.json();
       console.log(data);
       const is_login = data.is_login;

@@ -39,6 +39,7 @@ function SignInForm() {
           Cookies.set('_client', client);
           Cookies.set('_uid', uid);
           navigate('/');
+          window.location.reload();
         }
       } else {
         const data = await response.json();
