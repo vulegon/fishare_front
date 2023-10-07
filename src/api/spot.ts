@@ -1,6 +1,5 @@
 import { baseURL } from './client';
 import { Image } from '../types/Spot';
-import FishingTypeSelector from '../features/spots/LocationSelector';
 
 interface CreateSpotArgs {
   name: string;

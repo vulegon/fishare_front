@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
-import { fishNames } from '../../master/catchableFish';
 import { TextField } from '@mui/material';
+import { getFish } from '../../api/fish';
 
 function CatchableFishInput({
   catchableFish,
@@ -11,14 +11,25 @@ function CatchableFishInput({
   catchableFish: string[];
   setCatchableFish: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
+  const [fish, setFish] = useState<string[]>([]);
+  const getFishNames = async () => {
+    const response = await getFish();
+    const data = await response.json();
+    setFish(data.fish);
+  };
+
   const handleCatchableFishChange = (event: React.ChangeEvent<unknown>, newValue: string[]) => {
     setCatchableFish(newValue);
   };
+
+  useEffect(() => {
+    getFishNames();
+  }, []);
   return (
     <Autocomplete
       multiple
       id='tags-outlined'
-      options={fishNames.map((option) => option.name)}
+      options={fish}
       freeSolo
       onChange={handleCatchableFishChange}
       renderTags={(value: readonly string[], getTagProps) =>
