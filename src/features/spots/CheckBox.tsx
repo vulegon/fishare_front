@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
@@ -18,9 +18,5 @@ export default function CheckBox({
       setFishingType([...fishingType, label]);
     }
   };
-  return (
-    <>
-      <FormControlLabel control={<Checkbox onChange={handleCheckboxChange} />} label={label} />
-    </>
-  );
+  return <FormControlLabel control={<Checkbox onChange={handleCheckboxChange} />} label={label} />;
 }
