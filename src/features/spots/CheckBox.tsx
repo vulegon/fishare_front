@@ -4,18 +4,18 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 export default function CheckBox({
   label,
-  fishingType,
-  setFishingType,
+  fishingTypes,
+  setFishingTypes,
 }: {
   label: string;
-  fishingType: string[];
-  setFishingType: React.Dispatch<React.SetStateAction<string[]>>;
+  fishingTypes: string[];
+  setFishingTypes: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (fishingType.includes(label)) {
-      setFishingType(fishingType.filter((check) => check !== label));
+    if (fishingTypes.includes(label)) {
+      setFishingTypes(fishingTypes.filter((fishingType) => fishingType !== label));
     } else {
-      setFishingType([...fishingType, label]);
+      setFishingTypes([...fishingTypes, label]);
     }
   };
   return <FormControlLabel control={<Checkbox onChange={handleCheckboxChange} />} label={label} />;

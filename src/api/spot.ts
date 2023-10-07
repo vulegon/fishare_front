@@ -1,5 +1,6 @@
 import { baseURL } from './client';
 import { Image } from '../types/Spot';
+import FishingTypeSelector from '../features/spots/LocationSelector';
 
 interface CreateSpotArgs {
   name: string;
@@ -9,6 +10,7 @@ interface CreateSpotArgs {
   location: string;
   images: Image[];
   catchableFish: string[];
+  fishingTypes: string[];
 }
 export const createSpot = async ({
   name,
@@ -18,6 +20,7 @@ export const createSpot = async ({
   location,
   images,
   catchableFish,
+  fishingTypes
 }: CreateSpotArgs): Promise<Response> => {
   const url = `${baseURL}/spots`;
   const method = 'POST';
@@ -29,6 +32,7 @@ export const createSpot = async ({
   formData.append('location', location);
   images.forEach((image) => formData.append('images[]', image.file));
   catchableFish.forEach((fish) => formData.append('fish[]', fish));
+  fishingTypes.forEach((fishingType) => formData.append('fishing_types[]', fishingType));
 
   // ヘッダーは指定しない
   // https://zenn.dev/kariya_mitsuru/articles/25c9aeb27059e7
