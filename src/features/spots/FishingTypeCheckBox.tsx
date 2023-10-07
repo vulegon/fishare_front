@@ -13,10 +13,10 @@ function FishingCheckBox({
   const [isRiver, setIsRiver] = useState<boolean>(false);
 
   useEffect(() => {
-    if (location === 'sea') {
+    if (location === '海釣り') {
       setIsSea(true);
       setIsRiver(false);
-    } else if (location === 'river') {
+    } else if (location === '川釣り') {
       setIsSea(false);
       setIsRiver(true);
     } else {

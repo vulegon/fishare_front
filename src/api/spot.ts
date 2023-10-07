@@ -26,8 +26,8 @@ export const createSpot = async ({
   const formData = new FormData();
   formData.append('name', name);
   formData.append('description', description);
-  formData.append('latitude', latitude);
-  formData.append('longitude', longitude);
+  formData.append('str_latitude', latitude);
+  formData.append('str_longitude', longitude);
   formData.append('location', location);
   images.forEach((image) => formData.append('images[]', image.file));
   catchableFish.forEach((fish) => formData.append('fish[]', fish));

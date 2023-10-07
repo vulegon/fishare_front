@@ -20,8 +20,8 @@ function FishingTypeSelector({
       row
       onChange={handleLocationChange}
     >
-      <FormControlLabel value='sea' control={<Radio />} label='海釣り' />
-      <FormControlLabel value='river' control={<Radio />} label='川釣り' />
+      <FormControlLabel value='海釣り' control={<Radio />} label='海釣り' />
+      <FormControlLabel value='川釣り' control={<Radio />} label='川釣り' />
     </RadioGroup>
   );
 }
