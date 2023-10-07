@@ -17,7 +17,6 @@ import {
   FishingTypeCheckBox,
 } from './index';
 import { createSpot } from '../../api/spot';
-import FishingTypeSelector from './LocationSelector';
 
 function SpotCreateFrom() {
   const [description, setDescription] = useState<string>('');
@@ -34,7 +33,7 @@ function SpotCreateFrom() {
   });
   const [location, setLocation] = useState<string>('');
   const [catchableFish, setCatchableFish] = useState<string[]>(['']);
-  const [fishingType, setFishingType] = useState<string[]>(['']);
+  const [fishingType, setFishingType] = useState<string[]>([]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -80,8 +79,8 @@ function SpotCreateFrom() {
           <FormSpace></FormSpace>
           <CatchableFish catchableFish={catchableFish} setCatchableFish={setCatchableFish} />
           <FormSpace></FormSpace>
-          <LocationSelector location={location} setLocation={setLocation}></LocationSelector>
-          <FishingTypeCheckBox></FishingTypeCheckBox>
+          <LocationSelector location={location} setLocation={setLocation} />
+          <FishingTypeCheckBox fishingType={fishingType} setFishingType={setFishingType} />
           <Description description={description} setDescription={setDescription} />
           <ImageUploader imageCount={imageCount} setImageCount={setImageCount} images={images} setImages={setImages} />
           <ImageItem images={images} setImages={setImages} />
