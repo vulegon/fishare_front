@@ -72,7 +72,7 @@ function SpotCreateFrom() {
           <CatchableFish catchableFish={catchableFish} setCatchableFish={setCatchableFish} />
           <FormSpace></FormSpace>
           <LocationSelector location={location} setLocation={setLocation} />
-          <FishingTypeCheckBox fishingTypes={fishingTypes} setFishingTypes={setFishingTypes} />
+          <FishingTypeCheckBox location={location} fishingTypes={fishingTypes} setFishingTypes={setFishingTypes} />
           <Description description={description} setDescription={setDescription} />
           <ImageUploader imageCount={imageCount} setImageCount={setImageCount} images={images} setImages={setImages} />
           <ImageItem images={images} setImages={setImages} />
