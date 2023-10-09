@@ -8,13 +8,15 @@ import {
   SpotName,
   CatchableFish,
   LocationSelector,
-  FormSpace,
   SubmmitButton,
   ImageUploader,
   SpotMap,
   FishingTypeCheckBox,
 } from './index';
 import { createSpot } from '../../api/spot';
+import HelpText from '../../components/HelpText';
+import { ErrorMessages } from '../../types/ErrorMessage';
+import { ErrorMessageText } from '../auth/components';
 
 function SpotCreateFrom() {
   const [description, setDescription] = useState<string>('');
@@ -29,6 +31,8 @@ function SpotCreateFrom() {
   const [location, setLocation] = useState<string>('');
   const [catchableFish, setCatchableFish] = useState<string[]>([]);
   const [fishingTypes, setFishingTypes] = useState<string[]>([]);
+  const [isErrorMessageOpen, setIsErrorMessageOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<ErrorMessages>({});
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -43,10 +47,15 @@ function SpotCreateFrom() {
       longitude: String(markerPosition.lng),
       fishingTypes: fishingTypes,
     });
-
-    const data = await response.json();
-    console.log(data);
-    console.log(data.message[0]);
+    if (response.status === 200) {
+      setIsErrorMessageOpen(false);
+    } else {
+      setIsErrorMessageOpen(true);
+      const data = await response.json();
+      console.log(data);
+      setErrorMessage(data.details);
+      console.log(data.details);
+    }
     setIsLoading(false);
   };
 
@@ -65,16 +74,24 @@ function SpotCreateFrom() {
         <Typography variant='h4' gutterBottom>
           釣り場の登録
         </Typography>
+        <HelpText value={'地図のマーカーを動かすこともできます'}></HelpText>
         <SpotMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
+        {isErrorMessageOpen && <ErrorMessageText fieldKey={'str_latitude'} errors={errorMessage} />}
+        {isErrorMessageOpen && <ErrorMessageText fieldKey={'str_longitude'} errors={errorMessage} />}
         <form style={{ width: '700px' }} onSubmit={handleSubmit}>
           <SpotName name={name} setName={setName} />
-          <FormSpace></FormSpace>
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'name'} errors={errorMessage} />}
+          <HelpText value={'必ず候補から選択してください。選択しない場合はパラメーターとして送信されません'}></HelpText>
           <CatchableFish catchableFish={catchableFish} setCatchableFish={setCatchableFish} />
-          <FormSpace></FormSpace>
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'fish'} errors={errorMessage} />}
           <LocationSelector location={location} setLocation={setLocation} />
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'location'} errors={errorMessage} />}
           <FishingTypeCheckBox location={location} fishingTypes={fishingTypes} setFishingTypes={setFishingTypes} />
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'fishing_types'} errors={errorMessage} />}
           <Description description={description} setDescription={setDescription} />
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'description'} errors={errorMessage} />}
           <ImageUploader imageCount={imageCount} setImageCount={setImageCount} images={images} setImages={setImages} />
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'images'} errors={errorMessage} />}
           <ImageItem images={images} setImages={setImages} />
           <SubmmitButton isLoading={isLoading} buttonText='送信'></SubmmitButton>
         </form>

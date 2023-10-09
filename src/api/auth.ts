@@ -1,4 +1,4 @@
-import { baseURL, Headers, defaultHeaders } from './client';
+import { baseURL, Headers, defaultHeaders, authHeaders } from './client';
 import Cookies from 'js-cookie';
 
 // ユーザー登録
@@ -42,11 +42,7 @@ export const signOut = async (): Promise<Response | null> => {
   }
   const url = `${baseURL}/auth/sign_out`;
   const method = 'DELETE';
-  const headers = {
-    'access-token': Cookies.get('_access_token') as string,
-    client: Cookies.get('_client') as string,
-    uid: Cookies.get('_uid') as string,
-  };
+  const headers = authHeaders;
   const options = {
     method,
     headers,

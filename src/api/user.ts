@@ -1,4 +1,4 @@
-import { baseURL } from './client';
+import { baseURL, authHeaders } from './client';
 import Cookies from 'js-cookie';
 
 // ログインユーザーの取得
@@ -9,11 +9,7 @@ export const getCurrentUser = async (): Promise<Response | null> => {
   }
   const url = `${baseURL}/users`;
   const method = 'GET';
-  const headers = {
-    'access-token': Cookies.get('_access_token') as string,
-    client: Cookies.get('_client') as string,
-    uid: Cookies.get('_uid') as string,
-  };
+  const headers = authHeaders;
   const options = {
     method,
     headers,

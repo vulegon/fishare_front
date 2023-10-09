@@ -1,5 +1,6 @@
 import { baseURL } from './client';
 import { Image } from '../types/Spot';
+import { authHeaders } from './client';
 
 interface CreateSpotArgs {
   name: string;
@@ -19,7 +20,7 @@ export const createSpot = async ({
   location,
   images,
   catchableFish,
-  fishingTypes
+  fishingTypes,
 }: CreateSpotArgs): Promise<Response> => {
   const url = `${baseURL}/spots`;
   const method = 'POST';
@@ -33,10 +34,12 @@ export const createSpot = async ({
   catchableFish.forEach((fish) => formData.append('fish[]', fish));
   fishingTypes.forEach((fishingType) => formData.append('fishing_types[]', fishingType));
 
-  // ヘッダーは指定しない
+  const headers = authHeaders;
+  // ヘッダーにContent-Typeは指定しない
   // https://zenn.dev/kariya_mitsuru/articles/25c9aeb27059e7
   const options: RequestInit = {
     method,
+    headers,
     body: formData,
   };
   const response = await fetch(url, options);

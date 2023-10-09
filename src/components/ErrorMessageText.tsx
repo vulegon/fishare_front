@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import InputHelpTextSpace from '../signUp/InputHelpTextSpace';
-type Messages = {
-  [key: string]: string[];
-};
+import { ErrorMessages } from '../types/ErrorMessage';
 
-function ErrorMessageText({ fieldKey, errors }: { fieldKey: string; errors: Messages }) {
-  const [errorMessages, setErrorMessages] = useState<string[]>(['']);
+function ErrorMessageText({ fieldKey, errors }: { fieldKey: string; errors: ErrorMessages }) {
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
   useEffect(() => {
     const messages = errors[fieldKey];
@@ -21,7 +18,8 @@ function ErrorMessageText({ fieldKey, errors }: { fieldKey: string; errors: Mess
     if (typeof messages === 'string') {
       setErrorMessages([messages]);
     }
-  }, [fieldKey, errors]);
+    console.log(errorMessages);
+  }, [errors]);
 
   return (
     <>
@@ -31,7 +29,6 @@ function ErrorMessageText({ fieldKey, errors }: { fieldKey: string; errors: Mess
           <br />
         </Typography>
       ))}
-      <InputHelpTextSpace></InputHelpTextSpace>
     </>
   );
 }
