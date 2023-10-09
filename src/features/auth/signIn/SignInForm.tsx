@@ -6,13 +6,13 @@ import {
   FormTitle,
   SubmmitButton,
   AuthContainer,
-  ErrorMessageText,
 } from '../components';
 import { signIn } from '../../../api/auth';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Header from '../../headers/Header';
 import { ErrorMessages } from '../../../types/ErrorMessage';
+import ErrorMessageText from '../../../components/ErrorMessageText';
 
 function SignInForm() {
   const [email, setEmail] = useState<string>('');

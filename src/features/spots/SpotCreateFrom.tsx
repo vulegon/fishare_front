@@ -16,7 +16,7 @@ import {
 import { createSpot } from '../../api/spot';
 import HelpText from '../../components/HelpText';
 import { ErrorMessages } from '../../types/ErrorMessage';
-import { ErrorMessageText } from '../auth/components';
+import ErrorMessageText from '../../components/ErrorMessageText';
 
 function SpotCreateFrom() {
   const [description, setDescription] = useState<string>('');

@@ -9,12 +9,12 @@ import {
   InputFieldSpace,
   FormTitle,
   SubmmitButton,
-  AuthContainer,
-  ErrorMessageText,
+  AuthContainer
 } from '../components';
 import Header from '../../headers/Header';
 import { Box } from '@mui/material';
 import { ErrorMessages } from '../../../types/ErrorMessage';
+import ErrorMessageText from '../../../components/ErrorMessageText';
 
 function SignUp() {
   const [name, setName] = useState<string>('');
