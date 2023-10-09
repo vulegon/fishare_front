@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SearchSpot from './searchSpot/SearchSpot';
-import { Box } from '@mui/material';
+import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import AuthenticatedMenu from './menu/authenticatedMenu/AuthenticatedMenu';
-import { CurrentUserContext } from '../../App';
-import { getCurrentUser } from '../../api/user';
+import { CurrentUserContext, IsCurrentUserLoadingCompleteContext } from '../../contexts/index';
 import UnAuthenticatedMenu from './menu/unAuthenticatedMenu/UnAuthenticatedMenu';
+import { isUserLoggedIn } from '../../utils/authUtils';
 
 export default function Header({
   isShowSearchSpot = true,
@@ -17,36 +14,9 @@ export default function Header({
   isShowSearchSpot?: boolean;
   isShowUserAccountMenu?: boolean;
 }) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-  const fetchCurrentUser = async () => {
-    try {
-      const response = await getCurrentUser();
-      if (response === null) return;
-      if (response.status !== 200) return;
-      const data = await response.json();
-      console.log(data);
-      setIsAuthenticated(data.is_login);
-      if (isAuthenticated) {
-        const userData = data.data;
-        const currentUser = {
-          id: userData.id,
-          name: userData.name,
-          email: userData.email,
-        };
-        setCurrentUser(currentUser);
-      }
-    } catch (e) {
-      console.log('エラー:', e);
-    }
-  };
+  const { currentUser } = useContext(CurrentUserContext);
+  const { isCurrentUserLoadingComplete } = useContext(IsCurrentUserLoadingCompleteContext);
 
-  const isUserLoggedIn = () => {
-    return !!currentUser.id;
-  };
-  useEffect(() => {
-    fetchCurrentUser();
-  }, [isAuthenticated]);
   return (
     <AppBar position='static'>
       <Toolbar>
@@ -57,7 +27,8 @@ export default function Header({
         </Link>
         <Box sx={{ width: 100 }} />
         {isShowSearchSpot && <SearchSpot />}
-        {isShowUserAccountMenu && isUserLoggedIn() ? <AuthenticatedMenu /> : <UnAuthenticatedMenu />}
+        {isCurrentUserLoadingComplete &&
+          (isShowUserAccountMenu && isUserLoggedIn(currentUser) ? <AuthenticatedMenu /> : <UnAuthenticatedMenu />)}
       </Toolbar>
     </AppBar>
   );

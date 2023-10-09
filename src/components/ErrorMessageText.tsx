@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-type Messages = {
-  [key: string]: string[];
-};
+import { ErrorMessages } from '../types/ErrorMessage';
 
-function ErrorMessageText({ fieldKey, errors }: { fieldKey: string; errors: Messages }) {
-  const [errorMessages, setErrorMessages] = useState<string[]>(['']);
+function ErrorMessageText({ fieldKey, errors }: { fieldKey: string; errors: ErrorMessages }) {
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    if (errors[fieldKey]) {
+    const messages = errors[fieldKey];
+    if (!errors[fieldKey]) return;
+    if (Array.isArray(messages)) {
       const messages = errors[fieldKey];
       const set = new Set(messages);
-      console.log(set);
       const newArr = [...set];
       setErrorMessages(newArr);
+      return;
     }
-  }, [fieldKey, errors]);
+    if (typeof messages === 'string') {
+      setErrorMessages([messages]);
+    }
+    console.log(errorMessages);
+  }, [errors]);
 
   return (
     <>

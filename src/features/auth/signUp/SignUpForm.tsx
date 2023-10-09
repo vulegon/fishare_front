@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import InputHelpText from './InputHelpText';
+import InputHelpText from '../../../components/HelpText';
 import { signUp } from '../../../api/auth';
-import InputHelpTextSpace from './InputHelpTextSpace';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import {
@@ -12,8 +11,10 @@ import {
   SubmmitButton,
   AuthContainer,
   ErrorMessageText,
-} from '../components/Index';
+} from '../components';
 import Header from '../../headers/Header';
+import { Box } from '@mui/material';
+import { ErrorMessages } from '../../../types/ErrorMessage';
 
 function SignUp() {
   const [name, setName] = useState<string>('');
@@ -21,10 +22,7 @@ function SignUp() {
   const [password, setPassword] = useState<string>('');
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
   const [isOpenErrorMessages, setIsOpenErrorMessages] = useState<boolean>(false);
-  const [errors, setErrors] = useState<Messages>({});
-  type Messages = {
-    [key: string]: string[];
-  };
+  const [errors, setErrors] = useState<ErrorMessages>({});
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -53,6 +51,7 @@ function SignUp() {
       } else {
         const data = await response.json();
         setErrors(data.errors);
+        console.log(data);
         setIsOpenErrorMessages(true);
       }
     } catch (e) {
@@ -64,11 +63,11 @@ function SignUp() {
   return (
     <>
       <Header isShowSearchSpot={false} isShowUserAccountMenu={false}></Header>
+      <Box sx={{ height: 50 }}></Box>
       <AuthContainer>
         <FormTitle value='ユーザー登録'></FormTitle>
         <form onSubmit={handleSubmit}>
-          <InputHelpText value={'20文字以内で入力してください'} />
-          <InputHelpTextSpace></InputHelpTextSpace>
+          <InputHelpText value={'10文字以内で入力してください'} />
           <InputTextField label={'名前'} value={name} setState={setName} />
           {isOpenErrorMessages && <ErrorMessageText fieldKey={'name'} errors={errors} />}
           <InputFieldSpace></InputFieldSpace>
@@ -77,8 +76,7 @@ function SignUp() {
           <InputFieldSpace></InputFieldSpace>
           <InputHelpText value={'8文字以上128文字以下で入力してください'} />
           <br />
-          <InputHelpText value={'少なくとも1つ以上の小文字アルファベットと数字を含めてください'} />
-          <InputHelpTextSpace></InputHelpTextSpace>
+          <InputHelpText value={'英字の小文字と大文字、および数字を各1つ以上含む必要があります'} />
           <InputPasswordField label={'パスワード'} value={password} setState={setPassword} />
           {isOpenErrorMessages && <ErrorMessageText fieldKey={'password'} errors={errors} />}
           <InputFieldSpace></InputFieldSpace>

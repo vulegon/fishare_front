@@ -7,21 +7,19 @@ import {
   SubmmitButton,
   AuthContainer,
   ErrorMessageText,
-} from '../components/Index';
+} from '../components';
 import { signIn } from '../../../api/auth';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Header from '../../headers/Header';
+import { ErrorMessages } from '../../../types/ErrorMessage';
 
 function SignInForm() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpenErrorMessages, setIsOpenErrorMessages] = useState<boolean>(false);
-  const [errors, setErrors] = useState<Messages>({});
-  type Messages = {
-    [key: string]: string[];
-  };
+  const [errors, setErrors] = useState<ErrorMessages>({});
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -39,6 +37,7 @@ function SignInForm() {
           Cookies.set('_client', client);
           Cookies.set('_uid', uid);
           navigate('/');
+          window.location.reload();
         }
       } else {
         const data = await response.json();
@@ -52,7 +51,7 @@ function SignInForm() {
   };
   return (
     <>
-      <Header isShowSearchSpot={false} isShowUserAccountMenu={false}></Header>
+      <Header isShowSearchSpot={false} isShowUserAccountMenu={false} />
       <AuthContainer>
         <FormTitle value='ログイン'></FormTitle>
         <form onSubmit={handleSubmit} style={{ width: '400px' }}>

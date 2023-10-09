@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { mapContainerStyle, mapOptions } from './defaultMapOption';
-import { MarkerPosition } from '../types/types';
+import { MarkerPosition } from '../types/Spot';
 import SpotRegisterButton from './SpotRegisterButton';
 import Header from './headers/Header';
 import { getSpots } from '../api/client';
 import SpotDetail from './SpotDetail';
-import { Spot } from '../types/types';
+import { Spot } from '../types/Spot';
 import { getCurrentUser } from '../api/user';
 
 function Map() {

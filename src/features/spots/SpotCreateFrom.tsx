@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import Header from '../headers/Header';
-import { Typography, AlertColor, Box } from '@mui/material';
-import { MarkerPosition } from '../../types/types';
-import { Image } from '../../types/types';
-import AlertMessage from '../../components/AlertMessage';
+import { Typography, Box } from '@mui/material';
+import { MarkerPosition, Image } from '../../types/Spot';
 import {
   ImageItem,
   Description,
   SpotName,
   CatchableFish,
-  FishingTypeSelector,
-  FormSpace,
+  LocationSelector,
   SubmmitButton,
   ImageUploader,
   SpotMap,
+  FishingTypeCheckBox,
 } from './index';
+import { createSpot } from '../../api/spot';
+import HelpText from '../../components/HelpText';
+import { ErrorMessages } from '../../types/ErrorMessage';
+import { ErrorMessageText } from '../auth/components';
 
 function SpotCreateFrom() {
   const [description, setDescription] = useState<string>('');
@@ -22,46 +24,44 @@ function SpotCreateFrom() {
   const [images, setImages] = useState<Image[]>([]);
   const [imageCount, setImageCount] = useState<number>(5);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [severity, setSeverity] = useState<AlertColor>('info');
-  const [alertOpen, setAlertOpen] = useState<boolean>(false);
-  const [responseMessage, setResponseMessage] = useState<string>('');
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({
     lat: undefined,
     lng: undefined,
   });
-  const [fishingType, setFishingType] = useState<string>('');
-  const [catchableFish, setCatchableFish] = useState<string[]>(['']);
+  const [location, setLocation] = useState<string>('');
+  const [catchableFish, setCatchableFish] = useState<string[]>([]);
+  const [fishingTypes, setFishingTypes] = useState<string[]>([]);
+  const [isErrorMessageOpen, setIsErrorMessageOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<ErrorMessages>({});
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('description', description);
-    formData.append('str_latitude', String(markerPosition.lat));
-    formData.append('str_longitude', String(markerPosition.lng));
-    formData.append('fishing_type', fishingType);
-    images.forEach((image) => formData.append('images[]', image.file));
-    catchableFish.forEach((fish) => formData.append('fish[]', fish));
-    console.log(formData);
-
-    //formDataの場合はヘッダーを指定してはいけないため、apiClientは使わない。
-    // https://zenn.dev/kariya_mitsuru/articles/25c9aeb27059e7
-    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/spots`, { method: 'POST', body: formData });
-    response.status === 200 ? setSeverity('success') : setSeverity('error');
-
-    const data = await response.json();
-    console.log(data);
-    console.log(data.message[0]);
-    setResponseMessage(data.message);
-    setAlertOpen(true);
+    const response = await createSpot({
+      name: name,
+      description: description,
+      images: images,
+      location: location,
+      catchableFish: catchableFish,
+      latitude: String(markerPosition.lat),
+      longitude: String(markerPosition.lng),
+      fishingTypes: fishingTypes,
+    });
+    if (response.status === 200) {
+      setIsErrorMessageOpen(false);
+    } else {
+      setIsErrorMessageOpen(true);
+      const data = await response.json();
+      console.log(data);
+      setErrorMessage(data.details);
+      console.log(data.details);
+    }
     setIsLoading(false);
   };
 
   return (
     <div>
       <Header isShowSearchSpot={false} />
-      {alertOpen && <AlertMessage message={responseMessage} severity={severity} />}
       <div
         style={{
           marginTop: '40px',
@@ -74,15 +74,24 @@ function SpotCreateFrom() {
         <Typography variant='h4' gutterBottom>
           釣り場の登録
         </Typography>
+        <HelpText value={'地図のマーカーを動かすこともできます'}></HelpText>
         <SpotMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
+        {isErrorMessageOpen && <ErrorMessageText fieldKey={'str_latitude'} errors={errorMessage} />}
+        {isErrorMessageOpen && <ErrorMessageText fieldKey={'str_longitude'} errors={errorMessage} />}
         <form style={{ width: '700px' }} onSubmit={handleSubmit}>
           <SpotName name={name} setName={setName} />
-          <FormSpace></FormSpace>
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'name'} errors={errorMessage} />}
+          <HelpText value={'必ず候補から選択してください。選択しない場合はパラメーターとして送信されません'}></HelpText>
           <CatchableFish catchableFish={catchableFish} setCatchableFish={setCatchableFish} />
-          <FormSpace></FormSpace>
-          <FishingTypeSelector fishingType={fishingType} setFishingType={setFishingType}></FishingTypeSelector>
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'fish'} errors={errorMessage} />}
+          <LocationSelector location={location} setLocation={setLocation} />
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'location'} errors={errorMessage} />}
+          <FishingTypeCheckBox location={location} fishingTypes={fishingTypes} setFishingTypes={setFishingTypes} />
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'fishing_types'} errors={errorMessage} />}
           <Description description={description} setDescription={setDescription} />
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'description'} errors={errorMessage} />}
           <ImageUploader imageCount={imageCount} setImageCount={setImageCount} images={images} setImages={setImages} />
+          {isErrorMessageOpen && <ErrorMessageText fieldKey={'images'} errors={errorMessage} />}
           <ImageItem images={images} setImages={setImages} />
           <SubmmitButton isLoading={isLoading} buttonText='送信'></SubmmitButton>
         </form>

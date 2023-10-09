@@ -1,5 +1,5 @@
 export const fishNames: { id: number; name: string; type: string }[] = [
-   { id: 1, name: 'カサゴ', type: '海' },
+  { id: 1, name: 'カサゴ', type: '海' },
   { id: 2, name: 'ニジマス', type: '川' },
   { id: 3, name: 'マグロ', type: '海' },
   { id: 4, name: 'サバ', type: '海' },

@@ -1,4 +1,4 @@
-import { Position } from '../types/types';
+import { Position } from '../types/Spot';
 
 export const mapContainerStyle = (height = '64') => {
   const calcMapStyle = {
