@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { mapContainerStyle } from '../constants/defaultMapOption';
-import { MarkerPosition, Spot, Position } from '../types/Spot';
+import { MarkerPosition, Spot } from '../types/Spot';
 import SpotRegisterButton from './SpotRegisterButton';
 import Header from './headers/Header';
 import { getSpots } from '../api/spot';
 import SpotDetail from './SpotDetail';
 import { getCurrentUser } from '../api/user';
 import { MapOptions } from '../types/Map';
+import CenterLoading from './CenterLoading';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
@@ -16,6 +17,7 @@ function Map() {
   const [detailSpot, setDetailSpot] = useState<Spot | null>(null);
   const [spots, setSpots] = useState<Spot[]>([]);
   const [isSpotsLoading, setIsSpotsLoading] = useState<boolean>(true);
+  const [isCenterLoading, setIsCenterLoading] = useState<boolean>(true);
   const [mapOptions, setMapOptions] = useState<MapOptions>({
     zoom: 15,
     center: { lat: 36.063053704526226, lng: 136.22288055523217 },
@@ -53,11 +55,10 @@ function Map() {
   const getCurrentPosition = async () => {
     if (!navigator.geolocation) return; //Geolocation APIに対応していない場合はデフォルト値を採用するのでearly return
     function successGetCurrentPosition(position: GeolocationPosition) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const newCenter = { lat: latitude, lng: longitude };
+      const newCenter = { lat: position.coords.latitude, lng: position.coords.longitude };
       const newMapOptions = { ...mapOptions, center: newCenter };
       setMapOptions(newMapOptions);
+      setIsCenterLoading(false);
     }
 
     function failedGetCurrentPosition(error: GeolocationPositionError) {
@@ -81,6 +82,7 @@ function Map() {
       // エラーメッセージ
       const errorMessage = '[エラー番号: ' + errorNo + ']\n' + errorInfo[errorNo];
       console.log(errorMessage);
+      setIsCenterLoading(false);
     }
     const optionObj = {
       enableHighAccuracy: false,
@@ -115,6 +117,7 @@ function Map() {
         {markerPosition.lat && markerPosition.lng && (
           <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
         )}
+        {isCenterLoading && <CenterLoading></CenterLoading>}
         <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
           <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} markerPosition={markerPosition} />
         </div>
