@@ -17,6 +17,11 @@ export interface Image {
 
 export interface Spot {
   id: string;
+  name: string;
   lat: number;
   lng: number;
+  description: string;
+  fish: string[];
+  fishing_types: string[];
+  images: string[];
 }
