@@ -8,7 +8,10 @@ import { getSpots } from '../api/spot';
 import SpotDetail from './SpotDetail';
 import { getCurrentUser } from '../api/user';
 import { MapOptions } from '../types/Map';
-import CenterLoading from './CenterLoading';
+import CurrentCenterLoading from './CurrentCenterLoading';
+import { useLocation } from 'react-router-dom';
+import FlashMessage from './FlashMessage';
+import { AlertColor } from '@mui/material';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
@@ -23,6 +26,13 @@ function Map() {
     center: { lat: 36.063053704526226, lng: 136.22288055523217 },
     fullscreenControl: false,
   });
+  const location = useLocation();
+  const [isFlashMessageOpen, setIsFlashMessageOpen] = useState<boolean>(false);
+  const [flashMessage, setFlashMessage] = useState<flashMessages>({status: 'info',message: ''});
+  interface flashMessages{ 
+    status: AlertColor
+    message: string
+  }
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     if (e.latLng && e.latLng) {
@@ -92,10 +102,19 @@ function Map() {
     navigator.geolocation.getCurrentPosition(successGetCurrentPosition, failedGetCurrentPosition, optionObj);
   };
 
+  const getFlashMessage= () => {
+    const state = location.state;
+    if (!state) return
+    setIsFlashMessageOpen(true);
+    const newFlashMessage: flashMessages = { status: state.status, message: state.message };
+    setFlashMessage(newFlashMessage);
+  }
+
   useEffect(() => {
     fetchSpots();
     getCurrentUser();
     getCurrentPosition();
+    getFlashMessage();
   }, []);
   const handleMarkerClick = (spot: Spot) => {
     setIsSpotShow(true);
@@ -105,6 +124,12 @@ function Map() {
   return (
     <div>
       <Header />
+      <FlashMessage
+        status={flashMessage.status}
+        message={flashMessage.message}
+        isFlashMessageOpen={isFlashMessageOpen}
+        setIsFlashMessageOpen={setIsFlashMessageOpen}
+      ></FlashMessage>
       <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
         {!isSpotsLoading &&
           spots.map((spot) => (
@@ -117,7 +142,7 @@ function Map() {
         {markerPosition.lat && markerPosition.lng && (
           <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
         )}
-        {isCenterLoading && <CenterLoading></CenterLoading>}
+        {isCenterLoading && <CurrentCenterLoading />}
         <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
           <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} markerPosition={markerPosition} />
         </div>

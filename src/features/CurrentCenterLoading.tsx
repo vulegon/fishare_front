@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Box, Snackbar, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-
-function CenterLoading() {
+function CurrentCenterLoading() {
   const [open, setOpen] = useState<boolean>(true);
   const handleClose = () => {
     setOpen(false);
@@ -29,4 +28,4 @@ function CenterLoading() {
   );
 }
 
-export default CenterLoading;
+export default CurrentCenterLoading;
