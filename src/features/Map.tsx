@@ -28,10 +28,10 @@ function Map() {
   });
   const location = useLocation();
   const [isFlashMessageOpen, setIsFlashMessageOpen] = useState<boolean>(false);
-  const [flashMessage, setFlashMessage] = useState<flashMessages>({status: 'info',message: ''});
-  interface flashMessages{ 
-    status: AlertColor
-    message: string
+  const [flashMessage, setFlashMessage] = useState<flashMessages>({ status: 'info', message: '' });
+  interface flashMessages {
+    status: AlertColor;
+    message: string;
   }
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
@@ -102,13 +102,14 @@ function Map() {
     navigator.geolocation.getCurrentPosition(successGetCurrentPosition, failedGetCurrentPosition, optionObj);
   };
 
-  const getFlashMessage= () => {
+  const getFlashMessage = () => {
     const state = location.state;
-    if (!state) return
+    console.log(state)
+    if (!state) return;
     setIsFlashMessageOpen(true);
     const newFlashMessage: flashMessages = { status: state.status, message: state.message };
     setFlashMessage(newFlashMessage);
-  }
+  };
 
   useEffect(() => {
     fetchSpots();
