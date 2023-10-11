@@ -9,10 +9,9 @@ import {
   InputFieldSpace,
   FormTitle,
   SubmmitButton,
-  AuthContainer
+  AuthContainer,
 } from '../components';
 import Header from '../../headers/Header';
-import { Box } from '@mui/material';
 import { ErrorMessages } from '../../../types/ErrorMessage';
 import ErrorMessageText from '../../../components/ErrorMessageText';
 
@@ -50,6 +49,7 @@ function SignUp() {
         }
       } else {
         const data = await response.json();
+        data.errors.email = data.errors.email.filter((message: string) => message !== 'は有効ではありません'); //サーバサイドで無理そうだったのでフロントエンドで対応
         setErrors(data.errors);
         console.log(data);
         setIsOpenErrorMessages(true);
@@ -63,7 +63,6 @@ function SignUp() {
   return (
     <>
       <Header isShowSearchSpot={false} isShowUserAccountMenu={false}></Header>
-      <Box sx={{ height: 50 }}></Box>
       <AuthContainer>
         <FormTitle value='ユーザー登録'></FormTitle>
         <form onSubmit={handleSubmit}>

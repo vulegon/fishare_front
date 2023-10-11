@@ -41,7 +41,7 @@ function SignInForm() {
         }
       } else {
         const data = await response.json();
-        setErrors(data);
+        setErrors(data.details);
         setIsOpenErrorMessages(true);
       }
     } catch (e) {
@@ -55,7 +55,7 @@ function SignInForm() {
       <AuthContainer>
         <FormTitle value='ログイン'></FormTitle>
         <form onSubmit={handleSubmit} style={{ width: '400px' }}>
-          {isOpenErrorMessages && <ErrorMessageText fieldKey={'message'} errors={errors} />}
+          {isOpenErrorMessages && <ErrorMessageText fieldKey={'email'} errors={errors} />}
           <InputTextField label={'メールアドレス'} value={email} setState={setEmail} />
           <InputFieldSpace />
           <InputPasswordField label={'パスワード'} value={password} setState={setPassword} />

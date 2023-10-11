@@ -87,7 +87,7 @@ function Map() {
     const optionObj = {
       enableHighAccuracy: false,
       timeout: 5000, //5秒は取得しようと頑張る。取得できなかったらmapOptionsのuseStateの初期値
-      maximumAge: 3600000, //1時間
+      maximumAge: 3600000,
     };
     navigator.geolocation.getCurrentPosition(successGetCurrentPosition, failedGetCurrentPosition, optionObj);
   };
