@@ -104,7 +104,7 @@ function Map() {
 
   const getFlashMessage = () => {
     const state = location.state;
-    console.log(state)
+    console.log(state);
     if (!state) return;
     setIsFlashMessageOpen(true);
     const newFlashMessage: flashMessages = { status: state.status, message: state.message };
@@ -116,6 +116,11 @@ function Map() {
     getCurrentUser();
     getCurrentPosition();
     getFlashMessage();
+    return () => {
+      const newLocation = { ...location };
+      delete newLocation.state;
+      window.history.replaceState(newLocation, '');
+    };
   }, []);
   const handleMarkerClick = (spot: Spot) => {
     setIsSpotShow(true);
