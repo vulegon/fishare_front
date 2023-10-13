@@ -30,6 +30,7 @@ function SearchOptionForm({
     // イベントの伝播を止める
     event.stopPropagation();
     setIsSearchOptionOpen(!isSearchOptionOpen);
+    //釣り場を検索する部分の文字を空にする、入力できないようにする
     setIsSpotNameDisabled(!isSpotNameDisabled);
     setSpotName('');
   };

@@ -85,7 +85,7 @@ function SpotCreateFrom() {
           <SpotName name={name} setName={setName} />
           {isErrorMessageOpen && <ErrorMessageText fieldKey={'name'} errors={errorMessage} />}
           <HelpText value={'必ず候補から選択してください。選択しない場合は登録されません'}></HelpText>
-          <CatchableFish catchableFish={catchableFish} setCatchableFish={setCatchableFish} />
+          <CatchableFish setCatchableFish={setCatchableFish} />
           {isErrorMessageOpen && <ErrorMessageText fieldKey={'fish'} errors={errorMessage} />}
           <LocationSelector location={location} setLocation={setLocation} />
           {isErrorMessageOpen && <ErrorMessageText fieldKey={'location'} errors={errorMessage} />}
