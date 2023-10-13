@@ -1,19 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
-import { fishNames } from '../../../master/catchableFish';
 import { TextField } from '@mui/material';
+import { getFish } from '../../../api/fish';
 
-function CatchableFishInput({ setIsCatchableFishSelected }: { setIsCatchableFishSelected: React.Dispatch<React.SetStateAction<boolean>>;
+function CatchableFishInput({
+  setIsCatchableFishSelected,
+  setCatchableFish,
+}: {
+  setIsCatchableFishSelected: React.Dispatch<React.SetStateAction<boolean>>;
+  setCatchableFish: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const handleCathableFishOnChange = () => {
-    setIsCatchableFishSelected(true);
+  const [fish, setFish] = useState<string[]>([]);
+  const getFishNames = async () => {
+    const response = await getFish();
+    const data = await response.json();
+    setFish(data.fish);
   };
+  const handleCathableFishOnChange = (event: React.ChangeEvent<unknown>, newValue: string[]) => {
+    setIsCatchableFishSelected(true);
+    setCatchableFish(newValue);
+  };
+
+  useEffect(() => {
+    getFishNames();
+  }, []);
   return (
     <Autocomplete
       multiple
       id='tags-filled'
-      options={fishNames.map((option) => option.name)}
+      options={fish}
       freeSolo
       renderTags={(value: readonly string[], getTagProps) =>
         value.map((option: string, index: number) => (

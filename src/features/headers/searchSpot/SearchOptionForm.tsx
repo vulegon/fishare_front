@@ -84,14 +84,13 @@ function SearchOptionForm({
         >
           <TextField sx={{ width: '100%' }} id='spot-name-search' label='名前' type='search' variant='standard' />
           <Box sx={{ height: 10 }}></Box>
-          <CatchableFishInput setIsCatchableFishSelected={setIsCatchableFishSelected} />
+          <CatchableFishInput
+            setIsCatchableFishSelected={setIsCatchableFishSelected}
+            setCatchableFish={setCatchableFish}
+          />
           <Box sx={{ height: 10 }}></Box>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-            <CheckBox
-              labels={['海釣り', '川釣り']}
-              checkedLabels={locations}
-              setCheckedLabels={setLocations}
-            />
+            <CheckBox labels={['海釣り', '川釣り']} checkedLabels={locations} setCheckedLabels={setLocations} />
           </div>
           <FishingCheckBox
             locations={locations}
@@ -99,11 +98,7 @@ function SearchOptionForm({
             setFishingTypes={setFishingTypes}
           ></FishingCheckBox>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-            <CheckBox
-              labels={['10km圏内']}
-              checkedLabels={travelDistances}
-              setCheckedLabels={setTravelDistances}
-            />
+            <CheckBox labels={['10km圏内']} checkedLabels={travelDistances} setCheckedLabels={setTravelDistances} />
           </div>
         </Paper>
       )}
