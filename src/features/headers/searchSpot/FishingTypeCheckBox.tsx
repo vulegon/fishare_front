@@ -11,19 +11,34 @@ function FishingTypeCheckBox({
 }) {
   const [isDisabledSea, setIsDisabledSea] = useState<boolean>(true);
   const [isDisabledRiver, setIsDisabledRiver] = useState<boolean>(true);
+  const FISHING_TYPES = {
+    海釣り: ['穴釣り', 'サビキ釣り', '投げ釣り'],
+    川釣り: ['渓流釣り', 'バス釣り'],
+  };
 
   useEffect(() => {
-    if (locations.includes('海釣り') && locations.includes('川釣り')) {
-      setIsDisabledRiver(false);
-      setIsDisabledSea(false);
-    }
-    if (locations.includes('海釣り')) {
-      setIsDisabledSea(false);
-    } else if (locations.includes('川釣り')) {
-      setIsDisabledRiver(false);
+    const isSeaEnabled = locations.includes('海釣り');
+    const isRiverEnabled = locations.includes('川釣り');
+
+    const setDisabled = ({ sea, river }: { sea: boolean; river: boolean }) => {
+      setIsDisabledSea(sea);
+      setIsDisabledRiver(river);
+    };
+
+    if (isSeaEnabled && isRiverEnabled) {
+      setDisabled({ sea: false, river: false });
+      const allFishingTypes = FISHING_TYPES['海釣り'].concat(FISHING_TYPES['川釣り']);
+      setFishingTypes(allFishingTypes);
+
+    } else if (isSeaEnabled) {
+      setDisabled({ sea: false, river: true });
+      setFishingTypes(FISHING_TYPES['海釣り']);
+    } else if (isRiverEnabled) {
+      setDisabled({ sea: true, river: false });
+      setFishingTypes(FISHING_TYPES['川釣り']);
     } else {
-      setIsDisabledSea(true);
-      setIsDisabledRiver(true);
+      setDisabled({ sea: true, river: true });
+      setFishingTypes([]);
     }
   }, [locations]);
   return (
@@ -31,7 +46,7 @@ function FishingTypeCheckBox({
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
         <CheckBox
           isDisabled={isDisabledSea}
-          labels={['穴釣り', 'サビキ釣り', '投げ釣り']}
+          labels={FISHING_TYPES['海釣り']}
           checkedLabels={fishingTypes}
           setCheckedLabels={setFishingTypes}
         />
@@ -39,7 +54,7 @@ function FishingTypeCheckBox({
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
         <CheckBox
           isDisabled={isDisabledRiver}
-          labels={['渓流釣り', 'バス釣り']}
+          labels={FISHING_TYPES['川釣り']}
           checkedLabels={fishingTypes}
           setCheckedLabels={setFishingTypes}
         />

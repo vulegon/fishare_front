@@ -27,6 +27,7 @@ export default function CheckBox({
         <FormControlLabel
           key={label}
           disabled={isDisabled}
+          checked={checkedLabels.includes(label)}
           control={<Checkbox onChange={(e) => handleCheckboxChange(e, label)} />}
           label={label}
         />
