@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CheckBox from './CheckBox';
-function FishingCheckBox({
+function FishingTypeCheckBox({
   locations,
   fishingTypes,
   setFishingTypes,
@@ -48,4 +48,4 @@ function FishingCheckBox({
   );
 }
 
-export default FishingCheckBox;
+export default FishingTypeCheckBox;

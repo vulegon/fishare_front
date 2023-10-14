@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import CatchableFishInput from './CatchableFishInput';
 import CheckBox from './CheckBox';
-import FishingCheckBox from './FishingTypeCheckBox';
+import FishingTypeCheckBox from './FishingTypeCheckBox';
 import SpotNameInput from './SpotNameInput';
 
 function SearchOptionForm({
@@ -92,7 +92,7 @@ function SearchOptionForm({
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
             <CheckBox labels={['海釣り', '川釣り']} checkedLabels={locations} setCheckedLabels={setLocations} />
           </div>
-          <FishingCheckBox locations={locations} fishingTypes={fishingTypes} setFishingTypes={setFishingTypes} />
+          <FishingTypeCheckBox locations={locations} fishingTypes={fishingTypes} setFishingTypes={setFishingTypes} />
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
             <CheckBox labels={['10km圏内']} checkedLabels={travelDistances} setCheckedLabels={setTravelDistances} />
           </div>
