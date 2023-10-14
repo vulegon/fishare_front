@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { TextField } from '@mui/material';
 import { Box } from '@mui/material';
 import TuneIcon from '@mui/icons-material/Tune';
 import Paper from '@mui/material/Paper';
@@ -7,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import CatchableFishInput from './CatchableFishInput';
 import CheckBox from './CheckBox';
 import FishingCheckBox from './FishingTypeCheckBox';
+import SpotNameInput from './SpotNameInput';
 
 function SearchOptionForm({
   isSpotNameDisabled,
@@ -82,21 +82,17 @@ function SearchOptionForm({
           }}
           ref={searchOptionRef}
         >
-          <TextField sx={{ width: '100%' }} id='spot-name-search' label='名前' type='search' variant='standard' />
-          <Box sx={{ height: 10 }}></Box>
+          <SpotNameInput spotName={optionSpotName} setSpotName={setOptionSpotName} />
+          <Box sx={{ height: 10 }} />
           <CatchableFishInput
             setIsCatchableFishSelected={setIsCatchableFishSelected}
             setCatchableFish={setCatchableFish}
           />
-          <Box sx={{ height: 10 }}></Box>
+          <Box sx={{ height: 10 }} />
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
             <CheckBox labels={['海釣り', '川釣り']} checkedLabels={locations} setCheckedLabels={setLocations} />
           </div>
-          <FishingCheckBox
-            locations={locations}
-            fishingTypes={fishingTypes}
-            setFishingTypes={setFishingTypes}
-          ></FishingCheckBox>
+          <FishingCheckBox locations={locations} fishingTypes={fishingTypes} setFishingTypes={setFishingTypes} />
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
             <CheckBox labels={['10km圏内']} checkedLabels={travelDistances} setCheckedLabels={setTravelDistances} />
           </div>
