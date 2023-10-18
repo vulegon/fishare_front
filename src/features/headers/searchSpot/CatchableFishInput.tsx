@@ -3,13 +3,14 @@ import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
 import { TextField } from '@mui/material';
 import { getFish } from '../../../api/fish';
+import { SearchOptions } from './types';
 
 function CatchableFishInput({
-  setIsCatchableFishSelected,
-  setCatchableFish,
+  options,
+  setOptions,
 }: {
-  setIsCatchableFishSelected: React.Dispatch<React.SetStateAction<boolean>>;
-  setCatchableFish: React.Dispatch<React.SetStateAction<string[]>>;
+  options: SearchOptions;
+  setOptions: React.Dispatch<React.SetStateAction<SearchOptions>>;
 }) {
   const [fish, setFish] = useState<string[]>([]);
   const getFishNames = async () => {
@@ -18,8 +19,7 @@ function CatchableFishInput({
     setFish(data.fish);
   };
   const handleCathableFishOnChange = (event: React.ChangeEvent<unknown>, newValue: string[]) => {
-    setIsCatchableFishSelected(true);
-    setCatchableFish(newValue);
+    setOptions({ ...options, catchableFish: newValue, isCatchableFishSelected: true });
   };
 
   useEffect(() => {

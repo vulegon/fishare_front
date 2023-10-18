@@ -7,49 +7,41 @@ import CatchableFishInput from './CatchableFishInput';
 import CheckBox from './CheckBox';
 import FishingTypeCheckBox from './FishingTypeCheckBox';
 import SpotNameInput from './SpotNameInput';
+import { SpotData, SearchOptions } from './types/index';
 
 function SearchOptionForm({
-  isSpotNameDisabled,
-  setIsSpotNameDisabled,
-  setSpotName,
+  spotData,
+  setSpotData,
+  options,
+  setOptions,
 }: {
-  isSpotNameDisabled: boolean;
-  setIsSpotNameDisabled: React.Dispatch<React.SetStateAction<boolean>>;
-  setSpotName: React.Dispatch<React.SetStateAction<string>>;
+  spotData: SpotData;
+  setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
+  options: SearchOptions;
+  setOptions: React.Dispatch<React.SetStateAction<SearchOptions>>;
 }) {
-  const [isSearchOptionOpen, setIsSearchOptionOpen] = useState<boolean>(false);
   const searchOptionRef = useRef<HTMLDivElement | null>(null);
-  const [isCatchableFishSelected, setIsCatchableFishSelected] = useState<boolean>(false);
-  const [optionSpotName, setOptionSpotName] = useState<string>('');
-  const [catchableFish, setCatchableFish] = useState<string[]>([]);
-  const [locations, setLocations] = useState<string[]>([]);
-  const [fishingTypes, setFishingTypes] = useState<string[]>([]);
-  const [travelDistances, setTravelDistances] = useState<string[]>([]);
-
   const handleTuneClick = (event: React.MouseEvent) => {
     // イベントの伝播を止める
     event.stopPropagation();
-    setIsSearchOptionOpen(!isSearchOptionOpen);
+    setOptions({ ...options, optionSpotName: spotData.spotName, isSearchOptionOpen: !options.isSearchOptionOpen });
     //釣り場を検索する部分の文字を空にする、入力できないようにする
-    setIsSpotNameDisabled(!isSpotNameDisabled);
-    setSpotName('');
+    setSpotData({ ...spotData, spotName: '', isSpotNameDisabled: !spotData.isSpotNameDisabled });
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (isCatchableFishSelected) {
-      setIsCatchableFishSelected(false);
-
+    if (options.isCatchableFishSelected) {
+      setOptions({ ...options, isCatchableFishSelected: false });
       return;
     }
     if (searchOptionRef.current && !searchOptionRef.current.contains(event.target as Node)) {
-      setIsSearchOptionOpen(false);
-      setIsSpotNameDisabled(!isSpotNameDisabled);
-      setSpotName('');
+      setOptions({ ...options, isSearchOptionOpen: false });
+      setSpotData({ ...spotData, spotName: '', isSpotNameDisabled: !spotData.isSpotNameDisabled });
     }
   };
 
   useEffect(() => {
-    if (isSearchOptionOpen) {
+    if (options.isSearchOptionOpen) {
       window.addEventListener('click', handleClickOutside);
     } else {
       window.removeEventListener('click', handleClickOutside);
@@ -58,14 +50,14 @@ function SearchOptionForm({
     return () => {
       window.removeEventListener('click', handleClickOutside);
     };
-  }, [isSearchOptionOpen, isCatchableFishSelected]);
+  }, [options.isSearchOptionOpen, options.isCatchableFishSelected]);
 
   return (
     <>
       <IconButton sx={{ p: '10px' }} aria-label='menu' onClick={handleTuneClick}>
         <TuneIcon />
       </IconButton>
-      {isSearchOptionOpen && (
+      {options.isSearchOptionOpen && (
         <Paper
           elevation={3}
           style={{
@@ -82,19 +74,25 @@ function SearchOptionForm({
           }}
           ref={searchOptionRef}
         >
-          <SpotNameInput spotName={optionSpotName} setSpotName={setOptionSpotName} />
+          <SpotNameInput options={options} setOptions={setOptions} />
           <Box sx={{ height: 10 }} />
-          <CatchableFishInput
-            setIsCatchableFishSelected={setIsCatchableFishSelected}
-            setCatchableFish={setCatchableFish}
-          />
+          <CatchableFishInput options={options} setOptions={setOptions} />
           <Box sx={{ height: 10 }} />
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-            <CheckBox labels={['海釣り', '川釣り']} checkedLabels={locations} setCheckedLabels={setLocations} />
+            {/* <CheckBox labels={['海釣り', '川釣り']} options={options} setOptions={setOptions} /> */}
+            <CheckBox labels={['海釣り', '川釣り']} />
           </div>
-          <FishingTypeCheckBox locations={locations} fishingTypes={fishingTypes} setFishingTypes={setFishingTypes} />
+          {/* <FishingTypeCheckBox options={options} setOptions={setOptions} /> */}
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-            <CheckBox labels={['10km圏内']} checkedLabels={travelDistances} setCheckedLabels={setTravelDistances} />
+            {/* <CheckBox labels={['海釣り', '川釣り']} options={options} setOptions={setOptions} /> */}
+            <CheckBox labels={['穴釣り', 'サビキ釣り', '投げ釣り']} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
+            {/* <CheckBox labels={['海釣り', '川釣り']} options={options} setOptions={setOptions} /> */}
+            <CheckBox labels={['渓流釣り', 'バス釣り']} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
+            <CheckBox labels={['10km圏内']} />
           </div>
         </Paper>
       )}

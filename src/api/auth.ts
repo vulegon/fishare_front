@@ -6,13 +6,13 @@ export const signUp = async ({
   name,
   email,
   password,
-  passwordConfirmation,
+  password_confirmation,
   confirm_success_url,
 }: {
   name: string;
   email: string;
   password: string;
-  passwordConfirmation: string;
+  password_confirmation: string;
   confirm_success_url: string;
 }): Promise<Response> => {
   const url = `${baseURL}/auth`;
@@ -22,7 +22,7 @@ export const signUp = async ({
     name: name,
     email: email,
     password: password,
-    passwordConfirmation: passwordConfirmation,
+    password_confirmation: password_confirmation,
     confirm_success_url: confirm_success_url,
   };
   const options: RequestInit = {

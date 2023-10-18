@@ -36,6 +36,7 @@ function FishingTypeCheckBox({
     } else if (isRiverEnabled) {
       setDisabled({ sea: true, river: false });
       setFishingTypes(FISHING_TYPES['川釣り']);
+      
     } else {
       setDisabled({ sea: true, river: true });
       setFishingTypes([]);
@@ -44,20 +45,20 @@ function FishingTypeCheckBox({
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-        <CheckBox
+        {/* <CheckBox
           isDisabled={isDisabledSea}
           labels={FISHING_TYPES['海釣り']}
           checkedLabels={fishingTypes}
           setCheckedLabels={setFishingTypes}
-        />
+        /> */}
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-        <CheckBox
+        {/* <CheckBox
           isDisabled={isDisabledRiver}
           labels={FISHING_TYPES['川釣り']}
           checkedLabels={fishingTypes}
           setCheckedLabels={setFishingTypes}
-        />
+        /> */}
       </div>
     </>
   );

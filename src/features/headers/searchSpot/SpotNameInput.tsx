@@ -1,15 +1,16 @@
-import React from 'react'
+import React from 'react';
 import { TextField } from '@mui/material';
+import { SearchOptions } from './types';
 
 function SpotNameInput({
-  spotName,
-  setSpotName,
+  options,
+  setOptions,
 }: {
-  spotName: string;
-  setSpotName: React.Dispatch<React.SetStateAction<string>>;
+  options: SearchOptions;
+  setOptions: React.Dispatch<React.SetStateAction<SearchOptions>>;
 }) {
   const handleSpotNameOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSpotName(e.target.value)
+    setOptions({ ...options, optionSpotName: e.target.value });
   };
 
   return (
@@ -21,9 +22,9 @@ function SpotNameInput({
       variant='standard'
       onChange={handleSpotNameOnChange}
     >
-      {spotName}
+      {options.optionSpotName}
     </TextField>
   );
 }
 
-export default SpotNameInput
+export default SpotNameInput;

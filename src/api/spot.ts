@@ -60,10 +60,7 @@ export const getSpots = async (): Promise<Response> => {
 export const getSpotShow = async (spotId: string, userId: string): Promise<Response> => {
   const url = `${baseURL}/spots/${spotId}`;
   const method = 'GET';
-  const headers: Headers = {
-    'Content-Type': 'application/json',
-    'Fishare-User-Id': userId,
-  };
+  const headers: Headers = authHeaders;
   const options: RequestInit = {
     method,
     headers,

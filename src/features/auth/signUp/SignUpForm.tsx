@@ -33,7 +33,7 @@ function SignUp() {
         name: name,
         email: email,
         password: password,
-        passwordConfirmation: passwordConfirmation,
+        password_confirmation: passwordConfirmation,
         confirm_success_url: 'https://google.com', //パラメータとして使用しないが、送らないとできないため送る。実際のリダイレクト先はバックエンド側で処理する
       });
       if (response.status === 200) {
@@ -66,7 +66,7 @@ function SignUp() {
       <AuthContainer>
         <FormTitle value='ユーザー登録'></FormTitle>
         <form onSubmit={handleSubmit}>
-          <InputHelpText value={'10文字以内で入力してください'} />
+          <InputHelpText value={'20文字以内で入力してください'} />
           <InputTextField label={'名前'} value={name} setState={setName} />
           {isOpenErrorMessages && <ErrorMessageText fieldKey={'name'} errors={errors} />}
           <InputFieldSpace></InputFieldSpace>
