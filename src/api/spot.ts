@@ -57,7 +57,7 @@ export const getSpots = async (): Promise<Response> => {
   return response;
 };
 
-export const getSpotShow = async (spotId: string, userId: string): Promise<Response> => {
+export const getSpotShow = async (spotId: string): Promise<Response> => {
   const url = `${baseURL}/spots/${spotId}`;
   const method = 'GET';
   const headers: Headers = authHeaders;
