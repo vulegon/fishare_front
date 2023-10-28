@@ -120,6 +120,15 @@ function SpotDetail({
               <Divider />
               <Margin />
               <div style={{ marginLeft: '10px' }}>
+                <Typography variant='subtitle2' sx={{ fontWeight: 600 }}>
+                  釣り場の種類
+                </Typography>
+                <Chip key={spot.location} color='primary' label={spot.location}></Chip>
+              </div>
+              <Margin />
+              <Divider />
+              <Margin />
+              <div style={{ marginLeft: '10px' }}>
                 <Typography variant='subtitle2' gutterBottom sx={{ fontWeight: 600 }}>
                   釣れる魚
                 </Typography>
