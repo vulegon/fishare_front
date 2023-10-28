@@ -5,10 +5,8 @@ import { TextField } from '@mui/material';
 import { getFish } from '../../api/fish';
 
 function CatchableFishInput({
-  catchableFish,
   setCatchableFish,
 }: {
-  catchableFish: string[];
   setCatchableFish: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
   const [fish, setFish] = useState<string[]>([]);

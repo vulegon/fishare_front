@@ -10,11 +10,10 @@ import {
   FormTitle,
   SubmmitButton,
   AuthContainer,
-  ErrorMessageText,
 } from '../components';
 import Header from '../../headers/Header';
-import { Box } from '@mui/material';
 import { ErrorMessages } from '../../../types/ErrorMessage';
+import ErrorMessageText from '../../../components/ErrorMessageText';
 
 function SignUp() {
   const [name, setName] = useState<string>('');
@@ -34,7 +33,7 @@ function SignUp() {
         name: name,
         email: email,
         password: password,
-        passwordConfirmation: passwordConfirmation,
+        password_confirmation: passwordConfirmation,
         confirm_success_url: 'https://google.com', //パラメータとして使用しないが、送らないとできないため送る。実際のリダイレクト先はバックエンド側で処理する
       });
       if (response.status === 200) {
@@ -50,6 +49,7 @@ function SignUp() {
         }
       } else {
         const data = await response.json();
+        data.errors.email = data.errors.email.filter((message: string) => message !== 'は有効ではありません'); //サーバサイドで無理そうだったのでフロントエンドで対応
         setErrors(data.errors);
         console.log(data);
         setIsOpenErrorMessages(true);
@@ -63,11 +63,10 @@ function SignUp() {
   return (
     <>
       <Header isShowSearchSpot={false} isShowUserAccountMenu={false}></Header>
-      <Box sx={{ height: 50 }}></Box>
       <AuthContainer>
         <FormTitle value='ユーザー登録'></FormTitle>
         <form onSubmit={handleSubmit}>
-          <InputHelpText value={'10文字以内で入力してください'} />
+          <InputHelpText value={'20文字以内で入力してください'} />
           <InputTextField label={'名前'} value={name} setState={setName} />
           {isOpenErrorMessages && <ErrorMessageText fieldKey={'name'} errors={errors} />}
           <InputFieldSpace></InputFieldSpace>
