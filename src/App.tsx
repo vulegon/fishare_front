@@ -21,13 +21,12 @@ function App() {
       if (response.status !== 200) return setIsCurrentUserLoadingComplete(true);
       const data = await response.json();
       console.log(data);
-      const is_login = data.is_login;
-      if (is_login) {
-        const userData = data.data;
+      const user = data.user;
+      if (user) {
         const currentUser = {
-          id: userData.id,
-          name: userData.name,
-          email: userData.email,
+          id: user.id,
+          name: user.name,
+          email: user.email,
         };
         setCurrentUser(currentUser);
       }
