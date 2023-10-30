@@ -21,8 +21,4 @@ export interface Spot {
   lat: number;
   lng: number;
   description: string;
-  fish: string[];
-  fishing_types: string[];
-  images: string[];
-  location: string;
 }

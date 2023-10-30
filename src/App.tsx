@@ -9,7 +9,7 @@ import SignUpSuccessForm from './features/auth/signUp/success/SignUpSuccessForm'
 import { getCurrentUser } from './api/user';
 import { CurrentUser } from './types/CurrentUser';
 import { isUserLoggedIn } from './utils/authUtils';
-import { CurrentUserContext, IsCurrentUserLoadingCompleteContext } from './contexts/index';
+import { CurrentUserContext, IsCurrentUserLoadingCompleteContext } from './contexts/users/index';
 
 function App() {
   const [currentUser, setCurrentUser] = useState<CurrentUser>({ id: '', name: '', email: '' }); // ログインユーザー情報の初期値
