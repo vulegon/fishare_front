@@ -51,7 +51,7 @@ function SearchSpot() {
       <SearchOptionForm spotData={spotData} setSpotData={setSpotData} options={options} setOptions={setOptions} />
       <InputBase
         sx={{ ml: 1, flex: 1 }}
-        placeholder='釣り場を検索(今は使用できません)'
+        placeholder='釣り場を検索'
         inputProps={{ 'aria-label': 'search google maps' }}
         value={spotData.spotName}
         onChange={handleSearchSpotNameChange}
