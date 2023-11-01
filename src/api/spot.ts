@@ -1,4 +1,4 @@
-import { baseURL, authHeaders, defaultHeaders,Headers } from './client';
+import { baseURL, authHeaders, defaultHeaders, Headers } from './client';
 import { Image } from '../types/Spot';
 
 interface CreateSpotArgs {
@@ -11,6 +11,8 @@ interface CreateSpotArgs {
   catchableFish: string[];
   fishingTypes: string[];
 }
+
+// 釣り場の作成
 export const createSpot = async ({
   name,
   description,
@@ -45,6 +47,7 @@ export const createSpot = async ({
   return response;
 };
 
+// 釣り場一覧の取得
 export const getSpots = async (): Promise<Response> => {
   const url = `${baseURL}/spots`;
   const method = 'GET';
@@ -57,6 +60,7 @@ export const getSpots = async (): Promise<Response> => {
   return response;
 };
 
+// 釣り場の詳細画面の表示
 export const getSpotShow = async (spotId: string): Promise<Response> => {
   const url = `${baseURL}/spots/${spotId}`;
   const method = 'GET';
@@ -66,5 +70,56 @@ export const getSpotShow = async (spotId: string): Promise<Response> => {
     headers,
   };
   const response = await fetch(url, options);
+  return response;
+};
+
+// 釣り場の検索
+export const spotSearch = async ({
+  spotName,
+  catchableFish,
+  locations,
+  fishingTypes,
+  travelDistances,
+}: {
+  spotName: string;
+  catchableFish?: string[];
+  locations?: string[];
+  fishingTypes?: string[];
+  travelDistances?: string[];
+}): Promise<Response> => {
+  const url = `${baseURL}/spots/search?`;
+
+  // クエリパラメータをまとめてエンコード
+  const queryParams = new URLSearchParams();
+
+  if (spotName) {
+    queryParams.append('name', spotName);
+  }
+
+  if (catchableFish && catchableFish.length > 0) {
+    queryParams.append('catchable_fish', catchableFish.join(','));
+  }
+
+  if (locations && locations.length > 0) {
+    queryParams.append('locations', locations.join(','));
+  }
+
+  if (fishingTypes && fishingTypes.length > 0) {
+    queryParams.append('fishing_types', fishingTypes.join(','));
+  }
+
+  if (travelDistances && travelDistances.length > 0) {
+    queryParams.append('travelDistances', travelDistances.join(','));
+  }
+
+  const headers: Headers = defaultHeaders;
+  const method = 'GET';
+  const options = {
+    method,
+    headers,
+  };
+  // URLにクエリ文字列を追加
+  const finalURL = `${url}${queryParams.toString()}`;
+  const response = await fetch(finalURL, options);
   return response;
 };

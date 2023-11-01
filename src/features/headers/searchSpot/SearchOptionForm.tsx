@@ -5,7 +5,6 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import CatchableFishInput from './CatchableFishInput';
 import CheckBox from './CheckBox';
-import FishingTypeCheckBox from './FishingTypeCheckBox';
 import SpotNameInput from './SpotNameInput';
 import { SpotData, SearchOptions } from './types/index';
 
@@ -79,20 +78,26 @@ function SearchOptionForm({
           <CatchableFishInput options={options} setOptions={setOptions} />
           <Box sx={{ height: 10 }} />
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-            {/* <CheckBox labels={['海釣り', '川釣り']} options={options} setOptions={setOptions} /> */}
-            <CheckBox labels={['海釣り', '川釣り']} />
-          </div>
-          {/* <FishingTypeCheckBox options={options} setOptions={setOptions} /> */}
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-            {/* <CheckBox labels={['海釣り', '川釣り']} options={options} setOptions={setOptions} /> */}
-            <CheckBox labels={['穴釣り', 'サビキ釣り', '投げ釣り']} />
+            <CheckBox labels={['海釣り', '川釣り']} options={options} setOptions={setOptions} target={'locations'} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-            {/* <CheckBox labels={['海釣り', '川釣り']} options={options} setOptions={setOptions} /> */}
-            <CheckBox labels={['渓流釣り', 'バス釣り']} />
+            <CheckBox
+              labels={['穴釣り', 'サビキ釣り', '投げ釣り']}
+              options={options}
+              setOptions={setOptions}
+              target={'fishingTypes'}
+            />
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
-            <CheckBox labels={['10km圏内']} />
+            <CheckBox
+              labels={['渓流釣り', 'バス釣り']}
+              options={options}
+              setOptions={setOptions}
+              target={'fishingTypes'}
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
+            <CheckBox labels={['10km圏内']} options={options} setOptions={setOptions} target={'travelDistances'} />
           </div>
         </Paper>
       )}

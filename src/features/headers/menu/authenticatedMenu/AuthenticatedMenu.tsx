@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Paper from '@mui/material/Paper';
-import { CurrentUserContext } from '../../../../contexts/index';
+import { CurrentUserContext } from '../../../../contexts/users/index';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Typography from '@mui/material/Typography';
 import UserAccountMenu from './UserAccountMenu';
@@ -64,7 +64,7 @@ function AuthenticatedMenu() {
             }}
             ref={menuRef}
           >
-            <UserAccountMenu/>
+            <UserAccountMenu />
           </Paper>
         )}
       </div>

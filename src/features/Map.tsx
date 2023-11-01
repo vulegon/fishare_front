@@ -12,6 +12,7 @@ import CurrentCenterLoading from './CurrentCenterLoading';
 import { useLocation } from 'react-router-dom';
 import FlashMessage from './FlashMessage';
 import { AlertColor } from '@mui/material';
+import { SpotsContext } from '../contexts/spots/SpotsContext';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
@@ -34,6 +35,7 @@ function Map() {
     message: string;
   }
 
+  // GoogleMapをクリックしたらマーカーを置くのと釣り場を登録するボタンを押せるようにします
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     if (e.latLng && e.latLng) {
       console.log(`緯度: ${e.latLng.lat()}, 経度: ${e.latLng.lng()}`);
@@ -60,10 +62,10 @@ function Map() {
     setIsSpotsLoading(false);
   };
 
-  // ブラウザの現在位置を取得するメソッド
+  // ブラウザの現在位置を取得します
   // https://syncer.jp/how-to-use-geolocation-apiを参考
   const getCurrentPosition = async () => {
-    if (!navigator.geolocation) return; //Geolocation APIに対応していない場合はデフォルト値を採用するのでearly return
+    if (!navigator.geolocation) return; //Geolocation APIに対応していない場合はデフォルト値を採用する
     function successGetCurrentPosition(position: GeolocationPosition) {
       const newCenter = { lat: position.coords.latitude, lng: position.coords.longitude };
       const newMapOptions = { ...mapOptions, center: newCenter };
@@ -96,7 +98,7 @@ function Map() {
     }
     const optionObj = {
       enableHighAccuracy: false,
-      timeout: 5000, //5秒は取得しようと頑張る。取得できなかったらmapOptionsのuseStateの初期値
+      timeout: 5000,
       maximumAge: 3600000,
     };
     navigator.geolocation.getCurrentPosition(successGetCurrentPosition, failedGetCurrentPosition, optionObj);
@@ -129,7 +131,9 @@ function Map() {
 
   return (
     <div>
-      <Header />
+      <SpotsContext.Provider value={{ spots, setSpots }}>
+        <Header />
+      </SpotsContext.Provider>
       <FlashMessage
         status={flashMessage.status}
         message={flashMessage.message}

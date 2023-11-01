@@ -1,29 +1,29 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-// import { SearchOptions } from './types';
+import { SearchOptions } from './types';
 
 export default function CheckBox({
   labels,
-  // options,
-  // setOptions,
-  // target,
+  options,
+  setOptions,
+  target,
 }: {
   labels: string[];
-  // options: SearchOptions;
-  // setOptions: React.Dispatch<React.SetStateAction<SearchOptions>>;
-  // target: keyof SearchOptions;
-  // isDisabled?: boolean;
+  options: SearchOptions;
+  setOptions: React.Dispatch<React.SetStateAction<SearchOptions>>;
+  target: keyof SearchOptions;
 }) {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, label: string) => {
-    // if ((options[target] as string[]).includes(label)) {
-    //   setOptions({
-    //     ...options,
-    //     [target]: (options[target] as string[]).filter((fishingType) => fishingType !== label),
-    //   });
-    // } else {
-    //   setOptions({ ...options, [target]: label });
-    // }
+    if ((options[target] as string[]).includes(label)) {
+      setOptions({
+        ...options,
+        [target]: (options[target] as string[]).filter((fishingType) => fishingType !== label),
+      });
+    } else {
+      setOptions({ ...options, [target]: [...(options[target] as string[]), label] });
+    }
+    console.log(options)
   };
 
   return (
@@ -31,7 +31,7 @@ export default function CheckBox({
       {labels.map((label) => (
         <FormControlLabel
           key={label}
-          // checked={(options[target] as string[]).includes(label)}
+          checked={(options[target] as string[]).includes(label)}
           control={<Checkbox onChange={(e) => handleCheckboxChange(e, label)} />}
           label={label}
         />

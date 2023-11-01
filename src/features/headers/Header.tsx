@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import SearchSpot from './searchSpot/SearchSpot';
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import AuthenticatedMenu from './menu/authenticatedMenu/AuthenticatedMenu';
-import { CurrentUserContext, IsCurrentUserLoadingCompleteContext } from '../../contexts/index';
+import { CurrentUserContext, IsCurrentUserLoadingCompleteContext } from '../../contexts/users/index';
 import UnAuthenticatedMenu from './menu/unAuthenticatedMenu/UnAuthenticatedMenu';
 import { isUserLoggedIn } from '../../utils/authUtils';
 

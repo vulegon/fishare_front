@@ -1,5 +1,5 @@
-import React, { createContext } from 'react'
-import { CurrentUser } from '../types/CurrentUser';
+import React, { createContext } from 'react';
+import { CurrentUser } from '../../types/CurrentUser';
 
 export const CurrentUserContext = createContext(
   {} as {
@@ -7,4 +7,3 @@ export const CurrentUserContext = createContext(
     setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUser>>;
   }
 );
-
