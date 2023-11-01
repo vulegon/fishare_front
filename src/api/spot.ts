@@ -93,11 +93,11 @@ export const spotSearch = async ({
   const queryParams = new URLSearchParams();
 
   if (spotName) {
-    queryParams.append('spotName', spotName);
+    queryParams.append('name', spotName);
   }
 
   if (catchableFish && catchableFish.length > 0) {
-    queryParams.append('catchableFish', catchableFish.join(','));
+    queryParams.append('catchable_fish', catchableFish.join(','));
   }
 
   if (locations && locations.length > 0) {
@@ -105,7 +105,7 @@ export const spotSearch = async ({
   }
 
   if (fishingTypes && fishingTypes.length > 0) {
-    queryParams.append('fishingTypes', fishingTypes.join(','));
+    queryParams.append('fishing_types', fishingTypes.join(','));
   }
 
   if (travelDistances && travelDistances.length > 0) {

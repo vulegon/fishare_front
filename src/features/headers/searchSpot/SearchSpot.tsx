@@ -22,7 +22,7 @@ function SearchSpot() {
     fishingTypes: [],
     travelDistances: [],
   });
-  const { spots, setSpots } = useContext(SpotsContext);
+  const { setSpots } = useContext(SpotsContext);
 
   const handleSearchSpotNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
