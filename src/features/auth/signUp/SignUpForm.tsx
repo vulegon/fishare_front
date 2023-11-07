@@ -37,7 +37,7 @@ function SignUp() {
         password_confirmation: passwordConfirmation,
         confirm_success_url: 'https://google.com', //パラメータとして使用しないが、送らないとできないため送る。実際のリダイレクト先はバックエンド側で処理する
       });
-      console.log('signup抜けた');
+      console.log(response);
       if (response.status === 200) {
         const accessToken = response.headers.get('access-token');
         const client = response.headers.get('client');
@@ -52,7 +52,7 @@ function SignUp() {
         }
       } else {
         const data = await response.json();
-        data.errors.email = data.errors.email.filter((message: string) => message !== 'は有効ではありません'); //サーバサイドで無理そうだったのでフロントエンドで対応
+        // data.errors.email = data.errors.email.filter((message: string) => message !== 'は有効ではありません'); //サーバサイドで無理そうだったのでフロントエンドで対応
         setErrors(data.errors);
         console.log(data);
         setIsOpenErrorMessages(true);
