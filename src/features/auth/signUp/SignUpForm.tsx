@@ -55,7 +55,7 @@ function SignUp() {
         setIsOpenErrorMessages(true);
       }
     } catch (e) {
-      console.log('例外的なエラー');
+      console.log(`例外的なエラー: ${e}`);
     }
     setIsLoading(false);
   };
