@@ -28,6 +28,7 @@ function SignUp() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
+    console.log(email);
     try {
       const response = await signUp({
         name: name,
@@ -36,10 +37,12 @@ function SignUp() {
         password_confirmation: passwordConfirmation,
         confirm_success_url: 'https://google.com', //パラメータとして使用しないが、送らないとできないため送る。実際のリダイレクト先はバックエンド側で処理する
       });
+      console.log('signup抜けた');
       if (response.status === 200) {
         const accessToken = response.headers.get('access-token');
         const client = response.headers.get('client');
         const uid = response.headers.get('uid');
+        console.log('200の中に入った');
 
         if (accessToken && client && uid) {
           Cookies.set('_access_token', accessToken);
