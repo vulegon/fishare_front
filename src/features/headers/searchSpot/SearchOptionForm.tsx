@@ -96,9 +96,9 @@ function SearchOptionForm({
               target={'fishingTypes'}
             />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
+          {/* <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
             <CheckBox labels={['10km圏内']} options={options} setOptions={setOptions} target={'travelDistances'} />
-          </div>
+          </div> */}
         </Paper>
       )}
     </>

@@ -133,31 +133,31 @@ function Map() {
     <div>
       <SpotsContext.Provider value={{ spots, setSpots }}>
         <Header />
+        <FlashMessage
+          status={flashMessage.status}
+          message={flashMessage.message}
+          isFlashMessageOpen={isFlashMessageOpen}
+          setIsFlashMessageOpen={setIsFlashMessageOpen}
+        ></FlashMessage>
+        <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
+          {!isSpotsLoading &&
+            spots.map((spot) => (
+              <Marker
+                key={spot.id.toString()}
+                position={{ lat: spot.lat, lng: spot.lng }}
+                onClick={() => handleMarkerClick(spot)}
+              />
+            ))}
+          {markerPosition.lat && markerPosition.lng && (
+            <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
+          )}
+          {isCenterLoading && <CurrentCenterLoading />}
+          <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
+            <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} markerPosition={markerPosition} />
+          </div>
+          {spotIsShow && <SpotDetail spotIsShow={spotIsShow} setIsSpotShow={setIsSpotShow} detailSpot={detailSpot} />}
+        </GoogleMap>
       </SpotsContext.Provider>
-      <FlashMessage
-        status={flashMessage.status}
-        message={flashMessage.message}
-        isFlashMessageOpen={isFlashMessageOpen}
-        setIsFlashMessageOpen={setIsFlashMessageOpen}
-      ></FlashMessage>
-      <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
-        {!isSpotsLoading &&
-          spots.map((spot) => (
-            <Marker
-              key={spot.id.toString()}
-              position={{ lat: spot.lat, lng: spot.lng }}
-              onClick={() => handleMarkerClick(spot)}
-            />
-          ))}
-        {markerPosition.lat && markerPosition.lng && (
-          <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
-        )}
-        {isCenterLoading && <CurrentCenterLoading />}
-        <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
-          <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} markerPosition={markerPosition} />
-        </div>
-        {spotIsShow && <SpotDetail spotIsShow={spotIsShow} setIsSpotShow={setIsSpotShow} detailSpot={detailSpot} />}
-      </GoogleMap>
     </div>
   );
 }

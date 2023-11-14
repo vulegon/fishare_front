@@ -80,12 +80,16 @@ export const spotSearch = async ({
   locations,
   fishingTypes,
   travelDistances,
+  latitude,
+  longitude,
 }: {
   spotName: string;
   catchableFish?: string[];
   locations?: string[];
   fishingTypes?: string[];
   travelDistances?: string[];
+  latitude?: string;
+  longitude?: string;
 }): Promise<Response> => {
   const url = `${baseURL}/spots/search?`;
 
@@ -109,7 +113,9 @@ export const spotSearch = async ({
   }
 
   if (travelDistances && travelDistances.length > 0) {
-    queryParams.append('travelDistances', travelDistances.join(','));
+    queryParams.append('travel_distances', travelDistances.join(','));
+    queryParams.append('latitude', String(latitude));
+    queryParams.append('longitude', String(longitude));
   }
 
   const headers: Headers = defaultHeaders;

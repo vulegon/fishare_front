@@ -20,16 +20,16 @@ function SearchSpot() {
     catchableFish: [],
     locations: [],
     fishingTypes: [],
-    travelDistances: [],
+    travelDistances: [], //まだ未実装
   });
   const { setSpots } = useContext(SpotsContext);
 
   const handleSearchSpotNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setSpotData((prev) => ({
-      ...prev,
-      spotData: value,
-    }));
+    setSpotData({
+      ...spotData,
+      spotName: value,
+    });
   };
 
   const onlySpotNameSearch = async () => {
