@@ -23,6 +23,7 @@ function SpotDetail({
 }) {
   const [isEnable, setIsEnable] = useState<boolean>(false);
   interface DetailSpot {
+    id: string;
     name: string;
     description: string;
     fish: string[];
@@ -31,6 +32,7 @@ function SpotDetail({
     location: string;
   }
   const [spot, setSpot] = useState<DetailSpot>({
+    id: '',
     name: '',
     description: '',
     fish: [],
@@ -62,6 +64,7 @@ function SpotDetail({
         console.log(data);
         setSpot({
           ...spot,
+          id: data.id,
           name: data.name,
           description: data.description,
           location: data.location,
@@ -98,7 +101,7 @@ function SpotDetail({
               onKeyDown={toggleDrawer(false)}
             >
               <img src={defaultSpotImage} alt='default_spot_image' style={{ width: '100%', height: 250 }} />
-              {isEnable && <EditDeleteIcons />}
+              {isEnable && <EditDeleteIcons id={spot.id } />}
               <Margin />
               <div style={{ marginLeft: '10px' }}>
                 <Typography variant='h5' gutterBottom sx={{ fontWeight: 600, marginBottom: 0 }}>

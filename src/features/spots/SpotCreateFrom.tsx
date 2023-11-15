@@ -51,7 +51,7 @@ function SpotCreateFrom() {
     });
     if (response.status === 200) {
       setIsErrorMessageOpen(false);
-      navigate('/', { state: { status: 'success', message: '釣り場の登録に成功しました' } });
+      navigate('/', { state: { status: 'success', message: '釣り場を登録しました' } });
     } else {
       setIsErrorMessageOpen(true);
       const data = await response.json();

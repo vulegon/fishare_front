@@ -129,3 +129,15 @@ export const spotSearch = async ({
   const response = await fetch(finalURL, options);
   return response;
 };
+
+export const deleteSpot = async (spotId: string): Promise<Response> => {
+  const url = `${baseURL}/spots/${spotId}`;
+  const method = 'DELETE';
+  const headers: Headers = authHeaders;
+  const options: RequestInit = {
+    method,
+    headers,
+  };
+  const response = await fetch(url, options);
+  return response;
+};
