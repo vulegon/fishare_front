@@ -10,12 +10,12 @@ import {
   FormTitle,
   SubmmitButton,
   AuthContainer,
-} from '../components';
-import Header from '../../headers/Header';
+} from '../../../features/auth/components';
+import Header from '../../../features/headers/Header';
 import { ErrorMessages } from '../../../types/ErrorMessage';
 import ErrorMessageText from '../../../components/ErrorMessageText';
 
-function SignUp() {
+function SignInPage() {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -96,4 +96,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignInPage;

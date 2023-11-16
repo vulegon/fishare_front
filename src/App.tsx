@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Map from './features/Map';
+import RootPage from './pages/root/RootPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-import SpotCreateFrom from './features/spots/SpotCreateFrom';
-import SignUpForm from './features/auth/signUp/SignUpForm';
-import SignInForm from './features/auth/signIn/SignInForm';
-import SignUpSuccessForm from './features/auth/signUp/success/SignUpSuccessForm';
+import SpotCreatePage from './pages/spots/create/SpotCreatePage';
+import SignUpPage from './pages/auth/signUp/SignUpPage';
+import SignInPage from './pages/auth/signIn/SignInPage';
+import SignUpSuccessPage from './pages/auth/signUp/success/SignUpSuccessPage';
 import { getCurrentUser } from './api/user';
 import { CurrentUser } from './types/CurrentUser';
 import { isUserLoggedIn } from './utils/authUtils';
@@ -46,22 +46,22 @@ function App() {
           value={{ isCurrentUserLoadingComplete, setIsCurrentUserLoadingComplete }}
         >
           <Routes>
-            <Route path='/' element={<Map />} />
+            <Route path='/' element={<RootPage />} />
             <Route
               path='/spots'
               element={
                 isCurrentUserLoadingComplete ? (
                   isUserLoggedIn(currentUser) ? (
-                    <SpotCreateFrom />
+                    <SpotCreatePage />
                   ) : (
                     <Navigate to='/auth/sign_in' />
                   )
                 ) : null
               }
             />
-            <Route path='/auth/sign_up' element={<SignUpForm />} />
-            <Route path='/auth/sign_in' element={<SignInForm />} />
-            <Route path='/auth/sign_up/success' element={<SignUpSuccessForm />} />
+            <Route path='/auth/sign_up' element={<SignUpPage />} />
+            <Route path='/auth/sign_in' element={<SignInPage />} />
+            <Route path='/auth/sign_up/success' element={<SignUpSuccessPage />} />
           </Routes>
         </IsCurrentUserLoadingCompleteContext.Provider>
       </CurrentUserContext.Provider>

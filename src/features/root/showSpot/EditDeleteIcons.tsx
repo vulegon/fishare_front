@@ -2,7 +2,7 @@ import React from 'react';
 import Fab from '@mui/material/Fab';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteSpot } from '../api/spot';
+import { deleteSpot } from '../../../api/spot';
 
 function EditDeleteIcons({ id }: { id: string }) {
   const handleDeleteClick = async () => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import RegisterButton from '../components/RegisterButton';
+import RegisterButton from '../../components/RegisterButton';
 import { Link } from 'react-router-dom';
-import { MarkerPosition } from '../types/Spot';
+import { MarkerPosition } from '../../types/Spot';
 
 interface SpotRegisterButtonProps {
   isDisabled: boolean;

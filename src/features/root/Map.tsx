@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
-import { mapContainerStyle } from '../constants/defaultMapOption';
-import { MarkerPosition, Spot } from '../types/Spot';
+import { mapContainerStyle } from './defaultMapOption';
+import { MarkerPosition, Spot } from '../../types/Spot';
 import SpotRegisterButton from './SpotRegisterButton';
-import Header from './headers/Header';
-import { getSpots } from '../api/spot';
-import SpotDetail from './SpotDetail';
-import { getCurrentUser } from '../api/user';
-import { MapOptions } from '../types/Map';
+import { getSpots } from '../../api/spot';
+import SpotShow from './showSpot/SpotShow';
+import { MapOptions } from '../../types/Map';
 import CurrentCenterLoading from './CurrentCenterLoading';
-import { useLocation } from 'react-router-dom';
-import FlashMessage from './FlashMessage';
-import { AlertColor } from '@mui/material';
-import { SpotsContext } from '../contexts/spots/SpotsContext';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
   const [spotRegisterButtonIsDisabled, setSpotRegisterButtonIsDisabled] = useState<boolean>(true);
   const [spotIsShow, setIsSpotShow] = useState<boolean>(false);
-  const [detailSpot, setDetailSpot] = useState<Spot | null>(null);
+  const [showSpot, setShowSpot] = useState<Spot | null>(null);
   const [spots, setSpots] = useState<Spot[]>([]);
   const [isSpotsLoading, setIsSpotsLoading] = useState<boolean>(true);
   const [isCenterLoading, setIsCenterLoading] = useState<boolean>(true);
@@ -27,13 +21,6 @@ function Map() {
     center: { lat: 36.063053704526226, lng: 136.22288055523217 },
     fullscreenControl: false,
   });
-  const location = useLocation();
-  const [isFlashMessageOpen, setIsFlashMessageOpen] = useState<boolean>(false);
-  const [flashMessage, setFlashMessage] = useState<flashMessages>({ status: 'info', message: '' });
-  interface flashMessages {
-    status: AlertColor;
-    message: string;
-  }
 
   // GoogleMapをクリックしたらマーカーを置くのと釣り場を登録するボタンを押せるようにします
   const onMapClick = (e: google.maps.MapMouseEvent) => {
@@ -104,61 +91,37 @@ function Map() {
     navigator.geolocation.getCurrentPosition(successGetCurrentPosition, failedGetCurrentPosition, optionObj);
   };
 
-  const getFlashMessage = () => {
-    const state = location.state;
-    console.log(state);
-    if (!state) return;
-    setIsFlashMessageOpen(true);
-    const newFlashMessage: flashMessages = { status: state.status, message: state.message };
-    setFlashMessage(newFlashMessage);
-  };
-
   useEffect(() => {
     fetchSpots();
-    getCurrentUser();
     getCurrentPosition();
-    getFlashMessage();
-    return () => {
-      const newLocation = { ...location };
-      delete newLocation.state;
-      window.history.replaceState(newLocation, '');
-    };
   }, []);
+
   const handleMarkerClick = (spot: Spot) => {
     setIsSpotShow(true);
-    setDetailSpot(spot);
+    setShowSpot(spot);
   };
 
   return (
-    <div>
-      <SpotsContext.Provider value={{ spots, setSpots }}>
-        <Header />
-        <FlashMessage
-          status={flashMessage.status}
-          message={flashMessage.message}
-          isFlashMessageOpen={isFlashMessageOpen}
-          setIsFlashMessageOpen={setIsFlashMessageOpen}
-        ></FlashMessage>
-        <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
-          {!isSpotsLoading &&
-            spots.map((spot) => (
-              <Marker
-                key={spot.id.toString()}
-                position={{ lat: spot.lat, lng: spot.lng }}
-                onClick={() => handleMarkerClick(spot)}
-              />
-            ))}
-          {markerPosition.lat && markerPosition.lng && (
-            <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
-          )}
-          {isCenterLoading && <CurrentCenterLoading />}
-          <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
-            <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} markerPosition={markerPosition} />
-          </div>
-          {spotIsShow && <SpotDetail spotIsShow={spotIsShow} setIsSpotShow={setIsSpotShow} detailSpot={detailSpot} />}
-        </GoogleMap>
-      </SpotsContext.Provider>
-    </div>
+    <>
+      <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
+        {!isSpotsLoading &&
+          spots.map((spot) => (
+            <Marker
+              key={spot.id.toString()}
+              position={{ lat: spot.lat, lng: spot.lng }}
+              onClick={() => handleMarkerClick(spot)}
+            />
+          ))}
+        {markerPosition.lat && markerPosition.lng && (
+          <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
+        )}
+        {isCenterLoading && <CurrentCenterLoading />}
+        <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
+          <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} markerPosition={markerPosition} />
+        </div>
+        {spotIsShow && <SpotShow spotIsShow={spotIsShow} setIsSpotShow={setIsSpotShow} showSpot={showSpot} />}
+      </GoogleMap>
+    </>
   );
 }
 

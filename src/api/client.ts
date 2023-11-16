@@ -2,7 +2,6 @@ import Cookies from 'js-cookie';
 
 export const baseURL = process.env.REACT_APP_BASE_URL;
 
-
 export type Headers = {
   [key: string]: string;
 };
