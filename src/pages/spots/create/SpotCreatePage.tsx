@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Header from '../headers/Header';
+import Header from '../../../features/headers/Header';
 import { Typography, Box } from '@mui/material';
-import { MarkerPosition, Image } from '../../types/Spot';
+import { MarkerPosition, Image } from '../../../types/Spot';
 import {
   ImageItem,
   Description,
@@ -12,14 +12,14 @@ import {
   ImageUploader,
   SpotMap,
   FishingTypeCheckBox,
-} from './index';
-import { createSpot } from '../../api/spot';
-import HelpText from '../../components/HelpText';
-import { ErrorMessages } from '../../types/ErrorMessage';
-import ErrorMessageText from '../../components/ErrorMessageText';
+} from '../../../features/spots/index';
+import { createSpot } from '../../../api/spot';
+import HelpText from '../../../components/HelpText';
+import { ErrorMessages } from '../../../types/ErrorMessage';
+import ErrorMessageText from '../../../components/ErrorMessageText';
 import { useNavigate } from 'react-router-dom';
 
-function SpotCreateFrom() {
+function SpotCreatePage() {
   const [description, setDescription] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [images, setImages] = useState<Image[]>([]);
@@ -104,4 +104,4 @@ function SpotCreateFrom() {
   );
 }
 
-export default SpotCreateFrom;
+export default SpotCreatePage;

@@ -6,15 +6,15 @@ import {
   FormTitle,
   SubmmitButton,
   AuthContainer,
-} from '../components';
+} from '../../../features/auth/components';
 import { signIn } from '../../../api/auth';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import Header from '../../headers/Header';
+import Header from '../../../features/headers/Header';
 import { ErrorMessages } from '../../../types/ErrorMessage';
 import ErrorMessageText from '../../../components/ErrorMessageText';
 
-function SignInForm() {
+function SignInPage() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -67,4 +67,4 @@ function SignInForm() {
   );
 }
 
-export default SignInForm;
+export default SignInPage;

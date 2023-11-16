@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import { Box, Container } from '@mui/material';
 
-function SignUpSuccessForm() {
+function SignUpSuccessPage() {
   return (
     <Container>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -18,4 +18,4 @@ function SignUpSuccessForm() {
   );
 }
 
-export default SignUpSuccessForm;
+export default SignUpSuccessPage;
