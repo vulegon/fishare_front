@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Map from './features/Map';
+import Map from './features/root/Map';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import SpotCreateFrom from './features/spots/SpotCreateFrom';

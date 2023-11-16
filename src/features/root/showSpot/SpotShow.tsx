@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import { Spot } from '../types/Spot';
-import { getSpotShow } from '../api/spot';
+import { Spot } from '../../../types/Spot';
+import { getSpotShow } from '../../../api/spot';
 import Typography from '@mui/material/Typography';
 import defaultSpotImage from './default-spot-image.png';
-import EditDeleteIcons from './EditDeleteIcons';
+import EditDeleteIcons from '../EditDeleteIcons';
 import { Divider } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import Margin from './Margin';
+import Margin from '../Margin';
 
 function SpotDetail({
   spotIsShow,
   setIsSpotShow,
-  detailSpot,
+  showSpot,
 }: {
   spotIsShow: boolean;
   setIsSpotShow: React.Dispatch<React.SetStateAction<boolean>>;
-  detailSpot: Spot | null;
+  showSpot: Spot | null;
 }) {
   const [isEnable, setIsEnable] = useState<boolean>(false);
-  interface DetailSpot {
+  interface ShowSpot {
     id: string;
     name: string;
     description: string;
@@ -31,7 +31,7 @@ function SpotDetail({
     images: string[];
     location: string;
   }
-  const [spot, setSpot] = useState<DetailSpot>({
+  const [spot, setSpot] = useState<ShowSpot>({
     id: '',
     name: '',
     description: '',
@@ -53,12 +53,12 @@ function SpotDetail({
   };
 
   const fetchSpotShow = async () => {
-    if (detailSpot === null) {
+    if (showSpot === null) {
       console.log('detailSpotはnullです');
       return;
     }
     try {
-      const response = await getSpotShow(detailSpot.id);
+      const response = await getSpotShow(showSpot.id);
       if (response.status === 200) {
         const data = await response.json();
         console.log(data);
@@ -101,7 +101,7 @@ function SpotDetail({
               onKeyDown={toggleDrawer(false)}
             >
               <img src={defaultSpotImage} alt='default_spot_image' style={{ width: '100%', height: 250 }} />
-              {isEnable && <EditDeleteIcons id={spot.id } />}
+              {isEnable && <EditDeleteIcons id={spot.id} />}
               <Margin />
               <div style={{ marginLeft: '10px' }}>
                 <Typography variant='h5' gutterBottom sx={{ fontWeight: 600, marginBottom: 0 }}>

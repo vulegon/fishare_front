@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
-import { mapContainerStyle } from '../constants/defaultMapOption';
-import { MarkerPosition, Spot } from '../types/Spot';
+import { mapContainerStyle } from './defaultMapOption';
+import { MarkerPosition, Spot } from '../../types/Spot';
 import SpotRegisterButton from './SpotRegisterButton';
-import Header from './headers/Header';
-import { getSpots } from '../api/spot';
-import SpotDetail from './SpotDetail';
-import { getCurrentUser } from '../api/user';
-import { MapOptions } from '../types/Map';
+import Header from '../headers/Header';
+import { getSpots } from '../../api/spot';
+import SpotShow from './showSpot/SpotShow';
+import { getCurrentUser } from '../../api/user';
+import { MapOptions } from '../../types/Map';
 import CurrentCenterLoading from './CurrentCenterLoading';
 import { useLocation } from 'react-router-dom';
 import FlashMessage from './FlashMessage';
 import { AlertColor } from '@mui/material';
-import { SpotsContext } from '../contexts/spots/SpotsContext';
+import { SpotsContext } from '../../contexts/spots/SpotsContext';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
   const [spotRegisterButtonIsDisabled, setSpotRegisterButtonIsDisabled] = useState<boolean>(true);
   const [spotIsShow, setIsSpotShow] = useState<boolean>(false);
-  const [detailSpot, setDetailSpot] = useState<Spot | null>(null);
+  const [showSpot, setShowSpot] = useState<Spot | null>(null);
   const [spots, setSpots] = useState<Spot[]>([]);
   const [isSpotsLoading, setIsSpotsLoading] = useState<boolean>(true);
   const [isCenterLoading, setIsCenterLoading] = useState<boolean>(true);
@@ -126,7 +126,7 @@ function Map() {
   }, []);
   const handleMarkerClick = (spot: Spot) => {
     setIsSpotShow(true);
-    setDetailSpot(spot);
+    setShowSpot(spot);
   };
 
   return (
@@ -155,7 +155,7 @@ function Map() {
           <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
             <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} markerPosition={markerPosition} />
           </div>
-          {spotIsShow && <SpotDetail spotIsShow={spotIsShow} setIsSpotShow={setIsSpotShow} detailSpot={detailSpot} />}
+          {spotIsShow && <SpotShow spotIsShow={spotIsShow} setIsSpotShow={setIsSpotShow} showSpot={showSpot} />}
         </GoogleMap>
       </SpotsContext.Provider>
     </div>
