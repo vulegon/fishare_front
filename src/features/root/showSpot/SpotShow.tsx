@@ -5,7 +5,7 @@ import { Spot } from '../../../types/Spot';
 import { getSpotShow } from '../../../api/spot';
 import Typography from '@mui/material/Typography';
 import defaultSpotImage from './default-spot-image.png';
-import EditDeleteIcons from '../EditDeleteIcons';
+import EditDeleteIcons from './EditDeleteIcons';
 import { Divider } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import ImageList from '@mui/material/ImageList';
