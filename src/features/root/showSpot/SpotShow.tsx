@@ -10,9 +10,10 @@ import { Divider } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import Margin from '../Margin';
+import Margin from './Margin';
+import { ShowSpot } from '../../../types/ShowSpot';
 
-function SpotDetail({
+function SpotShow({
   spotIsShow,
   setIsSpotShow,
   showSpot,
@@ -21,16 +22,7 @@ function SpotDetail({
   setIsSpotShow: React.Dispatch<React.SetStateAction<boolean>>;
   showSpot: Spot | null;
 }) {
-  const [isEnable, setIsEnable] = useState<boolean>(false);
-  interface ShowSpot {
-    id: string;
-    name: string;
-    description: string;
-    fish: string[];
-    fishing_types: string[];
-    images: string[];
-    location: string;
-  }
+
   const [spot, setSpot] = useState<ShowSpot>({
     id: '',
     name: '',
@@ -39,6 +31,7 @@ function SpotDetail({
     fishing_types: [],
     images: [],
     location: '',
+    editable: false,
   });
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -62,18 +55,19 @@ function SpotDetail({
       if (response.status === 200) {
         const data = await response.json();
         console.log(data);
+        const responseSpot = data.spot
         setSpot({
           ...spot,
-          id: data.id,
-          name: data.name,
-          description: data.description,
-          location: data.location,
-          fish: data.fish,
-          fishing_types: data.fishing_types,
-          images: data.images,
+          id: responseSpot.id,
+          name: responseSpot.name,
+          description: responseSpot.description,
+          location: responseSpot.location,
+          fish: responseSpot.fish,
+          fishing_types: responseSpot.fishing_types,
+          images: responseSpot.images,
+          editable: responseSpot.editable
         });
 
-        setIsEnable(data.editable);
       }
     } catch (e) {
       console.log(e);
@@ -101,7 +95,7 @@ function SpotDetail({
               onKeyDown={toggleDrawer(false)}
             >
               <img src={defaultSpotImage} alt='default_spot_image' style={{ width: '100%', height: 250 }} />
-              {isEnable && <EditDeleteIcons id={spot.id} />}
+              {spot.editable && <EditDeleteIcons id={spot.id} />}
               <Margin />
               <div style={{ marginLeft: '10px' }}>
                 <Typography variant='h5' gutterBottom sx={{ fontWeight: 600, marginBottom: 0 }}>
@@ -174,4 +168,4 @@ function SpotDetail({
   );
 }
 
-export default SpotDetail;
+export default SpotShow;
