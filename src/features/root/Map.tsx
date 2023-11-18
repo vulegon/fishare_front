@@ -13,8 +13,7 @@ function Map() {
   const [spotRegisterButtonIsDisabled, setSpotRegisterButtonIsDisabled] = useState<boolean>(true);
   const [spotIsShow, setIsSpotShow] = useState<boolean>(false);
   const [showSpot, setShowSpot] = useState<Spot | null>(null);
-  const [spots, setSpots] = useState<Spot[]>([]);
-  const [isSpotsLoading, setIsSpotsLoading] = useState<boolean>(true);
+  const [spotData, setSpotData] = useState({ spots: [] as Spot[], isLoading: true });
   const [isCenterLoading, setIsCenterLoading] = useState<boolean>(true);
   const [mapOptions, setMapOptions] = useState<MapOptions>({
     zoom: 15,
@@ -40,13 +39,13 @@ function Map() {
       const response = await getSpots();
       if (response.status === 200) {
         const data = await response.json();
-        setSpots(data.spots);
+        setSpotData({ ...spotData, spots: data.spots });
         console.log(data);
       }
     } catch (e) {
       console.log(e);
     }
-    setIsSpotsLoading(false);
+    setSpotData({ ...spotData, isLoading: false });
   };
 
   // ブラウザの現在位置を取得します
@@ -104,8 +103,8 @@ function Map() {
   return (
     <>
       <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
-        {!isSpotsLoading &&
-          spots.map((spot) => (
+        {!spotData.isLoading &&
+          spotData.spots.map((spot) => (
             <Marker
               key={spot.id.toString()}
               position={{ lat: spot.lat, lng: spot.lng }}

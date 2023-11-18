@@ -11,7 +11,7 @@ function EditDeleteIcons({ id }: { id: string }) {
       if (response.status === 200) {
         const data = await response.json();
         console.log(data);
-        // ここでSpotを読み込む処理を入れる
+
       }
     } catch (e) {
       console.log(e);
