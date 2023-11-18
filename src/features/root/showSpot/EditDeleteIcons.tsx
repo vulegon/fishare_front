@@ -1,24 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import Fab from '@mui/material/Fab';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteSpot } from '../../../api/spot';
-import { fetchSpots } from '../utils/fetchSpots';
-import { SpotsDataContext } from '../../../contexts/spots/SpotsDataContext';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 function EditDeleteIcons({ id }: { id: string }) {
-  const { setSpotsData } = useContext(SpotsDataContext);
-  const handleDeleteClick = async () => {
-    try {
-      const response = await deleteSpot(id);
-      if (response.status === 200) {
-        const data = await response.json();
-        console.log(data);
-        fetchSpots(setSpotsData);
-      }
-    } catch (e) {
-      console.log(e);
-    }
+  const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] = useState(false);
+
+  const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
+    setIsDeleteConfirmationModalOpen(true);
   };
   return (
     <div style={{ position: 'absolute', top: 0, right: 20 }}>
@@ -28,6 +19,8 @@ function EditDeleteIcons({ id }: { id: string }) {
       <Fab color='primary' aria-label='delete' onClick={handleDeleteClick}>
         <DeleteIcon />
       </Fab>
+
+      <DeleteConfirmationModal open={isDeleteConfirmationModalOpen} setOpen={setIsDeleteConfirmationModalOpen} spotId={id } />
     </div>
   );
 }

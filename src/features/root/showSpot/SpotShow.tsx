@@ -6,11 +6,10 @@ import { getSpotShow } from '../../../api/spot';
 import Typography from '@mui/material/Typography';
 import defaultSpotImage from './default-spot-image.png';
 import EditDeleteIcons from './EditDeleteIcons';
-import { Divider } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import Margin from './Margin';
+import { Margin, SpaceWithDivider } from './components';
 import { ShowSpot } from '../../../types/ShowSpot';
 
 function SpotShow({
@@ -22,7 +21,6 @@ function SpotShow({
   setIsSpotShow: React.Dispatch<React.SetStateAction<boolean>>;
   showSpot: Spot | null;
 }) {
-
   const [spot, setSpot] = useState<ShowSpot>({
     id: '',
     name: '',
@@ -55,7 +53,7 @@ function SpotShow({
       if (response.status === 200) {
         const data = await response.json();
         console.log(data);
-        const responseSpot = data.spot
+        const responseSpot = data.spot;
         setSpot({
           ...spot,
           id: responseSpot.id,
@@ -65,9 +63,8 @@ function SpotShow({
           fish: responseSpot.fish,
           fishing_types: responseSpot.fishing_types,
           images: responseSpot.images,
-          editable: responseSpot.editable
+          editable: responseSpot.editable,
         });
-
       }
     } catch (e) {
       console.log(e);
@@ -102,9 +99,7 @@ function SpotShow({
                   {spot.name}
                 </Typography>
               </div>
-              <Margin />
-              <Divider />
-              <Margin />
+              <SpaceWithDivider />
               <div style={{ marginLeft: '10px' }}>
                 <Typography variant='subtitle2' sx={{ fontWeight: 600 }}>
                   説明
@@ -113,18 +108,14 @@ function SpotShow({
                   {spot.description}
                 </Typography>
               </div>
-              <Margin />
-              <Divider />
-              <Margin />
+              <SpaceWithDivider />
               <div style={{ marginLeft: '10px' }}>
                 <Typography variant='subtitle2' sx={{ fontWeight: 600 }}>
                   釣り場の種類
                 </Typography>
                 <Chip key={spot.location} color='primary' label={spot.location}></Chip>
               </div>
-              <Margin />
-              <Divider />
-              <Margin />
+              <SpaceWithDivider />
               <div style={{ marginLeft: '10px' }}>
                 <Typography variant='subtitle2' gutterBottom sx={{ fontWeight: 600 }}>
                   釣れる魚
@@ -133,9 +124,7 @@ function SpotShow({
                   <Chip key={fish_name} color='primary' label={fish_name}></Chip>
                 ))}
               </div>
-              <Margin />
-              <Divider />
-              <Margin />
+              <SpaceWithDivider />
               <div style={{ marginLeft: '10px' }}>
                 <Typography variant='subtitle2' gutterBottom sx={{ fontWeight: 600 }}>
                   釣りの種類
@@ -144,9 +133,7 @@ function SpotShow({
                   <Chip key={fishing_type} color='primary' label={fishing_type}></Chip>
                 ))}
               </div>
-              <Margin />
-              <Divider />
-              <Margin />
+              <SpaceWithDivider />
               <div style={{ marginLeft: '10px' }}>
                 <Typography variant='subtitle2' sx={{ fontWeight: 600 }}>
                   写真

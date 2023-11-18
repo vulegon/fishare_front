@@ -29,7 +29,7 @@ function FlashMessage({
     }, 3000); // 6秒後に閉じる（autoHideDurationの値と合わせる）
 
     return () => {
-      clearTimeout(timer); // コンポーネントがアンマウントされたらタイマーをクリア
+      clearTimeout(timer);
     };
   }, []);
   return (
