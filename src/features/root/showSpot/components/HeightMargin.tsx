@@ -1,8 +1,8 @@
 import React from 'react'
 import { Box } from '@mui/material'
 
-function Margin() {
+function HeightMargin() {
   return <Box sx={{ height: 20 }} />;
 }
 
-export default Margin
+export default HeightMargin;

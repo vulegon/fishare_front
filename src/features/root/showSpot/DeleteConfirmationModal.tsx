@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import Margin from './components/Margin';
+import Margin from './components/HeightMargin';
 import { deleteSpot } from '../../../api/spot';
 import { fetchSpots } from '../utils/fetchSpots';
 import { SpotsDataContext } from '../../../contexts/spots/SpotsDataContext';

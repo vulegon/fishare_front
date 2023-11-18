@@ -3,7 +3,7 @@ import { GoogleMap, Marker } from '@react-google-maps/api';
 import { mapContainerStyle } from './defaultMapOption';
 import { MarkerPosition, Spot } from '../../types/Spot';
 import SpotRegisterButton from './SpotRegisterButton';
-import SpotShow from './showSpot/SpotShow';
+import SpotShowPage from '../../pages/root/showSpot/SpotShowPage';
 import { MapOptions } from '../../types/Map';
 import CurrentCenterLoading from './CurrentCenterLoading';
 import { SpotsDataContext } from '../../contexts/spots/SpotsDataContext';
@@ -111,7 +111,7 @@ function Map() {
         <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
           <SpotRegisterButton isDisabled={spotRegisterButtonIsDisabled} markerPosition={markerPosition} />
         </div>
-        {spotIsShow && <SpotShow spotIsShow={spotIsShow} setIsSpotShow={setIsSpotShow} showSpot={showSpot} />}
+        {spotIsShow && <SpotShowPage spotIsShow={spotIsShow} setIsSpotShow={setIsSpotShow} showSpot={showSpot} />}
       </GoogleMap>
     </>
   );

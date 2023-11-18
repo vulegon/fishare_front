@@ -1,5 +1,5 @@
 import React from 'react';
-import Margin from './Margin';
+import Margin from './HeightMargin';
 import { Divider } from '@mui/material';
 
 function SpaceWithDivider() {

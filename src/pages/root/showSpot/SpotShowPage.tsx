@@ -3,14 +3,18 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import { Spot } from '../../../types/Spot';
 import { getSpotShow } from '../../../api/spot';
-import Typography from '@mui/material/Typography';
-import defaultSpotImage from './default-spot-image.png';
-import EditDeleteIcons from './EditDeleteIcons';
-import Chip from '@mui/material/Chip';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import { Margin, SpaceWithDivider } from './components';
+import defaultSpotImage from '../../../features/root/showSpot/default-spot-image.png';
+import EditDeleteIcons from '../../../features/root/showSpot/EditDeleteIcons';
+import { HeightMargin, SpaceWithDivider } from '../../../features/root/showSpot/components';
 import { ShowSpot } from '../../../types/ShowSpot';
+import {
+  SpotName,
+  SpotDescription,
+  SpotLocation,
+  SpotCatchableFish,
+  SpotFishingType,
+  SpotImages,
+} from '../../../features/root/showSpot';
 
 function SpotShow({
   spotIsShow,
@@ -93,60 +97,18 @@ function SpotShow({
             >
               <img src={defaultSpotImage} alt='default_spot_image' style={{ width: '100%', height: 250 }} />
               {spot.editable && <EditDeleteIcons id={spot.id} />}
-              <Margin />
-              <div style={{ marginLeft: '10px' }}>
-                <Typography variant='h5' gutterBottom sx={{ fontWeight: 600, marginBottom: 0 }}>
-                  {spot.name}
-                </Typography>
-              </div>
+              <HeightMargin />
+              <SpotName spotName={spot.name} />
               <SpaceWithDivider />
-              <div style={{ marginLeft: '10px' }}>
-                <Typography variant='subtitle2' sx={{ fontWeight: 600 }}>
-                  説明
-                </Typography>
-                <Typography variant='button' display='block' gutterBottom sx={{ color: 'grey' }}>
-                  {spot.description}
-                </Typography>
-              </div>
+              <SpotDescription spotDescription={spot.description} />
               <SpaceWithDivider />
-              <div style={{ marginLeft: '10px' }}>
-                <Typography variant='subtitle2' sx={{ fontWeight: 600 }}>
-                  釣り場の種類
-                </Typography>
-                <Chip key={spot.location} color='primary' label={spot.location}></Chip>
-              </div>
+              <SpotLocation spotLocation={spot.location} />
               <SpaceWithDivider />
-              <div style={{ marginLeft: '10px' }}>
-                <Typography variant='subtitle2' gutterBottom sx={{ fontWeight: 600 }}>
-                  釣れる魚
-                </Typography>
-                {spot.fish.map((fish_name) => (
-                  <Chip key={fish_name} color='primary' label={fish_name}></Chip>
-                ))}
-              </div>
+              <SpotCatchableFish catchableFish={spot.fish} />
               <SpaceWithDivider />
-              <div style={{ marginLeft: '10px' }}>
-                <Typography variant='subtitle2' gutterBottom sx={{ fontWeight: 600 }}>
-                  釣りの種類
-                </Typography>
-                {spot.fishing_types.map((fishing_type) => (
-                  <Chip key={fishing_type} color='primary' label={fishing_type}></Chip>
-                ))}
-              </div>
+              <SpotFishingType fishingTypes={spot.fishing_types} />
               <SpaceWithDivider />
-              <div style={{ marginLeft: '10px' }}>
-                <Typography variant='subtitle2' sx={{ fontWeight: 600 }}>
-                  写真
-                </Typography>
-                <Box sx={{ height: 10 }}></Box>
-                <ImageList sx={{ width: 500, height: 250 }} cols={3} rowHeight={200}>
-                  {spot.images.map((item) => (
-                    <ImageListItem key={item} sx={{ margin: '0 5px' }}>
-                      <img src={item} alt={item} loading='lazy' />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
-              </div>
+              <SpotImages images={spot.images} />
             </Box>
           </Drawer>
         </React.Fragment>
