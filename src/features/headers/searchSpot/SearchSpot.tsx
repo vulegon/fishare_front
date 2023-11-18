@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import SearchOptionForm from './SearchOptionForm';
 import { SearchOptions, SpotData } from './types/index';
 import { spotSearch } from '../../../api/spot';
-import { SpotsContext } from '../../../contexts/spots/SpotsContext';
+import { SpotsDataContext } from '../../../contexts/spots/SpotsDataContext';
 
 function SearchSpot() {
   const [spotData, setSpotData] = useState<SpotData>({
@@ -22,7 +22,7 @@ function SearchSpot() {
     fishingTypes: [],
     travelDistances: [], //まだ未実装
   });
-  const { setSpots } = useContext(SpotsContext);
+  const { setSpotsData } = useContext(SpotsDataContext);
 
   const handleSearchSpotNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -62,7 +62,7 @@ function SearchSpot() {
 
       if (response.status !== 200) return;
       const data = await response.json();
-      setSpots(data.spots);
+      setSpotsData(data.spots);
       console.log(data);
     } catch (e) {
       console.log(e);

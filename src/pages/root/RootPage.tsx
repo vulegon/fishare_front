@@ -5,11 +5,11 @@ import { getCurrentUser } from '../../api/user';
 import { useLocation } from 'react-router-dom';
 import FlashMessage from '../../features/root/FlashMessage';
 import { AlertColor } from '@mui/material';
-import { SpotsContext } from '../../contexts/spots/SpotsContext';
+import { SpotsDataContext } from '../../contexts/spots/SpotsDataContext';
 import Map from '../../features/root/Map';
 
 function RootPage() {
-  const [spots, setSpots] = useState<Spot[]>([]);
+  const [spotsData, setSpotsData] = useState({ spots: [] as Spot[], isLoading: true });
   const location = useLocation();
   const [isFlashMessageOpen, setIsFlashMessageOpen] = useState<boolean>(false);
   const [flashMessage, setFlashMessage] = useState<flashMessages>({ status: 'info', message: '' });
@@ -39,7 +39,7 @@ function RootPage() {
 
   return (
     <div>
-      <SpotsContext.Provider value={{ spots, setSpots }}>
+      <SpotsDataContext.Provider value={{ spotsData, setSpotsData }}>
         <Header />
         <FlashMessage
           status={flashMessage.status}
@@ -48,7 +48,7 @@ function RootPage() {
           setIsFlashMessageOpen={setIsFlashMessageOpen}
         ></FlashMessage>
         <Map />
-      </SpotsContext.Provider>
+      </SpotsDataContext.Provider>
     </div>
   );
 }

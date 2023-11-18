@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { mapContainerStyle } from './defaultMapOption';
 import { MarkerPosition, Spot } from '../../types/Spot';
 import SpotRegisterButton from './SpotRegisterButton';
-import { getSpots } from '../../api/spot';
 import SpotShow from './showSpot/SpotShow';
 import { MapOptions } from '../../types/Map';
 import CurrentCenterLoading from './CurrentCenterLoading';
+import { SpotsDataContext } from '../../contexts/spots/SpotsDataContext';
+import { fetchSpots } from './utils/fetchSpots';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
   const [spotRegisterButtonIsDisabled, setSpotRegisterButtonIsDisabled] = useState<boolean>(true);
   const [spotIsShow, setIsSpotShow] = useState<boolean>(false);
   const [showSpot, setShowSpot] = useState<Spot | null>(null);
-  const [spotData, setSpotData] = useState({ spots: [] as Spot[], isLoading: true });
   const [isCenterLoading, setIsCenterLoading] = useState<boolean>(true);
   const [mapOptions, setMapOptions] = useState<MapOptions>({
     zoom: 15,
     center: { lat: 36.063053704526226, lng: 136.22288055523217 },
     fullscreenControl: false,
   });
+  const { spotsData, setSpotsData } = useContext(SpotsDataContext);
 
   // GoogleMapをクリックしたらマーカーを置くのと釣り場を登録するボタンを押せるようにします
   const onMapClick = (e: google.maps.MapMouseEvent) => {
@@ -31,21 +32,6 @@ function Map() {
       });
       setSpotRegisterButtonIsDisabled(false);
     }
-  };
-
-  //データベースに登録されている釣り場を取得
-  const fetchSpots = async () => {
-    try {
-      const response = await getSpots();
-      if (response.status === 200) {
-        const data = await response.json();
-        setSpotData({ ...spotData, spots: data.spots });
-        console.log(data);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    setSpotData({ ...spotData, isLoading: false });
   };
 
   // ブラウザの現在位置を取得します
@@ -91,7 +77,14 @@ function Map() {
   };
 
   useEffect(() => {
-    fetchSpots();
+    const fetchSpotsData = async () => {
+      try {
+        await fetchSpots(setSpotsData);
+      } catch (error) {
+        console.error('Error fetsching spots:', error);
+      }
+    };
+    fetchSpotsData();
     getCurrentPosition();
   }, []);
 
@@ -103,8 +96,8 @@ function Map() {
   return (
     <>
       <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
-        {!spotData.isLoading &&
-          spotData.spots.map((spot) => (
+        {!spotsData.isLoading &&
+          spotsData.spots.map((spot) => (
             <Marker
               key={spot.id.toString()}
               position={{ lat: spot.lat, lng: spot.lng }}
