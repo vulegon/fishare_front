@@ -4,15 +4,11 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchOptionForm from './SearchOptionForm';
-import { SearchOptions, SpotData } from './types/index';
+import { SearchOptions } from './types/index';
 import { spotSearch } from '../../../api/spot';
 import { SpotsDataContext } from '../../../contexts/spots/SpotsDataContext';
 
 function SearchSpot() {
-  const [spotData, setSpotData] = useState<SpotData>({
-    spotName: '',
-    isSpotNameDisabled: false,
-  });
   const [options, setOptions] = useState<SearchOptions>({
     isSearchOptionOpen: false,
     optionSpotName: '',
@@ -20,20 +16,21 @@ function SearchSpot() {
     catchableFish: [],
     locations: [],
     fishingTypes: [],
-    travelDistances: [], //まだ未実装
+    travelDistances: [], //まだ未実装。ゆくゆくは現在位置から◯km圏内という検索条件を設定できるようにする
   });
   const { setSpotsData } = useContext(SpotsDataContext);
+  const placeHolder = '釣り場を検索'
 
   const handleSearchSpotNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setSpotData({
-      ...spotData,
-      spotName: value,
+    setOptions({
+      ...options,
+      optionSpotName: value,
     });
   };
 
   const onlySpotNameSearch = async () => {
-    const response = await spotSearch({ spotName: spotData.spotName });
+    const response = await spotSearch({ spotName: options.optionSpotName });
     return response;
   };
 
@@ -52,7 +49,7 @@ function SearchSpot() {
     try {
       let response;
       // 釣り場検索のオプションを使用していないとき
-      if (!spotData.isSpotNameDisabled && !options.isSearchOptionOpen) {
+      if (!options.isSearchOptionOpen) {
         response = await onlySpotNameSearch();
       }
       // 釣り場検索のオプションを使用しているとき
@@ -81,14 +78,14 @@ function SearchSpot() {
         position: 'relative',
       }}
     >
-      <SearchOptionForm spotData={spotData} setSpotData={setSpotData} options={options} setOptions={setOptions} />
+      <SearchOptionForm options={options} setOptions={setOptions} />
       <InputBase
         sx={{ ml: 1, flex: 1 }}
-        placeholder='釣り場を検索'
+        placeholder={placeHolder}
         inputProps={{ 'aria-label': 'search google maps' }}
-        value={spotData.spotName}
+        value={options.isSearchOptionOpen ? placeHolder : options.optionSpotName}
         onChange={handleSearchSpotNameChange}
-        disabled={spotData.isSpotNameDisabled}
+        disabled={options.isSearchOptionOpen}
       />
       <IconButton type='button' sx={{ p: '10px' }} aria-label='search' onClick={handleSearch}>
         <SearchIcon />
