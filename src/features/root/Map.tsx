@@ -7,7 +7,7 @@ import SpotShowPage from '../../pages/root/showSpot/SpotShowPage';
 import { MapOptions } from '../../types/Map';
 import CurrentCenterLoading from './CurrentCenterLoading';
 import { SpotsDataContext } from '../../contexts/spots/SpotsDataContext';
-import { fetchSpots } from './utils/fetchSpots';
+import { fetchSpots } from '../../utils/fetchSpots';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
@@ -97,6 +97,7 @@ function Map() {
     <>
       <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
         {!spotsData.isLoading &&
+          spotsData.spots &&
           spotsData.spots.map((spot) => (
             <Marker
               key={spot.id.toString()}

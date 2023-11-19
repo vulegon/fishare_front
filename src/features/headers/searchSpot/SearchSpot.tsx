@@ -17,9 +17,10 @@ function SearchSpot() {
     locations: [],
     fishingTypes: [],
     travelDistances: [], //まだ未実装。ゆくゆくは現在位置から◯km圏内という検索条件を設定できるようにする
+    isLoading: false,    //検索中かどうか
   });
   const { setSpotsData } = useContext(SpotsDataContext);
-  const placeHolder = '釣り場を検索'
+  const placeHolder = '釣り場を検索';
 
   const handleSearchSpotNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -27,11 +28,6 @@ function SearchSpot() {
       ...options,
       optionSpotName: value,
     });
-  };
-
-  const onlySpotNameSearch = async () => {
-    const response = await spotSearch({ spotName: options.optionSpotName });
-    return response;
   };
 
   const spotOpitonSearch = async () => {
@@ -46,24 +42,21 @@ function SearchSpot() {
   };
 
   const handleSearch = async () => {
-    try {
-      let response;
-      // 釣り場検索のオプションを使用していないとき
-      if (!options.isSearchOptionOpen) {
-        response = await onlySpotNameSearch();
-      }
-      // 釣り場検索のオプションを使用しているとき
-      else {
-        response = await spotOpitonSearch();
-      }
+    setSpotsData((prevSpotsData) => ({ ...prevSpotsData, isLoading: true }));
+    setOptions((prevOptions) => ({ ...prevOptions, isLoading: true }));
 
-      if (response.status !== 200) return;
-      const data = await response.json();
-      setSpotsData(data.spots);
-      console.log(data);
+    try {
+      const response = await spotOpitonSearch();
+      if (response.status === 200) {
+        const data = await response.json();
+        setSpotsData((prevSpotsData) => ({ ...prevSpotsData, spots: data.spots }));
+        console.log(data);
+      }
     } catch (e) {
       console.log(e);
     }
+    setSpotsData((prevSpotsData) => ({ ...prevSpotsData, isLoading: false }));
+    setOptions((prevOptions) => ({ ...prevOptions, isLoading: false }));
   };
 
   return (
@@ -87,7 +80,7 @@ function SearchSpot() {
         onChange={handleSearchSpotNameChange}
         disabled={options.isSearchOptionOpen}
       />
-      <IconButton type='button' sx={{ p: '10px' }} aria-label='search' onClick={handleSearch}>
+      <IconButton type='button' sx={{ p: '10px' }} aria-label='search' onClick={handleSearch} disabled={options.isLoading}>
         <SearchIcon />
       </IconButton>
     </Paper>

@@ -1,5 +1,5 @@
-import { getSpots } from "../../../api/spot";
-import { Spot } from "../../../types/Spot";
+import { getSpots } from '../api/spot';
+import { Spot } from '../types/Spot';
 //データベースに登録されている釣り場を取得
 export const fetchSpots = async (
   setSpotsData: React.Dispatch<React.SetStateAction<{ spots: Spot[]; isLoading: boolean }>>

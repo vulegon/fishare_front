@@ -6,4 +6,5 @@ export interface SearchOptions {
   locations: string[];
   fishingTypes: string[];
   travelDistances: string[];
+  isLoading: boolean;
 }
