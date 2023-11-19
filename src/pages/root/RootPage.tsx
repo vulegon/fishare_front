@@ -3,28 +3,23 @@ import { Spot } from '../../types/Spot';
 import Header from '../../features/headers/Header';
 import { getCurrentUser } from '../../api/user';
 import { useLocation } from 'react-router-dom';
-import FlashMessage from '../../features/root/FlashMessage';
-import { AlertColor } from '@mui/material';
 import { SpotsDataContext } from '../../contexts/spots/SpotsDataContext';
 import Map from '../../features/root/Map';
+import SnackBar from '../../features/root/SnackBar';
+import { AlertMessage } from '../../types/AlertMessage';
+import { AlertMessageContext } from '../../contexts/alertMessage/alertMessageContext';
 
 function RootPage() {
   const [spotsData, setSpotsData] = useState({ spots: [] as Spot[], isLoading: true });
   const location = useLocation();
-  const [isFlashMessageOpen, setIsFlashMessageOpen] = useState<boolean>(false);
-  const [flashMessage, setFlashMessage] = useState<flashMessages>({ status: 'info', message: '' });
-  interface flashMessages {
-    status: AlertColor;
-    message: string;
-  }
+  const [alertMessage, setAlertMessage] = useState<AlertMessage>({ status: 'info', message: '' });
 
   const getFlashMessage = () => {
     const state = location.state;
     console.log(state);
     if (!state) return;
-    setIsFlashMessageOpen(true);
-    const newFlashMessage: flashMessages = { status: state.status, message: state.message };
-    setFlashMessage(newFlashMessage);
+    const newFlashMessage: AlertMessage = { status: state.status, message: state.message };
+    setAlertMessage(newFlashMessage);
   };
 
   useEffect(() => {
@@ -40,14 +35,13 @@ function RootPage() {
   return (
     <div>
       <SpotsDataContext.Provider value={{ spotsData, setSpotsData }}>
-        <Header />
-        <FlashMessage
-          status={flashMessage.status}
-          message={flashMessage.message}
-          isFlashMessageOpen={isFlashMessageOpen}
-          setIsFlashMessageOpen={setIsFlashMessageOpen}
-        ></FlashMessage>
-        <Map />
+        <AlertMessageContext.Provider value={{ alertMessage, setAlertMessage }}>
+          <Header />
+          {alertMessage.message !== '' && (
+            <SnackBar></SnackBar>
+          )}
+          <Map />
+        </AlertMessageContext.Provider>
       </SpotsDataContext.Provider>
     </div>
   );

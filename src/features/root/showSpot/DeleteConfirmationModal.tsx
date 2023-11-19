@@ -7,6 +7,7 @@ import Margin from './components/HeightMargin';
 import { deleteSpot } from '../../../api/spot';
 import { fetchSpots } from '../utils/fetchSpots';
 import { SpotsDataContext } from '../../../contexts/spots/SpotsDataContext';
+import { AlertMessageContext } from '../../../contexts/alertMessage/alertMessageContext';
 
 const style = {
   position: 'absolute' as const,
@@ -31,6 +32,7 @@ function DeleteConfirmationModal({
   spotId: string;
 }) {
   const { setSpotsData } = useContext(SpotsDataContext);
+  const { setAlertMessage } = useContext(AlertMessageContext);
 
   const handleDeleteClick = async () => {
     try {
@@ -39,6 +41,11 @@ function DeleteConfirmationModal({
         const data = await response.json();
         console.log(data);
         fetchSpots(setSpotsData);
+        setAlertMessage((prevAlertMessage) => ({
+          ...prevAlertMessage,
+          status: 'success',
+          message: '釣り場を削除しました',
+        }));
       }
     } catch (e) {
       console.log(e);
