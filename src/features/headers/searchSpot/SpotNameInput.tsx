@@ -21,9 +21,8 @@ function SpotNameInput({
       type='search'
       variant='standard'
       onChange={handleSpotNameOnChange}
-    >
-      {options.optionSpotName}
-    </TextField>
+      value={options.optionSpotName}
+    />
   );
 }
 

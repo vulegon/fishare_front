@@ -4,15 +4,11 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchOptionForm from './SearchOptionForm';
-import { SearchOptions, SpotData } from './types/index';
+import { SearchOptions } from './types/index';
 import { spotSearch } from '../../../api/spot';
-import { SpotsContext } from '../../../contexts/spots/SpotsContext';
+import { SpotsDataContext } from '../../../contexts/spots/SpotsDataContext';
 
 function SearchSpot() {
-  const [spotData, setSpotData] = useState<SpotData>({
-    spotName: '',
-    isSpotNameDisabled: false,
-  });
   const [options, setOptions] = useState<SearchOptions>({
     isSearchOptionOpen: false,
     optionSpotName: '',
@@ -20,21 +16,18 @@ function SearchSpot() {
     catchableFish: [],
     locations: [],
     fishingTypes: [],
-    travelDistances: [], //まだ未実装
+    travelDistances: [], //まだ未実装。ゆくゆくは現在位置から◯km圏内という検索条件を設定できるようにする
+    isLoading: false,    //検索中かどうか
   });
-  const { setSpots } = useContext(SpotsContext);
+  const { setSpotsData } = useContext(SpotsDataContext);
+  const placeHolder = '釣り場を検索';
 
   const handleSearchSpotNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setSpotData({
-      ...spotData,
-      spotName: value,
+    setOptions({
+      ...options,
+      optionSpotName: value,
     });
-  };
-
-  const onlySpotNameSearch = async () => {
-    const response = await spotSearch({ spotName: spotData.spotName });
-    return response;
   };
 
   const spotOpitonSearch = async () => {
@@ -49,24 +42,21 @@ function SearchSpot() {
   };
 
   const handleSearch = async () => {
-    try {
-      let response;
-      // 釣り場検索のオプションを使用していないとき
-      if (!spotData.isSpotNameDisabled && !options.isSearchOptionOpen) {
-        response = await onlySpotNameSearch();
-      }
-      // 釣り場検索のオプションを使用しているとき
-      else {
-        response = await spotOpitonSearch();
-      }
+    setSpotsData((prevSpotsData) => ({ ...prevSpotsData, isLoading: true }));
+    setOptions((prevOptions) => ({ ...prevOptions, isLoading: true }));
 
-      if (response.status !== 200) return;
-      const data = await response.json();
-      setSpots(data.spots);
-      console.log(data);
+    try {
+      const response = await spotOpitonSearch();
+      if (response.status === 200) {
+        const data = await response.json();
+        setSpotsData((prevSpotsData) => ({ ...prevSpotsData, spots: data.spots }));
+        console.log(data);
+      }
     } catch (e) {
       console.log(e);
     }
+    setSpotsData((prevSpotsData) => ({ ...prevSpotsData, isLoading: false }));
+    setOptions((prevOptions) => ({ ...prevOptions, isLoading: false }));
   };
 
   return (
@@ -81,16 +71,16 @@ function SearchSpot() {
         position: 'relative',
       }}
     >
-      <SearchOptionForm spotData={spotData} setSpotData={setSpotData} options={options} setOptions={setOptions} />
+      <SearchOptionForm options={options} setOptions={setOptions} />
       <InputBase
         sx={{ ml: 1, flex: 1 }}
-        placeholder='釣り場を検索'
+        placeholder={placeHolder}
         inputProps={{ 'aria-label': 'search google maps' }}
-        value={spotData.spotName}
+        value={options.isSearchOptionOpen ? placeHolder : options.optionSpotName}
         onChange={handleSearchSpotNameChange}
-        disabled={spotData.isSpotNameDisabled}
+        disabled={options.isSearchOptionOpen}
       />
-      <IconButton type='button' sx={{ p: '10px' }} aria-label='search' onClick={handleSearch}>
+      <IconButton type='button' sx={{ p: '10px' }} aria-label='search' onClick={handleSearch} disabled={options.isLoading}>
         <SearchIcon />
       </IconButton>
     </Paper>
