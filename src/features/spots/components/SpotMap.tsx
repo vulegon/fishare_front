@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { MarkerPosition } from '../../../types/Spot';
 import { useLocation } from 'react-router-dom';
+import { defaultPosition } from '../../../utils/constants/defalutPosition';
 
 function SpotCreateFormMap({
   markerPosition,
@@ -14,8 +15,8 @@ function SpotCreateFormMap({
   const searchParams = new URLSearchParams(location.search);
   const latParam = searchParams.get('lat');
   const lngParam = searchParams.get('lng');
-  const centerLat = latParam ? parseFloat(latParam) : 36.063053704526226;
-  const centerLng = lngParam ? parseFloat(lngParam) : 136.22288055523217;
+  const centerLat = latParam ? parseFloat(latParam) : defaultPosition.lat;
+  const centerLng = lngParam ? parseFloat(lngParam) : defaultPosition.lng;
 
   useEffect(() => {
     setMarkerPosition({ lat: centerLat, lng: centerLng });
@@ -39,8 +40,8 @@ function SpotCreateFormMap({
       options={{
         zoom: 15,
         center: {
-          lat: markerPosition.lat ? markerPosition.lat : 36.063053704526226,
-          lng: markerPosition.lng ? markerPosition.lng : 136.22288055523217,
+          lat: markerPosition.lat ? markerPosition.lat : defaultPosition.lat,
+          lng: markerPosition.lng ? markerPosition.lng : defaultPosition.lng,
         },
         fullscreenControl: false,
       }}

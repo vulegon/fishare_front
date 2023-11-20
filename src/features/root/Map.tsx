@@ -8,6 +8,7 @@ import { MapOptions } from '../../types/Map';
 import CurrentCenterLoading from './CurrentCenterLoading';
 import { SpotsDataContext } from '../../contexts/spots/SpotsDataContext';
 import { fetchSpots } from '../../utils/fetchSpots';
+import { defaultPosition } from '../../utils/constants/defalutPosition';
 
 function Map() {
   const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
@@ -17,7 +18,7 @@ function Map() {
   const [isCenterLoading, setIsCenterLoading] = useState<boolean>(true);
   const [mapOptions, setMapOptions] = useState<MapOptions>({
     zoom: 15,
-    center: { lat: 36.063053704526226, lng: 136.22288055523217 },
+    center: defaultPosition,
     fullscreenControl: false,
   });
   const { spotsData, setSpotsData } = useContext(SpotsDataContext);
