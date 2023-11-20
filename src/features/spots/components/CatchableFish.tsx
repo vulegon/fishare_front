@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
 import { TextField } from '@mui/material';
-import { getFish } from '../../api/fish';
+import { getFish } from '../../../api/fish';
 
 function CatchableFishInput({
   setCatchableFish,

@@ -1,17 +1,6 @@
 import { baseURL, authHeaders, defaultHeaders, Headers } from './client';
 import { Image } from '../types/Spot';
 
-interface CreateSpotArgs {
-  name: string;
-  description: string;
-  latitude: string;
-  longitude: string;
-  location: string;
-  images: Image[];
-  catchableFish: string[];
-  fishingTypes: string[];
-}
-
 // 釣り場の作成
 export const createSpot = async ({
   name,
@@ -22,7 +11,16 @@ export const createSpot = async ({
   images,
   catchableFish,
   fishingTypes,
-}: CreateSpotArgs): Promise<Response> => {
+}: {
+  name: string;
+  description: string;
+  latitude: string;
+  longitude: string;
+  location: string;
+  images: Image[];
+  catchableFish: string[];
+  fishingTypes: string[];
+}): Promise<Response> => {
   const url = `${baseURL}/spots`;
   const method = 'POST';
   const formData = new FormData();
@@ -137,6 +135,51 @@ export const deleteSpot = async (spotId: string): Promise<Response> => {
   const options: RequestInit = {
     method,
     headers,
+  };
+  const response = await fetch(url, options);
+  return response;
+};
+
+export const updateSpot = async ({
+  id,
+  name,
+  description,
+  latitude,
+  longitude,
+  location,
+  images,
+  catchableFish,
+  fishingTypes,
+}: {
+  id: string;
+  name: string;
+  description: string;
+  latitude: string;
+  longitude: string;
+  location: string;
+  images: Image[];
+  catchableFish: string[];
+  fishingTypes: string[];
+}): Promise<Response> => {
+  const url = `${baseURL}/spots/${id}`;
+  const method = 'PUT';
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('description', description);
+  formData.append('str_latitude', latitude);
+  formData.append('str_longitude', longitude);
+  formData.append('location', location);
+  images.forEach((image) => formData.append('images[]', image.file));
+  catchableFish.forEach((fish) => formData.append('fish[]', fish));
+  fishingTypes.forEach((fishingType) => formData.append('fishing_types[]', fishingType));
+
+  const headers = authHeaders;
+  // ヘッダーにContent-Typeは指定しない
+  // https://zenn.dev/kariya_mitsuru/articles/25c9aeb27059e7
+  const options: RequestInit = {
+    method,
+    headers,
+    body: formData,
   };
   const response = await fetch(url, options);
   return response;

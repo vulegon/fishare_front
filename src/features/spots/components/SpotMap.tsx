@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
-import { MarkerPosition } from '../../types/Spot';
+import { MarkerPosition } from '../../../types/Spot';
 import { useLocation } from 'react-router-dom';
 
 function SpotCreateFormMap({

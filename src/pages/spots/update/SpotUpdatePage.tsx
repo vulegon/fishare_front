@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../../features/headers/Header';
 import { Typography, Box } from '@mui/material';
-import { MarkerPosition, Image } from '../../../types/Spot';
+import { useParams } from 'react-router-dom';
+import { ShowSpot } from '../../../types/ShowSpot';
+import { getSpotShow, updateSpot } from '../../../api/spot';
 import {
   ImageItem,
   Description,
@@ -13,13 +15,29 @@ import {
   SpotMap,
   FishingTypeCheckBox,
 } from '../../../features/spots/components/index';
-import { createSpot } from '../../../api/spot';
 import HelpText from '../../../components/HelpText';
 import { ErrorMessages } from '../../../types/ErrorMessage';
 import ErrorMessageText from '../../../components/ErrorMessageText';
+import { MarkerPosition } from '../../../types/Spot';
+import { Image } from '../../../types/Spot';
 import { useNavigate } from 'react-router-dom';
 
-function SpotCreatePage() {
+function SpotUpdatePage() {
+  const { spot_id } = useParams();
+  const [spot, setSpot] = useState<ShowSpot>({
+    id: '',
+    name: '',
+    description: '',
+    latitude: 0,
+    longitude: 0,
+    fish: [],
+    fishing_types: [],
+    images: [],
+    location: '',
+    editable: false,
+  });
+  const [isErrorMessageOpen, setIsErrorMessageOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<ErrorMessages>({});
   const [description, setDescription] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [images, setImages] = useState<Image[]>([]);
@@ -32,14 +50,46 @@ function SpotCreatePage() {
   const [location, setLocation] = useState<string>('');
   const [catchableFish, setCatchableFish] = useState<string[]>([]);
   const [fishingTypes, setFishingTypes] = useState<string[]>([]);
-  const [isErrorMessageOpen, setIsErrorMessageOpen] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<ErrorMessages>({});
   const navigate = useNavigate();
+
+  const fetchSpotShow = async () => {
+    try {
+      if (spot_id === undefined || spot_id === null) {
+        // spot_id が undefined または null の場合の処理
+        console.log('spot_id is undefined or null');
+        return;
+      }
+      const response = await getSpotShow(spot_id);
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log(data);
+        const responseSpot = data.spot;
+        setSpot({
+          ...spot,
+          id: responseSpot.id,
+          name: responseSpot.name,
+          description: responseSpot.description,
+          location: responseSpot.location,
+          fish: responseSpot.fish,
+          fishing_types: responseSpot.fishing_types,
+          images: responseSpot.images,
+          editable: responseSpot.editable,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    const response = await createSpot({
+    if (spot_id === null || spot_id === undefined) {
+      console.log('spot_idは不正な値です');
+      return;
+    }
+    const response = await updateSpot({
+      id: spot_id,
       name: name,
       description: description,
       images: images,
@@ -51,7 +101,7 @@ function SpotCreatePage() {
     });
     if (response.status === 200) {
       setIsErrorMessageOpen(false);
-      navigate('/', { state: { status: 'success', message: '釣り場を登録しました' } });
+      navigate('/', { state: { status: 'success', message: '釣り場を更新しました' } });
     } else {
       setIsErrorMessageOpen(true);
       const data = await response.json();
@@ -62,6 +112,9 @@ function SpotCreatePage() {
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    fetchSpotShow();
+  }, []);
   return (
     <div>
       <Header isShowSearchSpot={false} />
@@ -75,7 +128,7 @@ function SpotCreatePage() {
         }}
       >
         <Typography variant='h4' gutterBottom>
-          釣り場の登録
+          釣り場の編集
         </Typography>
         <HelpText value={'地図のマーカーを動かすこともできます'}></HelpText>
         <SpotMap markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
@@ -104,4 +157,4 @@ function SpotCreatePage() {
   );
 }
 
-export default SpotCreatePage;
+export default SpotUpdatePage;

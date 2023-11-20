@@ -2,7 +2,7 @@ import React from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import CloseIcon from '@mui/icons-material/Close';
-import { Image } from '../../types/Spot';
+import { Image } from '../../../types/Spot';
 
 function SpotImageItem({
   images,

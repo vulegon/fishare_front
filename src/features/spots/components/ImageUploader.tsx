@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Button from '@mui/material/Button';
-import { Image } from '../../types/Spot';
+import { Image } from '../../../types/Spot';
 
 function ImageUploader({
   imageCount,
