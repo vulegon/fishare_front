@@ -2,24 +2,24 @@ import React from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import CloseIcon from '@mui/icons-material/Close';
-import { Image } from '../../../types/Spot';
+import { SpotData } from '../types/SpotData';
 
 function SpotImageItem({
-  images,
-  setImages,
+  spotData,
+  setSpotData
 }: {
-  images: Image[];
-  setImages: React.Dispatch<React.SetStateAction<Image[]>>;
+  spotData: SpotData;
+  setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const handleCloseIconClick = (event: React.MouseEvent<SVGSVGElement>) => {
     const delete_image_id = parseInt(event.currentTarget.id);
-    const result = images.filter((item) => item.id !== delete_image_id);
-    setImages(result);
+    const result = spotData.images.filter((item) => item.id !== delete_image_id);
+    setSpotData((prev)=>({...prev, images: result}));
   };
   return (
     <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
       <ImageList sx={{ width: '100%', height: 500 }} cols={3} rowHeight={230}>
-        {images.map((image) => (
+        {spotData.images.map((image) => (
           <ImageListItem key={image.img} sx={{ height: 250, width: 200 }}>
             <img
               src={`${image.img}`}

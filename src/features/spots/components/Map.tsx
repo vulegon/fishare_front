@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
-import { MarkerPosition } from '../../../types/Spot';
+import { SpotData } from '../types/SpotData';
 import { useLocation } from 'react-router-dom';
 import { defaultPosition } from '../../../utils/constants/defalutPosition';
 
-function SpotCreateFormMap({
-  markerPosition,
-  setMarkerPosition,
+function Map({
+  spotData,
+  setSpotData,
 }: {
-  markerPosition: MarkerPosition;
-  setMarkerPosition: React.Dispatch<React.SetStateAction<MarkerPosition>>;
+  spotData: SpotData;
+  setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -19,16 +19,15 @@ function SpotCreateFormMap({
   const centerLng = lngParam ? parseFloat(lngParam) : defaultPosition.lng;
 
   useEffect(() => {
-    setMarkerPosition({ lat: centerLat, lng: centerLng });
-  }, []);
+    setSpotData((prev) => ({ ...prev, position: { lat: centerLat, lng: centerLng } }));
+    console.log(`緯度: ${spotData.position.lat}, 経度: ${spotData.position.lng}`);
+  }, [location.search]);
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
-    if (e.latLng && e.latLng) {
-      console.log(`緯度: ${e.latLng.lat()}, 経度: ${e.latLng.lng()}`);
-      setMarkerPosition({
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng(),
-      });
+    const latLng = e.latLng;
+    if (latLng && latLng.lat() && latLng.lng()) {
+      console.log(`緯度: ${latLng.lat()}, 経度: ${latLng.lng()}`);
+      setSpotData((prev) => ({ ...prev, position: { lat: latLng.lat(), lng: latLng.lng() } }));
     }
   };
   return (
@@ -40,18 +39,16 @@ function SpotCreateFormMap({
       options={{
         zoom: 15,
         center: {
-          lat: markerPosition.lat ? markerPosition.lat : defaultPosition.lat,
-          lng: markerPosition.lng ? markerPosition.lng : defaultPosition.lng,
+          lat: spotData.position.lat ? spotData.position.lat : defaultPosition.lat,
+          lng: spotData.position.lng ? spotData.position.lng : defaultPosition.lng,
         },
         fullscreenControl: false,
       }}
       onClick={onMapClick}
     >
-      {markerPosition.lat && markerPosition.lng && (
-        <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
-      )}
+      <Marker position={{ lat: spotData.position.lat, lng: spotData.position.lng }} />
     </GoogleMap>
   );
 }
 
-export default SpotCreateFormMap;
+export default Map;

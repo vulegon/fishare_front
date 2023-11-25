@@ -2,16 +2,15 @@ import React from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { SpotData } from '../types/SpotData';
 
 function FishingTypeSelector({
-  location,
-  setLocation,
+  setSpotData,
 }: {
-  location: string;
-  setLocation: React.Dispatch<React.SetStateAction<string>>;
+  setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const handleLocationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLocation(event.target.value);
+    setSpotData((prev) => ({ ...prev, location: event.target.value }));
   };
   return (
     <RadioGroup

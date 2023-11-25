@@ -1,15 +1,16 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
+import { SpotData } from '../types/SpotData';
 
 function SpotDescription({
-  description,
-  setDescription,
+  spotData,
+  setSpotData,
 }: {
-  description: string;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
+  spotData: SpotData;
+  setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDescription(event.target.value);
+    setSpotData((prev) => ({ ...prev, description: event.target.value }));
   };
   return (
     <TextField
@@ -17,7 +18,7 @@ function SpotDescription({
       multiline
       rows={5}
       variant='outlined'
-      value={description}
+      value={spotData.description}
       onChange={handleDescriptionChange}
       margin='normal'
       required

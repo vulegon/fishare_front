@@ -1,30 +1,31 @@
 import React, { useEffect } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { SpotData } from '../types/SpotData';
 
 export default function CheckBox({
   disabled,
   labels,
-  fishingTypes,
-  setFishingTypes,
-  location,
+  spotData,
+  setSpotData,
 }: {
   disabled: boolean;
   labels: string[];
-  fishingTypes: string[];
-  setFishingTypes: React.Dispatch<React.SetStateAction<string[]>>;
-  location: string;
+  spotData: SpotData;
+  setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, label: string) => {
-    if (fishingTypes.includes(label)) {
-      setFishingTypes(fishingTypes.filter((fishingType) => fishingType !== label));
+    if (spotData.fishingTypes.includes(label)) {
+      const newFishingTypes = spotData.fishingTypes.filter((fishingType) => fishingType !== label);
+      setSpotData((prev) => ({ ...prev, fishingTypes: newFishingTypes }));
     } else {
-      setFishingTypes([...fishingTypes, label]);
+      setSpotData((prev) => ({ ...prev, fishingTypes: [label] }));
+
     }
   };
   useEffect(() => {
-    setFishingTypes([]);
-  }, [location]);
+    setSpotData((prev) => ({ ...prev, fishingTypes: [] }));
+  }, [spotData.location]);
   return (
     <>
       {labels.map((label) => (
@@ -33,7 +34,7 @@ export default function CheckBox({
           control={
             <Checkbox
               disabled={disabled}
-              checked={fishingTypes.includes(label)}
+              checked={spotData.fishingTypes.includes(label)}
               onChange={(e) => handleCheckboxChange(e, label)}
             />
           }

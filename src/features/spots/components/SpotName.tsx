@@ -1,15 +1,16 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
+import { SpotData } from '../types/SpotData';
 
 function SpotName({
-  name,
-  setName,
+  spotData,
+  setSpotData,
 }: {
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
+  spotData: SpotData;
+  setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+    setSpotData((prev) => ({ ...prev, name: event.target.value }));
   };
   return (
     <TextField
@@ -17,7 +18,7 @@ function SpotName({
       multiline
       rows={1}
       variant='outlined'
-      value={name}
+      value={spotData.name}
       onChange={handleNameChange}
       margin='normal'
       required

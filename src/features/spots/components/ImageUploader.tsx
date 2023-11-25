@@ -2,17 +2,14 @@ import React, { useRef } from 'react';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Button from '@mui/material/Button';
 import { Image } from '../../../types/Spot';
+import { SpotData } from '../types/SpotData';
 
 function ImageUploader({
-  imageCount,
-  setImageCount,
-  images,
-  setImages,
+  spotData,
+  setSpotData,
 }: {
-  imageCount: number;
-  setImageCount: React.Dispatch<React.SetStateAction<number>>;
-  images: Image[];
-  setImages: React.Dispatch<React.SetStateAction<Image[]>>;
+  spotData: SpotData;
+  setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,9 +19,8 @@ function ImageUploader({
       reader.readAsDataURL(file);
       reader.onload = () => {
         const result = reader.result as string;
-        const newImage = { file: file, img: result, title: file.name, id: imageCount };
-        setImages([...images, newImage]);
-        setImageCount(imageCount + 1);
+        const newImage = { file: file, img: result, title: file.name, id: spotData.images.length };
+        setSpotData((prev) => ({ ...prev, images: [newImage] }));
       };
     }
   };

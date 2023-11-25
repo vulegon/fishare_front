@@ -12,7 +12,7 @@ import {
   LocationSelector,
   SubmmitButton,
   ImageUploader,
-  SpotMap,
+  Map,
   FishingTypeCheckBox,
 } from '../../../features/spots/components/index';
 import HelpText from '../../../components/HelpText';
