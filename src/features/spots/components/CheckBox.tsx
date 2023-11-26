@@ -19,8 +19,10 @@ export default function CheckBox({
       const newFishingTypes = spotData.fishingTypes.filter((fishingType) => fishingType !== label);
       setSpotData((prev) => ({ ...prev, fishingTypes: newFishingTypes }));
     } else {
-      setSpotData((prev) => ({ ...prev, fishingTypes: [label] }));
-
+      setSpotData((prev) => {
+        const updatedFishingTypes = [...prev.fishingTypes, label];
+        return { ...prev, fishingTypes: updatedFishingTypes };
+      });
     }
   };
   useEffect(() => {

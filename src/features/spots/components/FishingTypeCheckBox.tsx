@@ -22,7 +22,7 @@ function FishingCheckBox({
       setIsSea(false);
       setIsRiver(false);
     }
-  }, []);
+  }, [spotData.location]);
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
