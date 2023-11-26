@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { SpotData } from '../types/SpotData';
 import { useLocation } from 'react-router-dom';
@@ -17,11 +17,12 @@ function Map({
   const lngParam = searchParams.get('longitude');
   const centerLat = latParam ? parseFloat(latParam) : defaultPosition.latitude;
   const centerLng = lngParam ? parseFloat(lngParam) : defaultPosition.longitude;
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     setSpotData((prev) => ({ ...prev, position: { latitude: centerLat, longitude: centerLng } }));
-    console.log(`緯度: ${spotData.position.latitude}, 経度: ${spotData.position.longitude}`);
-  }, [location.search]);
+    setIsLoading(true);
+  }, []);
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     const latLng = e.latLng;
@@ -45,7 +46,7 @@ function Map({
       }}
       onClick={onMapClick}
     >
-      <Marker position={{ lat: spotData.position.latitude, lng: spotData.position.longitude }} />
+      {isLoading && <Marker position={{ lat: spotData.position.latitude, lng: spotData.position.longitude }} />}
     </GoogleMap>
   );
 }
