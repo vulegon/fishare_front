@@ -13,21 +13,20 @@ function Map({
 }) {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const latParam = searchParams.get('lat');
-  const lngParam = searchParams.get('lng');
-  const centerLat = latParam ? parseFloat(latParam) : defaultPosition.lat;
-  const centerLng = lngParam ? parseFloat(lngParam) : defaultPosition.lng;
+  const latParam = searchParams.get('latitude');
+  const lngParam = searchParams.get('longitude');
+  const centerLat = latParam ? parseFloat(latParam) : defaultPosition.latitude;
+  const centerLng = lngParam ? parseFloat(lngParam) : defaultPosition.longitude;
 
   useEffect(() => {
-    setSpotData((prev) => ({ ...prev, position: { lat: centerLat, lng: centerLng } }));
-    console.log(`緯度: ${spotData.position.lat}, 経度: ${spotData.position.lng}`);
+    setSpotData((prev) => ({ ...prev, position: { latitude: centerLat, longitude: centerLng } }));
+    console.log(`緯度: ${spotData.position.latitude}, 経度: ${spotData.position.longitude}`);
   }, [location.search]);
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     const latLng = e.latLng;
     if (latLng && latLng.lat() && latLng.lng()) {
-      console.log(`緯度: ${latLng.lat()}, 経度: ${latLng.lng()}`);
-      setSpotData((prev) => ({ ...prev, position: { lat: latLng.lat(), lng: latLng.lng() } }));
+      setSpotData((prev) => ({ ...prev, position: { latitude: latLng.lat(), longitude: latLng.lng() } }));
     }
   };
   return (
@@ -39,14 +38,14 @@ function Map({
       options={{
         zoom: 15,
         center: {
-          lat: spotData.position.lat ? spotData.position.lat : defaultPosition.lat,
-          lng: spotData.position.lng ? spotData.position.lng : defaultPosition.lng,
+          lat: spotData.position.latitude ? spotData.position.latitude : defaultPosition.latitude,
+          lng: spotData.position.longitude ? spotData.position.longitude : defaultPosition.longitude,
         },
         fullscreenControl: false,
       }}
       onClick={onMapClick}
     >
-      <Marker position={{ lat: spotData.position.lat, lng: spotData.position.lng }} />
+      <Marker position={{ lat: spotData.position.latitude, lng: spotData.position.longitude }} />
     </GoogleMap>
   );
 }

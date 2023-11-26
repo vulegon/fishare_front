@@ -29,8 +29,8 @@ function SpotCreatePage() {
     name: '',
     description: '',
     position: {
-      lat: defaultPosition.lat,
-      lng: defaultPosition.lng,
+      latitude: defaultPosition.latitude,
+      longitude: defaultPosition.longitude,
     },
     fish: [],
     fishingTypes: [],
@@ -48,8 +48,8 @@ function SpotCreatePage() {
       images: spotData.images,
       location: spotData.location,
       catchableFish: spotData.fish,
-      latitude: String(spotData.position.lat),
-      longitude: String(spotData.position.lng),
+      latitude: String(spotData.position.latitude),
+      longitude: String(spotData.position.longitude),
       fishingTypes: spotData.fishingTypes,
     });
     if (response.status === 200) {

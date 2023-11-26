@@ -11,7 +11,7 @@ import { fetchSpots } from '../../utils/fetchSpots';
 import { defaultPosition } from '../../utils/constants/defalutPosition';
 
 function Map() {
-  const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ lat: undefined, lng: undefined });
+  const [markerPosition, setMarkerPosition] = useState<MarkerPosition>({ latitude: undefined, longitude: undefined });
   const [spotRegisterButtonIsDisabled, setSpotRegisterButtonIsDisabled] = useState<boolean>(true);
   const [spotIsShow, setIsSpotShow] = useState<boolean>(false);
   const [showSpot, setShowSpot] = useState<Spot | null>(null);
@@ -28,8 +28,8 @@ function Map() {
     if (e.latLng && e.latLng) {
       console.log(`緯度: ${e.latLng.lat()}, 経度: ${e.latLng.lng()}`);
       setMarkerPosition({
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng(),
+        latitude: e.latLng.lat(),
+        longitude: e.latLng.lng(),
       });
       setSpotRegisterButtonIsDisabled(false);
     }
@@ -40,7 +40,7 @@ function Map() {
   const getCurrentPosition = async () => {
     if (!navigator.geolocation) return; //Geolocation APIに対応していない場合はデフォルト値を採用する
     function successGetCurrentPosition(position: GeolocationPosition) {
-      const newCenter = { lat: position.coords.latitude, lng: position.coords.longitude };
+      const newCenter = { latitude: position.coords.latitude, longitude: position.coords.longitude };
       const newMapOptions = { ...mapOptions, center: newCenter };
       setMapOptions(newMapOptions);
       setIsCenterLoading(false);
@@ -96,18 +96,26 @@ function Map() {
 
   return (
     <>
-      <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptions} onClick={onMapClick}>
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle()}
+        options={{
+          zoom: mapOptions.zoom,
+          center: { lat: mapOptions.center.latitude, lng: mapOptions.center.longitude },
+          fullscreenControl: mapOptions.fullscreenControl,
+        }}
+        onClick={onMapClick}
+      >
         {!spotsData.isLoading &&
           spotsData.spots &&
           spotsData.spots.map((spot) => (
             <Marker
               key={spot.id.toString()}
-              position={{ lat: spot.lat, lng: spot.lng }}
+              position={{ lat: spot.latitude, lng: spot.longitude }}
               onClick={() => handleMarkerClick(spot)}
             />
           ))}
-        {markerPosition.lat && markerPosition.lng && (
-          <Marker position={{ lat: markerPosition.lat, lng: markerPosition.lng }} />
+        {markerPosition.latitude && markerPosition.longitude && (
+          <Marker position={{ lat: markerPosition.latitude, lng: markerPosition.longitude }} />
         )}
         {isCenterLoading && <CurrentCenterLoading />}
         <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>

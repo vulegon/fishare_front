@@ -39,7 +39,8 @@ function App() {
 
   useEffect(() => {
     fetchCurrentUser();
-  }, [currentUser.id]);
+  }, []);
+
   return (
     <Router>
       <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
