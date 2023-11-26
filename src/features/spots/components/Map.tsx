@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { SpotData } from '../types/SpotData';
 import { useLocation } from 'react-router-dom';
@@ -30,20 +30,24 @@ function Map({
       setSpotData((prev) => ({ ...prev, position: { latitude: latLng.lat(), longitude: latLng.lng() } }));
     }
   };
+
+   const mapOptionsMemo = useMemo(() => {
+     return {
+       zoom: 15,
+       center: {
+         lat: spotData.position.latitude ? spotData.position.latitude : defaultPosition.latitude,
+         lng: spotData.position.longitude ? spotData.position.longitude : defaultPosition.longitude,
+       },
+       fullscreenControl: false,
+     };
+   }, []);
   return (
     <GoogleMap
       mapContainerStyle={{
         height: '500px',
         width: '700px',
       }}
-      options={{
-        zoom: 15,
-        center: {
-          lat: spotData.position.latitude ? spotData.position.latitude : defaultPosition.latitude,
-          lng: spotData.position.longitude ? spotData.position.longitude : defaultPosition.longitude,
-        },
-        fullscreenControl: false,
-      }}
+      options={mapOptionsMemo}
       onClick={onMapClick}
     >
       {isLoading && <Marker position={{ lat: spotData.position.latitude, lng: spotData.position.longitude }} />}

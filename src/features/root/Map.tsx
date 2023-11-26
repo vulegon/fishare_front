@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { mapContainerStyle } from './defaultMapOption';
 import { MarkerPosition, Spot } from '../../types/Spot';
@@ -94,17 +94,17 @@ function Map() {
     setShowSpot(spot);
   };
 
+  const mapOptionsMemo = useMemo(() => {
+    return {
+      zoom: mapOptions.zoom,
+      center: { lat: mapOptions.center.latitude, lng: mapOptions.center.longitude },
+      fullscreenControl: mapOptions.fullscreenControl,
+    };
+  }, [mapOptions.zoom, mapOptions.center.latitude, mapOptions.center.longitude, mapOptions.fullscreenControl]);
+
   return (
     <>
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle()}
-        options={{
-          zoom: mapOptions.zoom,
-          center: { lat: mapOptions.center.latitude, lng: mapOptions.center.longitude },
-          fullscreenControl: mapOptions.fullscreenControl,
-        }}
-        onClick={onMapClick}
-      >
+      <GoogleMap mapContainerStyle={mapContainerStyle()} options={mapOptionsMemo} onClick={onMapClick}>
         {!spotsData.isLoading &&
           spotsData.spots &&
           spotsData.spots.map((spot) => (
