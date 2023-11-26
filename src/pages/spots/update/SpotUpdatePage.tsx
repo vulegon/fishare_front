@@ -19,21 +19,24 @@ import HelpText from '../../../components/HelpText';
 import { ErrorMessages } from '../../../types/ErrorMessage';
 import ErrorMessageText from '../../../components/ErrorMessageText';
 import { useNavigate } from 'react-router-dom';
+import { SpotData } from '../../../features/spots/types/SpotData';
+import { defaultPosition } from '../../../utils/constants/defalutPosition';
 
 function SpotUpdatePage() {
   const { spot_id } = useParams();
-  const [spot, setSpot] = useState({
+  const [spotData, setSpotData] = useState<SpotData>({
     id: '',
     name: '',
     description: '',
-    latitude: 0,
-    longitude: 0,
+    position: {
+      latitude: defaultPosition.latitude,
+      longitude: defaultPosition.longitude,
+    },
     fish: [],
-    fishing_types: [],
+    fishingTypes: [],
     images: [],
     location: '',
-    editable: false,
-    isLoading: false,
+    isLoading: true,
   });
   const [isErrorMessageOpen, setIsErrorMessageOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<ErrorMessages>({});
@@ -51,22 +54,25 @@ function SpotUpdatePage() {
         const data = await response.json();
         console.log(data);
         const responseSpot = data.spot;
-        setSpot({
-          ...spot,
+        setSpotData((prev)=>({
+          ...prev,
           id: responseSpot.id,
           name: responseSpot.name,
           description: responseSpot.description,
+          position: {
+            latitude: responseSpot.latitude,
+            longitude: responseSpot.longitude,
+          },
           location: responseSpot.location,
           fish: responseSpot.fish,
-          fishing_types: responseSpot.fishing_types,
+          fishingTypes: responseSpot.fishing_types,
           images: responseSpot.images,
-          editable: responseSpot.editable,
-        });
+        }));
       }
     } catch (e) {
       console.log(e);
-      setSpot((prev) => ({ ...spot, isLoading: true }));
     }
+      setSpotData((prev) => ({ ...prev, isLoading: false }));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -75,7 +81,7 @@ function SpotUpdatePage() {
 
   useEffect(() => {
     fetchSpotShow();
-  }, []);
+  }, [spotData.isLoading]);
   return (
     <div>
       <Header isShowSearchSpot={false} />
@@ -91,9 +97,31 @@ function SpotUpdatePage() {
         <Typography variant='h4' gutterBottom>
           釣り場の編集
         </Typography>
-        <HelpText value={'地図のマーカーを動かすこともできます'}></HelpText>
-        <form style={{ width: '700px' }} onSubmit={handleSubmit}>
-        </form>
+        {!spotData.isLoading && (
+          <>
+            <HelpText value={'地図のマーカーを動かすこともできます'}></HelpText>
+            <Map spotData={spotData} setSpotData={setSpotData} />
+            {isErrorMessageOpen && <ErrorMessageText fieldKey={'str_latitude'} errors={errorMessage} />}
+            {isErrorMessageOpen && <ErrorMessageText fieldKey={'str_longitude'} errors={errorMessage} />}
+            <form style={{ width: '700px' }} onSubmit={handleSubmit}>
+              <SpotName spotData={spotData} setSpotData={setSpotData} />
+              {isErrorMessageOpen && <ErrorMessageText fieldKey={'name'} errors={errorMessage} />}
+              <HelpText value={'必ず候補から選択してください。選択しない場合は登録されません'}></HelpText>
+              <CatchableFish spotData={spotData} setSpotData={setSpotData} />
+              {isErrorMessageOpen && <ErrorMessageText fieldKey={'fish'} errors={errorMessage} />}
+              <LocationSelector spotData={spotData} setSpotData={setSpotData} />
+              {isErrorMessageOpen && <ErrorMessageText fieldKey={'location'} errors={errorMessage} />}
+              <FishingTypeCheckBox spotData={spotData} setSpotData={setSpotData} />
+              {isErrorMessageOpen && <ErrorMessageText fieldKey={'fishing_types'} errors={errorMessage} />}
+              <Description spotData={spotData} setSpotData={setSpotData} />
+              {isErrorMessageOpen && <ErrorMessageText fieldKey={'description'} errors={errorMessage} />}
+              <ImageUploader spotData={spotData} setSpotData={setSpotData} />
+              {isErrorMessageOpen && <ErrorMessageText fieldKey={'images'} errors={errorMessage} />}
+              <ImageItem spotData={spotData} setSpotData={setSpotData} />
+              <SubmmitButton isLoading={spotData.isLoading} buttonText='送信'></SubmmitButton>
+            </form>
+          </>
+        )}
         <Box sx={{ height: 300 }}></Box>
       </div>
     </div>

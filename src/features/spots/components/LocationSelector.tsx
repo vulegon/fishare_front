@@ -5,8 +5,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { SpotData } from '../types/SpotData';
 
 function FishingTypeSelector({
+  spotData,
   setSpotData,
 }: {
+  spotData: SpotData;
   setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const handleLocationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,6 +20,7 @@ function FishingTypeSelector({
       name='radio-buttons-group'
       row
       onChange={handleLocationChange}
+      defaultValue={spotData.location}
     >
       <FormControlLabel value='海釣り' control={<Radio />} label='海釣り' />
       <FormControlLabel value='川釣り' control={<Radio />} label='川釣り' />

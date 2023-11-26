@@ -5,7 +5,13 @@ import { TextField } from '@mui/material';
 import { getFish } from '../../../api/fish';
 import { SpotData } from '../types/SpotData';
 
-function CatchableFishInput({ setSpotData }: { setSpotData: React.Dispatch<React.SetStateAction<SpotData>> }) {
+function CatchableFishInput({
+  spotData,
+  setSpotData,
+}: {
+  spotData: SpotData;
+  setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
+}) {
   const [fish, setFish] = useState<string[]>([]);
   const getFishNames = async () => {
     const response = await getFish();
@@ -26,6 +32,7 @@ function CatchableFishInput({ setSpotData }: { setSpotData: React.Dispatch<React
       id='tags-outlined'
       options={fish}
       freeSolo
+      value={spotData.fish}
       onChange={handleCatchableFishChange}
       renderTags={(value: readonly string[], getTagProps) =>
         value.map((option: string, index: number) => (

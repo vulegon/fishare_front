@@ -41,6 +41,7 @@ function Map({
        fullscreenControl: false,
      };
    }, []);
+
   return (
     <GoogleMap
       mapContainerStyle={{

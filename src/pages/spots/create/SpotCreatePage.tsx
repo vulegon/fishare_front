@@ -26,6 +26,7 @@ function SpotCreatePage() {
   const navigate = useNavigate();
 
   const [spotData, setSpotData] = useState<SpotData>({
+    id: '',
     name: '',
     description: '',
     position: {
@@ -88,9 +89,9 @@ function SpotCreatePage() {
           <SpotName spotData={spotData} setSpotData={setSpotData} />
           {isErrorMessageOpen && <ErrorMessageText fieldKey={'name'} errors={errorMessage} />}
           <HelpText value={'必ず候補から選択してください。選択しない場合は登録されません'}></HelpText>
-          <CatchableFish setSpotData={setSpotData} />
+          <CatchableFish spotData={spotData} setSpotData={setSpotData} />
           {isErrorMessageOpen && <ErrorMessageText fieldKey={'fish'} errors={errorMessage} />}
-          <LocationSelector setSpotData={setSpotData} />
+          <LocationSelector spotData={spotData} setSpotData={setSpotData} />
           {isErrorMessageOpen && <ErrorMessageText fieldKey={'location'} errors={errorMessage} />}
           <FishingTypeCheckBox spotData={spotData} setSpotData={setSpotData} />
           {isErrorMessageOpen && <ErrorMessageText fieldKey={'fishing_types'} errors={errorMessage} />}

@@ -56,7 +56,7 @@ function App() {
                   isUserLoggedIn(currentUser) ? (
                     <Routes>
                       <Route path='/' element={<SpotCreatePage />} />
-                      <Route path=':id' element={<SpotUpdatePage />} />
+                      <Route path=':spot_id' element={<SpotUpdatePage />} />
                     </Routes>
                   ) : (
                     <Navigate to='/auth/sign_in' />
