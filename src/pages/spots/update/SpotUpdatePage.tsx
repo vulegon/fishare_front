@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Header from '../../../features/headers/Header';
 import { Typography, Box } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { ShowSpot } from '../../../types/ShowSpot';
 import { getSpotShow, updateSpot } from '../../../api/spot';
 import {
   ImageItem,
@@ -36,10 +35,11 @@ function SpotUpdatePage() {
     fishingTypes: [],
     images: [],
     location: '',
-    isLoading: true,
+    isLoading: false,
   });
   const [isErrorMessageOpen, setIsErrorMessageOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<ErrorMessages>({});
+  const [isInitLoading, setIsInitLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   const fetchSpotShow = async () => {
@@ -72,11 +72,34 @@ function SpotUpdatePage() {
     } catch (e) {
       console.log(e);
     }
-      setSpotData((prev) => ({ ...prev, isLoading: false }));
+      setIsInitLoading(false);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setSpotData((prev) => ({ ...prev, isLoading: true }));
+    const response = await updateSpot({
+      id: spotData.id,
+      name: spotData.name,
+      description: spotData.description,
+      images: spotData.images,
+      location: spotData.location,
+      catchableFish: spotData.fish,
+      latitude: String(spotData.position.latitude),
+      longitude: String(spotData.position.longitude),
+      fishingTypes: spotData.fishingTypes,
+    });
+    if (response.status === 200) {
+      setIsErrorMessageOpen(false);
+      navigate('/', { state: { status: 'success', message: '釣り場を更新しました' } });
+    } else {
+      setIsErrorMessageOpen(true);
+      const data = await response.json();
+      console.log(data);
+      setErrorMessage(data.details);
+      console.log(data.details);
+    }
+    setSpotData((prev) => ({ ...prev, isLoading: false }));
   };
 
   useEffect(() => {
@@ -97,7 +120,7 @@ function SpotUpdatePage() {
         <Typography variant='h4' gutterBottom>
           釣り場の編集
         </Typography>
-        {!spotData.isLoading && (
+        {!isInitLoading && (
           <>
             <HelpText value={'地図のマーカーを動かすこともできます'}></HelpText>
             <Map spotData={spotData} setSpotData={setSpotData} />
