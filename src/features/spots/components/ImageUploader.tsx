@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Button from '@mui/material/Button';
-import { Image } from '../../../types/Spot';
 import { SpotData } from '../types/SpotData';
 
 function ImageUploader({
@@ -19,8 +18,8 @@ function ImageUploader({
       reader.readAsDataURL(file);
       reader.onload = () => {
         const result = reader.result as string;
-        const newImage = { file: file, img: result, title: file.name, id: spotData.images.length };
-        setSpotData((prev) => ({ ...prev, images: [newImage] }));
+        const newImage = { file: file, img: result, title: file.name, id: spotData.images.length+1 };
+        setSpotData((prev) => ({ ...prev, images: [...prev.images, newImage] }));
       };
     }
   };
