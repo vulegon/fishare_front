@@ -11,7 +11,6 @@ import {
   LocationSelector,
   SubmmitButton,
   ImageUploader,
-  Map,
   FishingTypeCheckBox,
 } from '../../../features/spots/components/index';
 import HelpText from '../../../components/HelpText';
@@ -20,6 +19,7 @@ import ErrorMessageText from '../../../components/ErrorMessageText';
 import { useNavigate } from 'react-router-dom';
 import { SpotData } from '../../../features/spots/types/SpotData';
 import { defaultPosition } from '../../../utils/constants/defalutPosition';
+import Map from '../../../features/spots/update/Map';
 
 function SpotUpdatePage() {
   const { spot_id } = useParams();
@@ -72,7 +72,7 @@ function SpotUpdatePage() {
     } catch (e) {
       console.log(e);
     }
-      setIsInitLoading(false);
+    setIsInitLoading(false);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -138,7 +138,7 @@ function SpotUpdatePage() {
               {isErrorMessageOpen && <ErrorMessageText fieldKey={'fishing_types'} errors={errorMessage} />}
               <Description spotData={spotData} setSpotData={setSpotData} />
               {isErrorMessageOpen && <ErrorMessageText fieldKey={'description'} errors={errorMessage} />}
-              <ImageUploader spotData={spotData} setSpotData={setSpotData} />
+              <ImageUploader setSpotData={setSpotData} />
               {isErrorMessageOpen && <ErrorMessageText fieldKey={'images'} errors={errorMessage} />}
               <ImageItem spotData={spotData} setSpotData={setSpotData} />
               <SubmmitButton isLoading={spotData.isLoading} buttonText='送信'></SubmmitButton>

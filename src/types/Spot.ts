@@ -9,7 +9,7 @@ export interface MarkerPosition {
 }
 
 export interface Image {
-  id: number;
+  id: string;
   file: File;
   img: string;
   title: string;

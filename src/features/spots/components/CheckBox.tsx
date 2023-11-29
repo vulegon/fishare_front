@@ -26,7 +26,11 @@ export default function CheckBox({
     }
   };
   useEffect(() => {
-    setSpotData((prev) => ({ ...prev, fishingTypes: [] }));
+    const initializeFishingTypes = async () => {
+      await setSpotData((prev) => ({ ...prev, fishingTypes: [] }));
+    };
+
+    initializeFishingTypes();
   }, [spotData.location]);
   return (
     <>

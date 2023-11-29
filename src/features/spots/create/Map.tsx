@@ -17,12 +17,12 @@ function Map({
   const lngParam = searchParams.get('longitude');
   const centerLat = latParam ? parseFloat(latParam) : defaultPosition.latitude;
   const centerLng = lngParam ? parseFloat(lngParam) : defaultPosition.longitude;
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setSpotData((prev) => ({ ...prev, position: { latitude: centerLat, longitude: centerLng } }));
     setIsLoading(true);
-  }, []);
+  }, [centerLat, centerLng]);
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     const latLng = e.latLng;
@@ -31,16 +31,16 @@ function Map({
     }
   };
 
-   const mapOptionsMemo = useMemo(() => {
-     return {
-       zoom: 15,
-       center: {
-         lat: spotData.position.latitude ? spotData.position.latitude : defaultPosition.latitude,
-         lng: spotData.position.longitude ? spotData.position.longitude : defaultPosition.longitude,
-       },
-       fullscreenControl: false,
-     };
-   }, []);
+  const mapOptionsMemo = useMemo(() => {
+    return {
+      zoom: 15,
+      center: {
+        lat: spotData.position.latitude,
+        lng: spotData.position.longitude,
+      },
+      fullscreenControl: false,
+    };
+  }, [isLoading]);
 
   return (
     <GoogleMap

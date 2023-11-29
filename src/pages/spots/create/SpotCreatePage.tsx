@@ -9,7 +9,6 @@ import {
   LocationSelector,
   SubmmitButton,
   ImageUploader,
-  Map,
   FishingTypeCheckBox,
 } from '../../../features/spots/components/index';
 import { createSpot } from '../../../api/spot';
@@ -19,6 +18,7 @@ import ErrorMessageText from '../../../components/ErrorMessageText';
 import { useNavigate } from 'react-router-dom';
 import { defaultPosition } from '../../../utils/constants/defalutPosition';
 import { SpotData } from '../../../features/spots/types/SpotData';
+import Map from '../../../features/spots/create/Map';
 
 function SpotCreatePage() {
   const [isErrorMessageOpen, setIsErrorMessageOpen] = useState<boolean>(false);
@@ -97,7 +97,7 @@ function SpotCreatePage() {
           {isErrorMessageOpen && <ErrorMessageText fieldKey={'fishing_types'} errors={errorMessage} />}
           <Description spotData={spotData} setSpotData={setSpotData} />
           {isErrorMessageOpen && <ErrorMessageText fieldKey={'description'} errors={errorMessage} />}
-          <ImageUploader spotData={spotData} setSpotData={setSpotData} />
+          <ImageUploader setSpotData={setSpotData} />
           {isErrorMessageOpen && <ErrorMessageText fieldKey={'images'} errors={errorMessage} />}
           <ImageItem spotData={spotData} setSpotData={setSpotData} />
           <SubmmitButton isLoading={spotData.isLoading} buttonText='送信'></SubmmitButton>

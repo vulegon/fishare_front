@@ -4,17 +4,18 @@ import ImageListItem from '@mui/material/ImageListItem';
 import CloseIcon from '@mui/icons-material/Close';
 import { SpotData } from '../types/SpotData';
 
-function SpotImageItem({
+function ImageItem({
   spotData,
-  setSpotData
+  setSpotData,
 }: {
   spotData: SpotData;
   setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const handleCloseIconClick = (event: React.MouseEvent<SVGSVGElement>) => {
-    const delete_image_id = parseInt(event.currentTarget.id);
-    const result = spotData.images.filter((item) => item.id !== delete_image_id);
-    setSpotData((prev)=>({...prev, images: result}));
+      const delete_image_id = event.currentTarget.id;
+      const result = spotData.images.filter((item) => item.id !== delete_image_id);
+      setSpotData((prev) => ({ ...prev, images: result }));
+    
   };
   return (
     <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
@@ -26,7 +27,7 @@ function SpotImageItem({
               srcSet={`${image.img}`}
               alt={image.title}
               loading='lazy'
-              id={image.id.toString()}
+              id={image.id}
               style={{ maxHeight: '100%', width: 'auto', objectFit: 'cover' }}
             />
             <CloseIcon
@@ -40,7 +41,7 @@ function SpotImageItem({
                 cursor: 'pointer',
               }}
               onClick={handleCloseIconClick}
-              id={image.id.toString()}
+              id={image.id}
             />
           </ImageListItem>
         ))}
@@ -49,4 +50,4 @@ function SpotImageItem({
   );
 }
 
-export default SpotImageItem;
+export default ImageItem;
