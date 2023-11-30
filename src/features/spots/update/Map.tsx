@@ -8,15 +8,13 @@ function Map({
 }: {
   spotData: SpotData;
   setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
-  }) {
-
+}) {
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     const latLng = e.latLng;
     if (latLng && latLng.lat() && latLng.lng()) {
       setSpotData((prev) => ({ ...prev, position: { latitude: latLng.lat(), longitude: latLng.lng() } }));
     }
   };
-
   const mapOptionsMemo = useMemo(() => {
     return {
       zoom: 15,
@@ -37,7 +35,9 @@ function Map({
       options={mapOptionsMemo}
       onClick={onMapClick}
     >
-      <Marker position={{ lat: spotData.position.latitude, lng: spotData.position.longitude }} />
+      {spotData.position.latitude && spotData.position.longitude && (
+        <Marker position={{ lat: spotData.position.latitude, lng: spotData.position.longitude }} />
+      )}
     </GoogleMap>
   );
 }

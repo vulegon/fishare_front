@@ -45,8 +45,6 @@ function SpotUpdatePage() {
   const fetchSpotShow = async () => {
     try {
       if (spot_id === undefined || spot_id === null) {
-        // spot_id が undefined または null の場合の処理
-        console.log('spot_id is undefined or null');
         return;
       }
       const response = await getSpotShow(spot_id);
@@ -54,7 +52,7 @@ function SpotUpdatePage() {
         const data = await response.json();
         console.log(data);
         const responseSpot = data.spot;
-        setSpotData((prev)=>({
+        setSpotData((prev) => ({
           ...prev,
           id: responseSpot.id,
           name: responseSpot.name,
@@ -73,6 +71,7 @@ function SpotUpdatePage() {
       console.log(e);
     }
     setIsInitLoading(false);
+    console.log('initがfalseになった');
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -104,7 +103,8 @@ function SpotUpdatePage() {
 
   useEffect(() => {
     fetchSpotShow();
-  }, [spotData.isLoading]);
+  }, []);
+
   return (
     <div>
       <Header isShowSearchSpot={false} />

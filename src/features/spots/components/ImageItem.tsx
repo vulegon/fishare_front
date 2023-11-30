@@ -3,6 +3,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import CloseIcon from '@mui/icons-material/Close';
 import { SpotData } from '../types/SpotData';
+import { v4 as uuidv4 } from 'uuid'; // uuid パッケージから v4 関数をインポート
 
 function ImageItem({
   spotData,
@@ -12,16 +13,15 @@ function ImageItem({
   setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const handleCloseIconClick = (event: React.MouseEvent<SVGSVGElement>) => {
-      const delete_image_id = event.currentTarget.id;
-      const result = spotData.images.filter((item) => item.id !== delete_image_id);
-      setSpotData((prev) => ({ ...prev, images: result }));
-    
+    const delete_image_id = event.currentTarget.id;
+    const result = spotData.images.filter((item) => item.id !== delete_image_id);
+    setSpotData((prev) => ({ ...prev, images: result }));
   };
   return (
     <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
       <ImageList sx={{ width: '100%', height: 500 }} cols={3} rowHeight={230}>
         {spotData.images.map((image) => (
-          <ImageListItem key={image.img} sx={{ height: 250, width: 200 }}>
+          <ImageListItem key={String(uuidv4())} sx={{ height: 250, width: 200 }}>
             <img
               src={`${image.img}`}
               srcSet={`${image.img}`}
