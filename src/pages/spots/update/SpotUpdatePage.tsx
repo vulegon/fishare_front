@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { SpotData } from '../../../features/spots/types/SpotData';
 import { defaultPosition } from '../../../utils/constants/defalutPosition';
 import Map from '../../../features/spots/update/Map';
+import { Image } from '../../../types/Spot';
 
 function SpotUpdatePage() {
   const { spot_id } = useParams();
@@ -52,6 +53,15 @@ function SpotUpdatePage() {
         const data = await response.json();
         console.log(data);
         const responseSpot = data.spot;
+        responseSpot.images = await Promise.all(
+            responseSpot.images.map(async (image: Image) => {
+              const imageResponse = await fetch(image.img);
+              const blob = await imageResponse.blob();
+              const file = new File([blob], image.title, { type: blob.type });
+
+              // キー"file"を追加
+              return { ...image, file };
+            }))
         setSpotData((prev) => ({
           ...prev,
           id: responseSpot.id,
@@ -64,14 +74,14 @@ function SpotUpdatePage() {
           location: responseSpot.location,
           fish: responseSpot.fish,
           fishingTypes: responseSpot.fishing_types,
-          images: responseSpot.images,
+          images: responseSpot.images
+          ,
         }));
       }
     } catch (e) {
       console.log(e);
     }
     setIsInitLoading(false);
-    console.log('initがfalseになった');
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

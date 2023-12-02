@@ -1,3 +1,5 @@
+import { Image } from './Spot';
+
 export interface ShowSpot {
   id: string;
   name: string;
@@ -6,7 +8,7 @@ export interface ShowSpot {
   description: string;
   fish: string[];
   fishing_types: string[];
-  images: string[];
+  images: Image[];
   location: string;
   editable: boolean;
 }

@@ -17,7 +17,7 @@ function ImageUploader({
       reader.readAsDataURL(file);
       reader.onload = () => {
         const result = reader.result as string;
-        const newImage = { file: file, img: result, title: file.name, id: String(uuidv4()) };
+        const newImage = { id: String(uuidv4()), file: file, img: result, title: file.name };
         setSpotData((prev) => ({ ...prev, images: [...prev.images, newImage] }));
       };
     }
