@@ -6,6 +6,7 @@ import SpotCreatePage from './pages/spots/create/SpotCreatePage';
 import SignUpPage from './pages/auth/signUp/SignUpPage';
 import SignInPage from './pages/auth/signIn/SignInPage';
 import SignUpSuccessPage from './pages/auth/signUp/success/SignUpSuccessPage';
+import SpotUpdatePage from './pages/spots/update/SpotUpdatePage';
 import { getCurrentUser } from './api/user';
 import { CurrentUser } from './types/CurrentUser';
 import { isUserLoggedIn } from './utils/authUtils';
@@ -38,7 +39,8 @@ function App() {
 
   useEffect(() => {
     fetchCurrentUser();
-  }, [currentUser.id]);
+  }, []);
+
   return (
     <Router>
       <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
@@ -48,11 +50,14 @@ function App() {
           <Routes>
             <Route path='/' element={<RootPage />} />
             <Route
-              path='/spots'
+              path='/spots/*'
               element={
                 isCurrentUserLoadingComplete ? (
                   isUserLoggedIn(currentUser) ? (
-                    <SpotCreatePage />
+                    <Routes>
+                      <Route path='/' element={<SpotCreatePage />} />
+                      <Route path=':spot_id' element={<SpotUpdatePage />} />
+                    </Routes>
                   ) : (
                     <Navigate to='/auth/sign_in' />
                   )

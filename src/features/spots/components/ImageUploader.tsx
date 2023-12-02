@@ -1,18 +1,13 @@
 import React, { useRef } from 'react';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Button from '@mui/material/Button';
-import { Image } from '../../types/Spot';
+import { SpotData } from '../types/SpotData';
+import { v4 as uuidv4 } from 'uuid'; // uuid パッケージから v4 関数をインポート
 
 function ImageUploader({
-  imageCount,
-  setImageCount,
-  images,
-  setImages,
+  setSpotData,
 }: {
-  imageCount: number;
-  setImageCount: React.Dispatch<React.SetStateAction<number>>;
-  images: Image[];
-  setImages: React.Dispatch<React.SetStateAction<Image[]>>;
+  setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,9 +17,8 @@ function ImageUploader({
       reader.readAsDataURL(file);
       reader.onload = () => {
         const result = reader.result as string;
-        const newImage = { file: file, img: result, title: file.name, id: imageCount };
-        setImages([...images, newImage]);
-        setImageCount(imageCount + 1);
+        const newImage = { id: String(uuidv4()), file: file, img: result, title: file.name };
+        setSpotData((prev) => ({ ...prev, images: [...prev.images, newImage] }));
       };
     }
   };

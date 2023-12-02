@@ -2,16 +2,17 @@ import React from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { SpotData } from '../types/SpotData';
 
 function FishingTypeSelector({
-  location,
-  setLocation,
+  spotData,
+  setSpotData,
 }: {
-  location: string;
-  setLocation: React.Dispatch<React.SetStateAction<string>>;
+  spotData: SpotData;
+  setSpotData: React.Dispatch<React.SetStateAction<SpotData>>;
 }) {
   const handleLocationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLocation(event.target.value);
+    setSpotData((prev) => ({ ...prev, location: event.target.value }));
   };
   return (
     <RadioGroup
@@ -19,6 +20,7 @@ function FishingTypeSelector({
       name='radio-buttons-group'
       row
       onChange={handleLocationChange}
+      defaultValue={spotData.location}
     >
       <FormControlLabel value='海釣り' control={<Radio />} label='海釣り' />
       <FormControlLabel value='川釣り' control={<Radio />} label='川釣り' />

@@ -29,6 +29,8 @@ function SpotShow({
     id: '',
     name: '',
     description: '',
+    latitude: 0,
+    longitude: 0,
     fish: [],
     fishing_types: [],
     images: [],

@@ -16,7 +16,6 @@ function RootPage() {
 
   const getFlashMessage = () => {
     const state = location.state;
-    console.log(state);
     if (!state) return;
     const newFlashMessage: AlertMessage = { status: state.status, message: state.message };
     setAlertMessage(newFlashMessage);

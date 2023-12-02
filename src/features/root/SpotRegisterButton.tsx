@@ -24,7 +24,7 @@ function SpotRegisterButton({ isDisabled, markerPosition }: SpotRegisterButtonPr
   return (
     <div>
       <Link
-        to={`/spots?lat=${markerPosition.lat}&lng=${markerPosition.lng}`}
+        to={`/spots?latitude=${markerPosition.latitude}&longitude=${markerPosition.longitude}`}
         style={linkStyle}
         onClick={handleLinkClick}
       >

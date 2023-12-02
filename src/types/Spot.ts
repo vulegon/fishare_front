@@ -1,15 +1,15 @@
 export interface Position {
-  lat: number;
-  lng: number;
+  latitude: number;
+  longitude: number;
 }
 
 export interface MarkerPosition {
-  lat: number | undefined;
-  lng: number | undefined;
+  latitude: number | undefined;
+  longitude: number | undefined;
 }
 
 export interface Image {
-  id: number;
+  id: string;
   file: File;
   img: string;
   title: string;
@@ -17,6 +17,6 @@ export interface Image {
 
 export interface Spot {
   id: string;
-  lat: number;
-  lng: number;
+  latitude: number;
+  longitude: number;
 }
