@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SearchSpot from './searchSpot/SearchSpot';
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import AuthenticatedMenu from './menu/authenticatedMenu/AuthenticatedMenu';
@@ -16,15 +16,21 @@ export default function Header({
 }) {
   const { currentUser } = useContext(CurrentUserContext);
   const { isCurrentUserLoadingComplete } = useContext(IsCurrentUserLoadingCompleteContext);
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const redirect = () => {
+    if (location.pathname === '/') {
+      window.location.reload();
+    } else {
+      navigate('/');
+    }
+  };
   return (
     <AppBar position='static'>
       <Toolbar>
-        <Link to='/' style={{ color: 'inherit', textDecoration: 'none', display: 'block' }}>
-          <Typography variant='h6' component='div'>
-            Fishare
-          </Typography>
-        </Link>
+        <Typography variant='h6' component='div' onClick={redirect} style={{ cursor: 'pointer' }}>
+          Fishare
+        </Typography>
         <Box sx={{ width: 100 }} />
         {isShowSearchSpot && <SearchSpot />}
         {isCurrentUserLoadingComplete &&
